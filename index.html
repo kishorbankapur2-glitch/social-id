@@ -1,46 +1,82 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Kishor | Social ID</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #0f172a, #020617);
-      font-family: Arial, sans-serif;
-      color: white;
-    }
-    .card {
-      width: 300px;
-      padding: 25px;
-      text-align: center;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.08);
-    }
-    a {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      background: rgba(255,255,255,0.12);
-      color: white;
-      text-decoration: none;
-      border-radius: 12px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Kishor | Social</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at top,#1e293b,#020617);
+  font-family:system-ui,sans-serif;
+  color:#fff;
+}
+.card{
+  width:320px;
+  padding:28px;
+  border-radius:24px;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 50px rgba(0,0,0,.45);
+  text-align:center;
+}
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  font-weight:700;
+  margin:auto;
+}
+h2{margin:15px 0 5px}
+p{opacity:.75;margin-bottom:20px}
+a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  margin:10px 0;
+  border-radius:14px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.14);
+}
+a:hover{background:rgba(255,255,255,.25)}
+i{font-size:20px}
+</style>
 </head>
+
 <body>
 
-  <div class="card">
-    <h2>KISHOR</h2>
-    <p>@kishorbankapur</p>
+<div class="card">
+  <div class="avatar">K</div>
+  <h2>KISHOR</h2>
+  <p>@kishorbankapur</p>
 
-    <a href="#">Instagram</a>
-    <a href="#">X / Twitter</a>
-    <a href="#">LinkedIn</a>
-  </div>
+  <a href="https://www.instagram.com/reel/DUA1YbkE7CC/" target="_blank">
+    <i class="fa-brands fa-instagram"></i> Instagram
+  </a>
+
+  <a href="https://x.com/bankapurkishor" target="_blank">
+    <i class="fa-brands fa-x-twitter"></i> X / Twitter
+  </a>
+
+  <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" target="_blank">
+    <i class="fa-brands fa-linkedin"></i> LinkedIn
+  </a>
+</div>
 
 </body>
 </html>
