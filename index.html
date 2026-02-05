@@ -1,71 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Kishor | Social</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikhil | Profile Card</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent: #38bdf8;
+            --text: #f8fafc;
+        }
 
-<!-- Icons -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
 
-<style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:radial-gradient(circle at top,#1e293b,#020617);
-  font-family:system-ui,sans-serif;
-  color:#fff;
-}
-.card{
-  width:320px;
-  padding:28px;
-  border-radius:24px;
-  background:rgba(255,255,255,.12);
-  backdrop-filter:blur(14px);
-  box-shadow:0 0 50px rgba(0,0,0,.45);
-  text-align:center;
-}
-.avatar{
-  width:90px;
-  height:90px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#38bdf8,#6366f1);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:36px;
-  font-weight:700;
-  margin:auto;
-}
-h2{margin:15px 0 5px}
-p{opacity:.75;margin-bottom:20px}
-a{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:14px;
-  margin:10px 0;
-  border-radius:14px;
-  text-decoration:none;
-  color:white;
-  background:rgba(255,255,255,.14);
-}
-a:hover{background:rgba(255,255,255,.25)}
-i{font-size:20px}
-</style>
+        body {
+            background: radial-gradient(circle at top right, #1e293b, #0f172a);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 40px 30px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--accent), #818cf8);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
+        }
+
+        h1 { font-size: 1.8rem; margin-bottom: 4px; letter-spacing: 1px; }
+        .id-badge { color: var(--accent); font-size: 0.9rem; margin-bottom: 30px; display: block; opacity: 0.8; }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .link-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 10px;
+            border-radius: 20px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .link-btn i { font-size: 1.8rem; }
+        .link-btn span { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
 </head>
-
 <body>
 
-<div class="card">
-  <div class="avatar">K</div>
-  <h2>KISHOR</h2>
-  <p>@kishorbankapur</p>
+    <div class="profile-card">
+        <div class="avatar">N</div>
+        <h1>KISHOR BANKAPUR</h1>
+        <span class="id-badge">@CARELESS_3.14</span>
 
-  <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
+        <div class="links-grid">
+            <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
     <i class="fa-brands fa-instagram"></i> Instagram
   </a>
 
@@ -79,8 +117,9 @@ i{font-size:20px}
 
   <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
     <i class="fa-brands fa-youtube"></i> Youtube
-  </a>
-</div>
+            </a>
+        </div>
+    </div>
 
 </body>
 </html>
