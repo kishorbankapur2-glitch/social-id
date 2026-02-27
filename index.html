@@ -10,23 +10,29 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-  .eagle {
+.eagle {
   position: fixed;
-  bottom: 20px;
-  left: -200px;
-  width: 160px;
-  opacity: 0.08;
-  z-index: 0;
-  animation: glide 40s linear infinite;
+  bottom: 50px;
+  left: 0;
+  width: 120px;
+  opacity: 0.3;
+  animation: glide 20s linear infinite;
   pointer-events: none;
+  z-index: 1;
 }
-.card {
-  position: relative;
+.eagle {
+  position: fixed;
+  bottom: 50px;
+  left: -150px;
+  width: 120px;
+  opacity: 0.3;
+  animation: glide 20s linear infinite;
+  pointer-events: none;
   z-index: 1;
 }
 @keyframes glide {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(130vw); }
+  0% { left: -150px; }
+  100% { left: 100%; }
 }
 body{
   margin:0;
