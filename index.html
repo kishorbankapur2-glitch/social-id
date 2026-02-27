@@ -20,7 +20,10 @@
   animation: glide 40s linear infinite;
   pointer-events: none;
 }
-
+.card {
+  position: relative;
+  z-index: 1;
+}
 @keyframes glide {
   0% { transform: translateX(0); }
   100% { transform: translateX(130vw); }
