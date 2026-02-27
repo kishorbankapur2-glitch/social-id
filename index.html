@@ -10,6 +10,21 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
+  .eagle {
+  position: fixed;
+  bottom: 20px;
+  left: -200px;
+  width: 160px;
+  opacity: 0.08;
+  z-index: -1;
+  animation: glide 40s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes glide {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(130vw); }
+}
 body{
   margin:0;
   height:100vh;
