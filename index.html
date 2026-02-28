@@ -9,32 +9,80 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-.eagle {
-  position: fixed;
-  bottom: 50px;
-  left: -150px;
-  width: 120px;
-  opacity: 0.3;
-  animation: glide 20s linear infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-@keyframes glide {
-  0% { left: -150px; }
-  100% { left: 100%; }
-}
 body{
   margin:0;
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  /* Changed to dark grey radial gradient */
   background:radial-gradient(circle at top, #2e2e2e, #1a1a1a);
   font-family:system-ui,sans-serif;
   color:#fff;
 }
 .card{
+  width:320px;
+  padding:28px;
+  border-radius:24px;
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 50px rgba(0,0,0,.45);
+  text-align:center;
+}
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  font-weight:700;
+  margin:auto;
+}
+h2{margin:15px 0 5px}
+p{opacity:.75;margin-bottom:20px}
+a{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  margin:10px 0;
+  border-radius:14px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.14);
+}
+a:hover{background:rgba(255,255,255,.25)}
+i{font-size:20px}
+</style>
+</head>
+
+<body>
+<div class="card">
+  <div class="avatar">K</div>
+  <h2>KISHOR BANKAPUR</h2>
+  <p>@kishorbankapur</p>
+
+  <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
+    <i class="fa-brands fa-instagram"></i> Instagram
+  </a>
+
+  <a href="https://x.com/bankapurkishor" target="_blank">
+    <i class="fa-brands fa-x-twitter"></i> X / Twitter
+  </a>
+
+  <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" target="_blank">
+    <i class="fa-brands fa-linkedin"></i> LinkedIn
+  </a>
+
+  <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
+    <i class="fa-brands fa-youtube"></i> Youtube
+  </a>
+</div>
+
+</body>
+</html>.card{
   width:320px;
   padding:28px;
   border-radius:24px;
