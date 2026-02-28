@@ -2,109 +2,264 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kishor Bankapur</title>
+<title>Kishor | Social</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Icons -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-html,body{
-height:100%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body{
-display:flex;
-justify-content:center;
-align-items:center;
-background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  margin:0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at top, #2e2e2e, #1a1a1a);
+  font-family:system-ui,sans-serif;
+  color:#fff;
+  position: relative;
+  overflow-x: hidden;
 }
 
+/* Eagle Container */
+.eagle-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100; /* High z-index to be above everything */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Eagle - avatar ke upar aayega */
+.eagle-single {
+  position: absolute;
+  width: 80px;
+  opacity: 0;
+  animation: centreGrow 3s ease-out forwards;
+  filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
+  transform-origin: center;
+  /* Avatar ke exact centre mein */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+}
+
+@keyframes centreGrow {
+  0% {
+    opacity: 0;
+    width: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  30% {
+    opacity: 1;
+    width: 100px;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  60% {
+    opacity: 0.9;
+    width: 150px;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0.8;
+    width: 120px;
+    transform: translate(-50%, -50%) scale(1);
+    /* Avatar ke upar hi rukega */
+    top: 50%;
+    left: 50%;
+  }
+}
+
+/* Card */
 .card{
-width:320px;
-background:rgba(255,255,255,0.08);
-backdrop-filter: blur(20px);
-border-radius:20px;
-padding:60px 30px 30px 30px;
-text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,0.5);
-position:relative;
+  width: min(350px, 80vw);
+  padding: clamp(24px, 4vw, 32px);
+  border-radius: min(28px, 5vw);
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 50px rgba(0,0,0,.45);
+  text-align:center;
+  position: relative;
+  z-index: 2;
+  margin: auto;
+  max-width: 400px;
 }
 
-.eagle{
-width:90px;
-position:absolute;
-top:-45px;
-left:50%;
-transform:translateX(-50%);
+/* Avatar container for relative positioning */
+.avatar-container {
+  position: relative;
+  width: min(100px, 20vw);
+  height: min(100px, 20vw);
+  margin: 0 auto 20px auto;
+  z-index: 1;
 }
 
-.profile{
-width:90px;
-height:90px;
-border-radius:50%;
-background:linear-gradient(135deg,#4facfe,#00f2fe);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:40px;
-color:white;
-margin:0 auto 15px auto;
-font-weight:600;
+.avatar{
+  width: 100%;
+  height: 100%;
+  border-radius:50%;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: min(42px, 8vw);
+  font-weight:700;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
-h1{
-color:white;
-font-size:22px;
-margin-bottom:5px;
+/* Tablet styles */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .card {
+    width: min(450px, 70vw);
+    max-width: 500px;
+    padding: 35px;
+  }
+  
+  .avatar-container {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .eagle-single {
+    width: 100px;
+  }
+  
+  @keyframes centreGrow {
+    0% { opacity: 0; width: 40px; transform: translate(-50%, -50%) scale(0.3); }
+    30% { opacity: 1; width: 140px; transform: translate(-50%, -50%) scale(1.2); }
+    60% { opacity: 0.9; width: 200px; transform: translate(-50%, -50%) scale(1.5); }
+    100% { opacity: 0.8; width: 160px; transform: translate(-50%, -50%) scale(1); }
+  }
+  
+  h2 { font-size: 2rem; }
+  p { font-size: 1.3rem; }
+  a { padding: 18px; font-size: 1.2rem; max-width: 380px; }
+  i { font-size: 28px; }
 }
 
-.username{
-color:#ccc;
-font-size:14px;
-margin-bottom:25px;
+/* Phone styles */
+@media (max-width: 480px) {
+  .card {
+    width: 85vw;
+    padding: 20px;
+  }
+  
+  .avatar-container {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .eagle-single {
+    width: 60px;
+  }
+  
+  @keyframes centreGrow {
+    0% { opacity: 0; width: 25px; transform: translate(-50%, -50%) scale(0.3); }
+    30% { opacity: 1; width: 80px; transform: translate(-50%, -50%) scale(1.2); }
+    60% { opacity: 0.9; width: 120px; transform: translate(-50%, -50%) scale(1.5); }
+    100% { opacity: 0.8; width: 100px; transform: translate(-50%, -50%) scale(1); }
+  }
 }
 
-.btn{
-display:block;
-width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:30px;
-text-decoration:none;
-color:white;
-background:rgba(255,255,255,0.1);
-transition:0.3s;
+/* Large tablets */
+@media (min-width: 1024px) {
+  .card { width: 400px; padding: 40px; }
+  .avatar-container { width: 120px; height: 120px; }
 }
 
-.btn:hover{
-background:rgba(255,255,255,0.25);
-transform:scale(1.05);
+h2{
+  margin: 0 0 10px 0;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  text-align: center;
+}
+
+p{
+  opacity:.75;
+  margin-bottom: 25px;
+  font-size: clamp(1rem, 4vw, 1.2rem);
+  text-align: center;
+}
+
+a{
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  gap: 15px;
+  padding: 15px 20px;
+  margin: 12px auto;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 50px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.14);
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+a:hover{
+  background:rgba(255,255,255,.25);
+  transform: scale(1.02);
+  border-color: rgba(255,255,255,0.3);
+}
+
+i{
+  font-size: 24px;
+  width: 30px;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
+<!-- Eagle - avatar ke upar aayega -->
+<div class="eagle-container">
+  <img src="eagle2.png" class="eagle-single" alt="eagle">
+</div>
 
 <div class="card">
+  <!-- Avatar container for better positioning -->
+  <div class="avatar-container">
+    <div class="avatar">K</div>
+  </div>
+  
+  <h2>KISHOR BANKAPUR</h2>
+  <p>@kishorbankapur</p>
 
-<img src="eagle2.png" class="eagle">
+  <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
+    <i class="fa-brands fa-instagram"></i> Instagram
+  </a>
 
-<div class="profile">K</div>
-<h1>KISHOR BANKAPUR</h1>
-<div class="username">@kishorbankapur</div>
+  <a href="https://x.com/bankapurkishor" target="_blank">
+    <i class="fa-brands fa-x-twitter"></i> X / Twitter
+  </a>
 
-<a href="#" class="btn">Instagram</a>
-<a href="#" class="btn">X / Twitter</a>
-<a href="#" class="btn">LinkedIn</a>
-<a href="#" class="btn">YouTube</a>
+  <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" target="_blank">
+    <i class="fa-brands fa-linkedin"></i> LinkedIn
+  </a>
 
+  <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
+    <i class="fa-brands fa-youtube"></i> Youtube
+  </a>
 </div>
 
 </body>
