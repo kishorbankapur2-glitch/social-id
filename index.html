@@ -29,42 +29,6 @@ body{
   overflow-x: hidden;
 }
 
-/* Eagle Container */
-.eagle-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Eagle - FINAL POSITION: top 23.4%, left 52.0% */
-.eagle-single {
-  position: absolute;
-  width: 70px;
-  opacity: 0;
-  animation: centreGrow 3s ease-out forwards;
-  filter: drop-shadow(0 0 30px rgba(255,215,0,0.9));
-  transform-origin: center;
-  top: 23.4%;
-  left: 52.0%;
-  transform: translate(-50%, -50%);
-  z-index: 101;
-}
-
-@keyframes centreGrow {
-  0% { opacity: 0; width: 10px; top: 23.4%; left: 52.0%; transform: translate(-50%, -50%) scale(0.2); }
-  25% { opacity: 0.9; width: 50px; transform: translate(-50%, -50%) scale(0.8); }
-  50% { opacity: 1; width: 85px; transform: translate(-50%, -50%) scale(1.1); }
-  75% { opacity: 0.9; width: 100px; transform: translate(-50%, -50%) scale(1.2); }
-  100% { opacity: 0.8; width: 85px; top: 23.4%; left: 52.0%; transform: translate(-50%, -50%) scale(1); }
-}
-
 /* Card */
 .card{
   width: min(350px, 80vw);
@@ -83,28 +47,29 @@ body{
 /* Avatar container */
 .avatar-container {
   position: relative;
-  width: min(100px, 20vw);
-  height: min(100px, 20vw);
+  width: min(120px, 25vw);
+  height: min(120px, 25vw);
   margin: 0 auto 20px auto;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.avatar{
+/* Profile Photo */
+.avatar-img {
   width: 100%;
   height: 100%;
-  border-radius:50%;
-  background:linear-gradient(135deg,#38bdf8,#6366f1);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size: min(42px, 8vw);
-  font-weight:700;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  line-height: 1;
+  border-radius: 50%;
+  object-fit: cover; /* Photo ko sahi fit karega */
+  border: 3px solid rgba(255,255,255,0.3);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.avatar-img:hover {
+  transform: scale(1.05);
+  border-color: #38bdf8;
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.8);
 }
 
 /* Tablet styles */
@@ -116,23 +81,9 @@ body{
   }
   
   .avatar-container {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
   }
-  
-  .eagle-single {
-    width: 85px;
-  }
-  
-  @keyframes centreGrow {
-    0% { opacity: 0; width: 15px; top: 23.4%; left: 52.0%; }
-    25% { opacity: 0.9; width: 65px; }
-    50% { opacity: 1; width: 110px; }
-    75% { opacity: 0.9; width: 130px; }
-    100% { opacity: 0.8; width: 110px; top: 23.4%; left: 52.0%; }
-  }
-  
-  .avatar { font-size: 48px; }
 }
 
 /* Phone styles */
@@ -143,29 +94,18 @@ body{
   }
   
   .avatar-container {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
   }
-  
-  .eagle-single {
-    width: 60px;
-  }
-  
-  @keyframes centreGrow {
-    0% { opacity: 0; width: 8px; top: 23.4%; left: 52.0%; }
-    25% { opacity: 0.9; width: 40px; }
-    50% { opacity: 1; width: 70px; }
-    75% { opacity: 0.9; width: 85px; }
-    100% { opacity: 0.8; width: 70px; top: 23.4%; left: 52.0%; }
-  }
-  
-  .avatar { font-size: 32px; }
 }
 
 h2{
   margin: 0 0 10px 0;
   font-size: clamp(1.5rem, 5vw, 2rem);
   text-align: center;
+  background: linear-gradient(135deg, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 p{
@@ -173,6 +113,7 @@ p{
   margin-bottom: 25px;
   font-size: clamp(1rem, 4vw, 1.2rem);
   text-align: center;
+  color: #94a3b8;
 }
 
 a{
@@ -204,18 +145,35 @@ i{
   width: 30px;
   text-align: center;
 }
+
+/* Instagram specific hover */
+a[href*="instagram"]:hover i {
+  color: #e4405f;
+}
+
+/* Twitter specific hover */
+a[href*="twitter"]:hover i,
+a[href*="x.com"]:hover i {
+  color: #1da1f2;
+}
+
+/* LinkedIn specific hover */
+a[href*="linkedin"]:hover i {
+  color: #0077b5;
+}
+
+/* YouTube specific hover */
+a[href*="youtube"]:hover i {
+  color: #ff0000;
+}
 </style>
 </head>
 
 <body>
-<!-- Eagle - FINAL POSITION: top 23.4%, left 52.0% -->
-<div class="eagle-container">
-  <img src="eagle2.png" class="eagle-single" alt="eagle">
-</div>
-
 <div class="card">
+  <!-- Profile Photo - photo.png -->
   <div class="avatar-container">
-    <div class="avatar">K</div>
+    <img src="photo.png" alt="Kishor Bankapur" class="avatar-img">
   </div>
   
   <h2>KISHOR BANKAPUR</h2>
