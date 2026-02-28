@@ -55,12 +55,12 @@ body{
   align-items: center;
 }
 
-/* Profile Photo */
+/* Profile Photo - photo1.png */
 .avatar-img {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  object-fit: cover; /* Photo ko sahi fit karega */
+  object-fit: cover;
   border: 3px solid rgba(255,255,255,0.3);
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
   transition: transform 0.3s ease;
@@ -146,39 +146,133 @@ i{
   text-align: center;
 }
 
-/* Instagram specific hover */
-a[href*="instagram"]:hover i {
-  color: #e4405f;
+/* Music Button */
+.music-control {
+  margin-top: 25px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255,255,255,0.1);
 }
 
-/* Twitter specific hover */
-a[href*="twitter"]:hover i,
-a[href*="x.com"]:hover i {
-  color: #1da1f2;
+.music-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #38bdf8, #6366f1);
+  border: none;
+  color: white;
+  padding: 14px 30px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  width: 100%;
+  max-width: 280px;
 }
 
-/* LinkedIn specific hover */
-a[href*="linkedin"]:hover i {
-  color: #0077b5;
+.music-btn:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #4ec5ff, #7a7cff);
+  box-shadow: 0 0 25px #38bdf8;
+  border-color: rgba(255,255,255,0.5);
 }
 
-/* YouTube specific hover */
-a[href*="youtube"]:hover i {
-  color: #ff0000;
+.music-btn i {
+  font-size: 22px;
+  transition: transform 0.3s;
 }
+
+.music-btn:hover i {
+  transform: scale(1.1);
+}
+
+.music-status {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.music-status i {
+  font-size: 12px;
+  color: #38bdf8;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Volume Slider */
+.volume-control {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.volume-control i {
+  font-size: 16px;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.volume-control i:hover {
+  color: #38bdf8;
+}
+
+.volume-slider {
+  width: 100px;
+  height: 4px;
+  -webkit-appearance: none;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  outline: none;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #38bdf8;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #4ec5ff;
+}
+
+/* Icon hover colors */
+a[href*="instagram"]:hover i { color: #e4405f; }
+a[href*="twitter"]:hover i, a[href*="x.com"]:hover i { color: #1da1f2; }
+a[href*="linkedin"]:hover i { color: #0077b5; }
+a[href*="youtube"]:hover i { color: #ff0000; }
 </style>
 </head>
 
 <body>
 <div class="card">
-  <!-- Profile Photo - photo.png -->
+  <!-- Profile Photo - photo1.png -->
   <div class="avatar-container">
-    <img src="photo.png" alt="Kishor Bankapur" class="avatar-img">
+    <img src="photo1.png" alt="Kishor Bankapur" class="avatar-img">
   </div>
   
   <h2>KISHOR BANKAPUR</h2>
   <p>@kishorbankapur</p>
 
+  <!-- Social Links -->
   <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
     <i class="fa-brands fa-instagram"></i> Instagram
   </a>
@@ -194,7 +288,140 @@ a[href*="youtube"]:hover i {
   <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
     <i class="fa-brands fa-youtube"></i> Youtube
   </a>
+
+  <!-- Music Control Section -->
+  <div class="music-control">
+    <button class="music-btn" onclick="toggleMusic()" id="musicBtn">
+      <i class="fa-solid fa-music" id="musicIcon"></i>
+      <span id="musicText">Play Music</span>
+    </button>
+    
+    <div class="music-status" id="musicStatus">
+      <i class="fa-solid fa-circle"></i>
+      <span>Ready to play</span>
+    </div>
+
+    <!-- Volume Control -->
+    <div class="volume-control">
+      <i class="fa-solid fa-volume-low" onclick="setVolume('down')"></i>
+      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" onchange="changeVolume(this.value)">
+      <i class="fa-solid fa-volume-high" onclick="setVolume('up')"></i>
+    </div>
+  </div>
 </div>
+
+<!-- Audio Element - audio.mp3 -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="audio.mp3" type="audio/mpeg">
+  Your browser does not support audio.
+</audio>
+
+<script>
+// Get elements
+const music = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+const musicIcon = document.getElementById('musicIcon');
+const musicText = document.getElementById('musicText');
+const musicStatus = document.getElementById('musicStatus');
+const volumeSlider = document.getElementById('volumeSlider');
+
+// Set initial volume (50%)
+music.volume = 0.5;
+
+// Toggle play/pause
+function toggleMusic() {
+  if (music.paused) {
+    // Play music
+    music.play()
+      .then(() => {
+        musicIcon.className = 'fa-solid fa-pause';
+        musicText.textContent = 'Pause Music';
+        musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #22c55e;"></i> <span style="color: #22c55e;">Now Playing</span>';
+      })
+      .catch(error => {
+        console.log('Playback failed:', error);
+        musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #ef4444;"></i> <span style="color: #ef4444;">Error loading audio</span>';
+      });
+  } else {
+    // Pause music
+    music.pause();
+    musicIcon.className = 'fa-solid fa-music';
+    musicText.textContent = 'Play Music';
+    musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #94a3b8;"></i> <span style="color: #94a3b8;">Paused</span>';
+  }
+}
+
+// Change volume
+function changeVolume(value) {
+  const vol = value / 100;
+  music.volume = vol;
+  
+  // Update volume icons
+  const volLow = document.querySelector('.fa-volume-low');
+  const volHigh = document.querySelector('.fa-volume-high');
+  
+  if (vol <= 0.3) {
+    volLow.style.color = '#38bdf8';
+    volHigh.style.color = '#94a3b8';
+  } else {
+    volLow.style.color = '#94a3b8';
+    volHigh.style.color = '#38bdf8';
+  }
+}
+
+// Volume up/down buttons
+function setVolume(direction) {
+  let currentVol = music.volume * 100;
+  
+  if (direction === 'up' && currentVol < 100) {
+    currentVol = Math.min(100, currentVol + 10);
+  } else if (direction === 'down' && currentVol > 0) {
+    currentVol = Math.max(0, currentVol - 10);
+  }
+  
+  volumeSlider.value = currentVol;
+  changeVolume(currentVol);
+}
+
+// When song ends (loop is on, so it will restart)
+music.addEventListener('ended', function() {
+  // Optional: Do something when song ends
+  console.log('Song ended, restarting');
+});
+
+// Error handling
+music.addEventListener('error', function(e) {
+  console.error('Audio error:', e);
+  musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #ef4444;"></i> <span style="color: #ef4444;">Audio file not found</span>';
+  musicBtn.disabled = true;
+  musicBtn.style.opacity = '0.5';
+});
+
+// Check if audio loaded
+music.addEventListener('canplaythrough', function() {
+  musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #22c55e;"></i> <span style="color: #22c55e;">Ready to play</span>';
+  musicBtn.disabled = false;
+  musicBtn.style.opacity = '1';
+});
+
+// Keyboard shortcut - Spacebar play/pause
+document.addEventListener('keydown', function(e) {
+  if (e.code === 'Space' && !e.target.matches('input, button, a')) {
+    e.preventDefault();
+    toggleMusic();
+  }
+});
+
+// Auto-play when page loads? (Optional - browsers block auto-play)
+// Uncomment below to try auto-play
+/*
+window.addEventListener('load', function() {
+  setTimeout(() => {
+    toggleMusic();
+  }, 1000);
+});
+*/
+</script>
 
 </body>
 </html>
