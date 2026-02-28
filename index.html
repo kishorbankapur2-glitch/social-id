@@ -29,12 +29,180 @@ body{
   overflow-x: hidden;
 }
 
-/* Eagle Container - centre mein rahega */
+/* Eagle Container - centre mein */
 .eagle-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Sirf Eagle2 - centre se bada hoke aayega */
+.eagle-single {
+  position: absolute;
+  width: min(60px, 12vw);
+  opacity: 0;
+  animation: centreGrow 6s ease-out infinite;
+  filter: drop-shadow(0 0 30px rgba(255,215,0,0.6));
+  transform-origin: center;
+}
+
+@keyframes centreGrow {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translate(0, 0);
+  }
+  20% {
+    opacity: 0.9;
+    transform: scale(1) translate(0, 0);
+  }
+  40% {
+    opacity: 0.7;
+    transform: scale(2) translate(0, -5%);
+  }
+  60% {
+    opacity: 0.5;
+    transform: scale(3) translate(10%, -10%);
+  }
+  80% {
+    opacity: 0.3;
+    transform: scale(4) translate(20%, -15%);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(5) translate(30%, -20%);
+  }
+}
+
+/* Card - bilkul centre mein */
+.card{
+  width: min(320px, 85vw);
+  padding: clamp(20px, 5vw, 28px);
+  border-radius: min(24px, 6vw);
+  background:rgba(255,255,255,.12);
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 50px rgba(0,0,0,.45);
+  text-align:center;
+  position: relative;
+  z-index: 2;
+  /* Ye line ensure karti hai ki card bilkul centre mein rahe */
+  margin: auto;
+}
+
+.avatar{
+  width: min(90px, 25vw);
+  height: min(90px, 25vw);
+  border-radius:50%;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: min(36px, 10vw);
+  font-weight:700;
+  margin: auto; /* Center the avatar */
+}
+
+h2{
+  margin: min(15px, 4vw) 0 min(5px, 2vw);
+  font-size: clamp(1.2rem, 5vw, 1.5rem);
+  text-align: center;
+}
+
+p{
+  opacity:.75;
+  margin-bottom: min(20px, 5vw);
+  font-size: clamp(0.9rem, 4vw, 1rem);
+  text-align: center;
+}
+
+a{
+  display:flex;
+  align-items:center;
+  justify-content: center; /* Center the text and icon */
+  gap: min(12px, 3vw);
+  padding: min(14px, 3.5vw);
+  margin: min(10px, 2.5vw) auto; /* Auto margin for centering */
+  width: 100%; /* Full width of card */
+  max-width: 280px; /* Control maximum width */
+  border-radius: min(14px, 3.5vw);
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.14);
+  font-size: clamp(0.9rem, 4vw, 1rem);
+  transition: all 0.3s ease;
+}
+
+a:hover{
+  background:rgba(255,255,255,.25);
+  transform: scale(1.02);
+}
+
+i{
+  font-size: clamp(20px, 6vw, 24px);
+}
+
+/* Mobile ke liye extra center */
+@media (max-width: 480px) {
+  .card {
+    margin: 16px auto; /* Auto margin se centre */
+  }
+  
+  a {
+    max-width: 260px;
+  }
+}
+
+/* Landscape mode */
+@media (orientation: landscape) and (max-height: 500px) {
+  .card {
+    width: min(400px, 70vw);
+    padding: 12px;
+    margin: auto;
+  }
+  
+  a {
+    max-width: 320px;
+  }
+}
+</style>
+</head>
+
+<body>
+<!-- Sirf EK eagle - eagle2.png -->
+<div class="eagle-container">
+  <img src="eagle2.png" class="eagle-single" alt="eagle">
+</div>
+
+<div class="card">
+  <div class="avatar">K</div>
+  <h2>KISHOR BANKAPUR</h2>
+  <p>@kishorbankapur</p>
+
+  <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
+    <i class="fa-brands fa-instagram"></i> Instagram
+  </a>
+
+  <a href="https://x.com/bankapurkishor" target="_blank">
+    <i class="fa-brands fa-x-twitter"></i> X / Twitter
+  </a>
+
+  <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" target="_blank">
+    <i class="fa-brands fa-linkedin"></i> LinkedIn
+  </a>
+
+  <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
+    <i class="fa-brands fa-youtube"></i> Youtube
+  </a>
+</div>
+
+</body>
+</html>  width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 10;
