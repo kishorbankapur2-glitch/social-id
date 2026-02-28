@@ -8,24 +8,20 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:radial-gradient(circle at top, #2e2e2e, #1a1a1a);
-  font-family:system-ui,sans-serif;
+  background:#111;
+  font-family:system-ui;
   color:#fff;
   overflow:hidden;
 }
 
-/* Eagle container */
+/* Eagle animation */
 .eagle-container{
   position:fixed;
   inset:0;
@@ -33,8 +29,104 @@ body{
   justify-content:center;
   align-items:center;
   pointer-events:none;
-  z-index:1;
 }
+
+.eagle{
+  width:80px;
+  opacity:0;
+  animation:zoomOut 5s ease-out infinite;
+  filter:drop-shadow(0 0 40px rgba(255,215,0,0.6));
+}
+
+@keyframes zoomOut{
+  0%{opacity:0;transform:scale(0.3);}
+  20%{opacity:1;transform:scale(1);}
+  70%{opacity:0.5;transform:scale(4);}
+  100%{opacity:0;transform:scale(6);}
+}
+
+/* Card */
+.card{
+  width:320px;
+  padding:28px;
+  border-radius:24px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 40px rgba(0,0,0,.6);
+  text-align:center;
+  position:relative;
+  z-index:2;
+}
+
+.avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#38bdf8,#6366f1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  font-weight:700;
+  margin:auto;
+}
+
+h2{margin:15px 0 5px;}
+p{opacity:.7;margin-bottom:20px;}
+
+a{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:12px;
+  padding:14px;
+  margin:10px 0;
+  border-radius:14px;
+  text-decoration:none;
+  color:white;
+  background:rgba(255,255,255,.12);
+  transition:.3s;
+}
+
+a:hover{
+  background:rgba(255,255,255,.25);
+  transform:scale(1.05);
+}
+
+i{font-size:20px;}
+</style>
+</head>
+
+<body>
+
+<div class="eagle-container">
+  <img src="eagle2.png" class="eagle" alt="eagle">
+</div>
+
+<div class="card">
+  <div class="avatar">K</div>
+  <h2>KISHOR BANKAPUR</h2>
+  <p>@kishorbankapur</p>
+
+  <a href="https://instagram.com" target="_blank">
+    <i class="fa-brands fa-instagram"></i> Instagram
+  </a>
+
+  <a href="https://x.com" target="_blank">
+    <i class="fa-brands fa-x-twitter"></i> X / Twitter
+  </a>
+
+  <a href="https://linkedin.com" target="_blank">
+    <i class="fa-brands fa-linkedin"></i> LinkedIn
+  </a>
+
+  <a href="https://youtube.com" target="_blank">
+    <i class="fa-brands fa-youtube"></i> Youtube
+  </a>
+</div>
+
+</body>
+</html>}
 
 .eagle{
   width:70px;
