@@ -43,56 +43,26 @@ body{
   align-items: center;
 }
 
-/* Eagle - bilkul "K" ke upar */
+/* Eagle - FINAL POSITION: top 23.4%, left 52.0% */
 .eagle-single {
   position: absolute;
-  width: 80px;
+  width: 70px;
   opacity: 0;
   animation: centreGrow 3s ease-out forwards;
   filter: drop-shadow(0 0 30px rgba(255,215,0,0.9));
   transform-origin: center;
-  /* "K" ke exact centre mein - thoda upar shift */
-  top: calc(50% - 5px); /* Thoda upar */
-  left: 50%;
+  top: 23.4%;
+  left: 52.0%;
   transform: translate(-50%, -50%);
   z-index: 101;
 }
 
 @keyframes centreGrow {
-  0% {
-    opacity: 0;
-    width: 20px;
-    top: calc(50% - 5px);
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.5);
-  }
-  20% {
-    opacity: 0.8;
-    width: 50px;
-    transform: translate(-50%, -50%) scale(0.9);
-  }
-  40% {
-    opacity: 1;
-    width: 90px;
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-  60% {
-    opacity: 0.9;
-    width: 120px;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  80% {
-    opacity: 0.9;
-    width: 110px;
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-  100% {
-    opacity: 0.85;
-    width: 100px;
-    top: calc(50% - 5px);
-    left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-  }
+  0% { opacity: 0; width: 10px; top: 23.4%; left: 52.0%; transform: translate(-50%, -50%) scale(0.2); }
+  25% { opacity: 0.9; width: 50px; transform: translate(-50%, -50%) scale(0.8); }
+  50% { opacity: 1; width: 85px; transform: translate(-50%, -50%) scale(1.1); }
+  75% { opacity: 0.9; width: 100px; transform: translate(-50%, -50%) scale(1.2); }
+  100% { opacity: 0.8; width: 85px; top: 23.4%; left: 52.0%; transform: translate(-50%, -50%) scale(1); }
 }
 
 /* Card */
@@ -134,9 +104,7 @@ body{
   position: relative;
   z-index: 2;
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  /* Ensure "K" is perfectly centered */
   line-height: 1;
-  padding-bottom: 2px; /* Fine-tune vertical alignment */
 }
 
 /* Tablet styles */
@@ -153,23 +121,18 @@ body{
   }
   
   .eagle-single {
-    width: 100px;
+    width: 85px;
   }
   
   @keyframes centreGrow {
-    0% { opacity: 0; width: 25px; top: calc(50% - 6px); }
-    20% { opacity: 0.8; width: 60px; }
-    40% { opacity: 1; width: 110px; }
-    60% { opacity: 0.9; width: 150px; }
-    80% { opacity: 0.9; width: 140px; }
-    100% { opacity: 0.85; width: 130px; top: calc(50% - 6px); }
+    0% { opacity: 0; width: 15px; top: 23.4%; left: 52.0%; }
+    25% { opacity: 0.9; width: 65px; }
+    50% { opacity: 1; width: 110px; }
+    75% { opacity: 0.9; width: 130px; }
+    100% { opacity: 0.8; width: 110px; top: 23.4%; left: 52.0%; }
   }
   
   .avatar { font-size: 48px; }
-  h2 { font-size: 2rem; }
-  p { font-size: 1.3rem; }
-  a { padding: 18px; font-size: 1.2rem; max-width: 380px; }
-  i { font-size: 28px; }
 }
 
 /* Phone styles */
@@ -189,22 +152,14 @@ body{
   }
   
   @keyframes centreGrow {
-    0% { opacity: 0; width: 15px; top: calc(50% - 4px); }
-    20% { opacity: 0.8; width: 40px; }
-    40% { opacity: 1; width: 70px; }
-    60% { opacity: 0.9; width: 95px; }
-    80% { opacity: 0.9; width: 85px; }
-    100% { opacity: 0.85; width: 80px; top: calc(50% - 4px); }
+    0% { opacity: 0; width: 8px; top: 23.4%; left: 52.0%; }
+    25% { opacity: 0.9; width: 40px; }
+    50% { opacity: 1; width: 70px; }
+    75% { opacity: 0.9; width: 85px; }
+    100% { opacity: 0.8; width: 70px; top: 23.4%; left: 52.0%; }
   }
   
   .avatar { font-size: 32px; }
-}
-
-/* Large tablets */
-@media (min-width: 1024px) {
-  .card { width: 400px; padding: 40px; }
-  .avatar-container { width: 120px; height: 120px; }
-  .avatar { font-size: 52px; }
 }
 
 h2{
@@ -253,7 +208,7 @@ i{
 </head>
 
 <body>
-<!-- Eagle - bilkul "K" ke upar -->
+<!-- Eagle - FINAL POSITION: top 23.4%, left 52.0% -->
 <div class="eagle-container">
   <img src="eagle2.png" class="eagle-single" alt="eagle">
 </div>
