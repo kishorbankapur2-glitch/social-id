@@ -29,7 +29,7 @@ body{
   overflow-x: hidden;
 }
 
-/* Eagle Container - centre mein */
+/* Eagle Container - exact centre */
 .eagle-container {
   position: fixed;
   top: 0;
@@ -43,138 +43,200 @@ body{
   align-items: center;
 }
 
-/* Sirf Eagle2 - centre se bada hoke aayega */
+/* Eagle - ek baar aayega, ruk jayega */
 .eagle-single {
   position: absolute;
-  width: min(60px, 12vw);
+  width: 80px; /* Fixed size for consistency */
   opacity: 0;
-  animation: centreGrow 6s ease-out infinite;
+  animation: centreGrow 3s ease-out forwards; /* 'forwards' means ruk jayega */
   filter: drop-shadow(0 0 30px rgba(255,215,0,0.6));
   transform-origin: center;
+  /* Exact centre position */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 @keyframes centreGrow {
   0% {
     opacity: 0;
-    transform: scale(0.3) translate(0, 0);
+    width: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.3);
   }
-  20% {
-    opacity: 0.9;
-    transform: scale(1) translate(0, 0);
-  }
-  40% {
-    opacity: 0.7;
-    transform: scale(2) translate(0, -5%);
+  30% {
+    opacity: 1;
+    width: 100px;
+    transform: translate(-50%, -50%) scale(1);
   }
   60% {
-    opacity: 0.5;
-    transform: scale(3) translate(10%, -10%);
-  }
-  80% {
-    opacity: 0.3;
-    transform: scale(4) translate(20%, -15%);
+    opacity: 0.8;
+    width: 180px;
+    transform: translate(-50%, -50%) scale(1.5);
   }
   100% {
-    opacity: 0;
-    transform: scale(5) translate(30%, -20%);
+    opacity: 0.6; /* Ruk jayega with opacity */
+    width: 120px;
+    transform: translate(-50%, -50%) scale(1);
+    top: 20%; /* Thoda upar shift */
+    left: 80%; /* Thoda right shift */
   }
 }
 
-/* Card - bilkul centre mein */
+/* Card - bilkul centre */
 .card{
-  width: min(320px, 85vw);
-  padding: clamp(20px, 5vw, 28px);
-  border-radius: min(24px, 6vw);
+  width: min(350px, 80vw);
+  padding: clamp(24px, 4vw, 32px);
+  border-radius: min(28px, 5vw);
   background:rgba(255,255,255,.12);
   backdrop-filter:blur(14px);
   box-shadow:0 0 50px rgba(0,0,0,.45);
   text-align:center;
   position: relative;
   z-index: 2;
-  /* Ye line ensure karti hai ki card bilkul centre mein rahe */
   margin: auto;
+  /* Tablet ke liye specific */
+  max-width: 400px;
+}
+
+/* Tablet specific (iPad etc) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .card {
+    width: min(450px, 70vw);
+    max-width: 500px;
+    padding: 35px;
+  }
+  
+  .avatar {
+    width: 110px;
+    height: 110px;
+    font-size: 48px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  p {
+    font-size: 1.3rem;
+  }
+  
+  a {
+    padding: 18px;
+    font-size: 1.2rem;
+    max-width: 380px;
+  }
+  
+  i {
+    font-size: 28px;
+  }
+  
+  .eagle-single {
+    width: 120px;
+  }
+  
+  @keyframes centreGrow {
+    0% { opacity: 0; width: 60px; transform: translate(-50%, -50%) scale(0.3); }
+    30% { opacity: 1; width: 150px; transform: translate(-50%, -50%) scale(1); }
+    60% { opacity: 0.8; width: 250px; transform: translate(-50%, -50%) scale(1.5); }
+    100% { opacity: 0.6; width: 180px; transform: translate(-50%, -50%) scale(1); top: 15%; left: 85%; }
+  }
+}
+
+/* Phone specific */
+@media (max-width: 480px) {
+  .card {
+    width: 85vw;
+    padding: 20px;
+  }
+  
+  .eagle-single {
+    width: 60px;
+  }
+  
+  @keyframes centreGrow {
+    0% { opacity: 0; width: 30px; transform: translate(-50%, -50%) scale(0.3); }
+    30% { opacity: 1; width: 70px; transform: translate(-50%, -50%) scale(1); }
+    60% { opacity: 0.8; width: 120px; transform: translate(-50%, -50%) scale(1.5); }
+    100% { opacity: 0.6; width: 80px; transform: translate(-50%, -50%) scale(1); top: 15%; left: 85%; }
+  }
+}
+
+/* Large tablets */
+@media (min-width: 1024px) {
+  .card {
+    width: 400px;
+    padding: 40px;
+  }
+  
+  .avatar {
+    width: 120px;
+    height: 120px;
+    font-size: 52px;
+  }
 }
 
 .avatar{
-  width: min(90px, 25vw);
-  height: min(90px, 25vw);
+  width: min(100px, 20vw);
+  height: min(100px, 20vw);
   border-radius:50%;
   background:linear-gradient(135deg,#38bdf8,#6366f1);
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size: min(36px, 10vw);
+  font-size: min(42px, 8vw);
   font-weight:700;
-  margin: auto; /* Center the avatar */
+  margin: 0 auto 20px auto;
 }
 
 h2{
-  margin: min(15px, 4vw) 0 min(5px, 2vw);
-  font-size: clamp(1.2rem, 5vw, 1.5rem);
+  margin: 0 0 10px 0;
+  font-size: clamp(1.5rem, 5vw, 2rem);
   text-align: center;
 }
 
 p{
   opacity:.75;
-  margin-bottom: min(20px, 5vw);
-  font-size: clamp(0.9rem, 4vw, 1rem);
+  margin-bottom: 25px;
+  font-size: clamp(1rem, 4vw, 1.2rem);
   text-align: center;
 }
 
 a{
   display:flex;
   align-items:center;
-  justify-content: center; /* Center the text and icon */
-  gap: min(12px, 3vw);
-  padding: min(14px, 3.5vw);
-  margin: min(10px, 2.5vw) auto; /* Auto margin for centering */
-  width: 100%; /* Full width of card */
-  max-width: 280px; /* Control maximum width */
-  border-radius: min(14px, 3.5vw);
+  justify-content: center;
+  gap: 15px;
+  padding: 15px 20px;
+  margin: 12px auto;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 50px;
   text-decoration:none;
   color:white;
   background:rgba(255,255,255,.14);
-  font-size: clamp(0.9rem, 4vw, 1rem);
+  font-size: 1.1rem;
   transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 a:hover{
   background:rgba(255,255,255,.25);
   transform: scale(1.02);
+  border-color: rgba(255,255,255,0.3);
 }
 
 i{
-  font-size: clamp(20px, 6vw, 24px);
-}
-
-/* Mobile ke liye extra center */
-@media (max-width: 480px) {
-  .card {
-    margin: 16px auto; /* Auto margin se centre */
-  }
-  
-  a {
-    max-width: 260px;
-  }
-}
-
-/* Landscape mode */
-@media (orientation: landscape) and (max-height: 500px) {
-  .card {
-    width: min(400px, 70vw);
-    padding: 12px;
-    margin: auto;
-  }
-  
-  a {
-    max-width: 320px;
-  }
+  font-size: 24px;
+  width: 30px;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
-<!-- Sirf EK eagle - eagle2.png -->
+<!-- Eagle - ek baar aayega phir ruk jayega -->
 <div class="eagle-container">
   <img src="eagle2.png" class="eagle-single" alt="eagle">
 </div>
