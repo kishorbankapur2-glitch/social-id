@@ -53,9 +53,10 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
-/* Profile Photo - photo1.png */
+/* Profile Photo */
 .avatar-img {
   width: 100%;
   height: 100%;
@@ -63,40 +64,11 @@ body{
   object-fit: cover;
   border: 3px solid rgba(255,255,255,0.3);
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.avatar-img:hover {
-  transform: scale(1.05);
-  border-color: #38bdf8;
-  box-shadow: 0 0 40px rgba(56, 189, 248, 0.8);
-}
-
-/* Tablet styles */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .card {
-    width: min(450px, 70vw);
-    max-width: 500px;
-    padding: 35px;
-  }
-  
-  .avatar-container {
-    width: 150px;
-    height: 150px;
-  }
-}
-
-/* Phone styles */
-@media (max-width: 480px) {
-  .card {
-    width: 85vw;
-    padding: 20px;
-  }
-  
-  .avatar-container {
-    width: 100px;
-    height: 100px;
-  }
+.avatar-img:active {
+  transform: scale(0.95);
 }
 
 h2{
@@ -146,112 +118,106 @@ i{
   text-align: center;
 }
 
-/* Music Button */
-.music-control {
-  margin-top: 25px;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255,255,255,0.1);
+/* ===== MUSIC EMOJI STYLE ===== */
+.music-mini {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1000;
 }
 
-.music-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background: linear-gradient(135deg, #38bdf8, #6366f1);
-  border: none;
-  color: white;
-  padding: 14px 30px;
-  border-radius: 50px;
-  font-size: 18px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  width: 100%;
-  max-width: 280px;
-}
-
-.music-btn:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #4ec5ff, #7a7cff);
-  box-shadow: 0 0 25px #38bdf8;
-  border-color: rgba(255,255,255,0.5);
-}
-
-.music-btn i {
-  font-size: 22px;
-  transition: transform 0.3s;
-}
-
-.music-btn:hover i {
-  transform: scale(1.1);
-}
-
-.music-status {
-  font-size: 14px;
-  color: #94a3b8;
-  margin-top: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.music-status i {
-  font-size: 12px;
-  color: #38bdf8;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* Volume Slider */
-.volume-control {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.volume-control i {
-  font-size: 16px;
-  color: #94a3b8;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.volume-control i:hover {
-  color: #38bdf8;
-}
-
-.volume-slider {
-  width: 100px;
-  height: 4px;
-  -webkit-appearance: none;
-  background: rgba(255,255,255,0.2);
-  border-radius: 2px;
-  outline: none;
-}
-
-.volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 15px;
-  height: 15px;
+.music-emoji {
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  background: #38bdf8;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255,255,255,0.2);
+  color: white;
+  font-size: 40px;
   cursor: pointer;
-  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  user-select: none;
 }
 
-.volume-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  background: #4ec5ff;
+.music-emoji:hover {
+  transform: scale(1.1);
+  border-color: rgba(255,215,0,0.5);
+  box-shadow: 0 0 30px rgba(255,215,0,0.3);
+}
+
+/* Rotate animation */
+.rotate-emoji {
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ===== PHOTO ZOOM MODAL ===== */
+.photo-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.photo-modal.show {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 3px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.close-modal {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  color: white;
+  font-size: 40px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  transition: all 0.3s;
+  z-index: 2001;
+}
+
+.close-modal:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.1);
 }
 
 /* Icon hover colors */
@@ -264,9 +230,9 @@ a[href*="youtube"]:hover i { color: #ff0000; }
 
 <body>
 <div class="card">
-  <!-- Profile Photo - photo1.png -->
-  <div class="avatar-container">
-    <img src="photo1.png" alt="Kishor Bankapur" class="avatar-img">
+  <!-- Profile Photo - Click to zoom -->
+  <div class="avatar-container" onclick="openPhoto()">
+    <img src="photo1.png" alt="Kishor Bankapur" class="avatar-img" id="profilePhoto">
   </div>
   
   <h2>KISHOR BANKAPUR</h2>
@@ -288,139 +254,91 @@ a[href*="youtube"]:hover i { color: #ff0000; }
   <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
     <i class="fa-brands fa-youtube"></i> Youtube
   </a>
+</div>
 
-  <!-- Music Control Section -->
-  <div class="music-control">
-    <button class="music-btn" onclick="toggleMusic()" id="musicBtn">
-      <i class="fa-solid fa-music" id="musicIcon"></i>
-      <span id="musicText">Play Music</span>
-    </button>
-    
-    <div class="music-status" id="musicStatus">
-      <i class="fa-solid fa-circle"></i>
-      <span>Ready to play</span>
-    </div>
-
-    <!-- Volume Control -->
-    <div class="volume-control">
-      <i class="fa-solid fa-volume-low" onclick="setVolume('down')"></i>
-      <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50" onchange="changeVolume(this.value)">
-      <i class="fa-solid fa-volume-high" onclick="setVolume('up')"></i>
-    </div>
+<!-- ===== MUSIC EMOJI 🗿 ===== -->
+<div class="music-mini">
+  <div class="music-emoji" onclick="toggleMusic()" id="musicEmoji">
+    🗿
   </div>
 </div>
 
-<!-- Audio Element - audio.mp3 -->
+<!-- ===== PHOTO ZOOM MODAL ===== -->
+<div class="photo-modal" id="photoModal" onclick="closePhoto(event)">
+  <span class="close-modal" onclick="closePhoto(event)">&times;</span>
+  <div class="modal-content">
+    <img src="photo1.png" class="modal-image" alt="Kishor Bankapur">
+  </div>
+</div>
+
+<!-- Audio Element -->
 <audio id="bgMusic" loop preload="auto">
   <source src="audio.mp3" type="audio/mpeg">
-  Your browser does not support audio.
 </audio>
 
 <script>
-// Get elements
 const music = document.getElementById('bgMusic');
-const musicBtn = document.getElementById('musicBtn');
-const musicIcon = document.getElementById('musicIcon');
-const musicText = document.getElementById('musicText');
-const musicStatus = document.getElementById('musicStatus');
-const volumeSlider = document.getElementById('volumeSlider');
+const musicEmoji = document.getElementById('musicEmoji');
+const photoModal = document.getElementById('photoModal');
+const profilePhoto = document.getElementById('profilePhoto');
 
-// Set initial volume (50%)
+// Set volume
 music.volume = 0.5;
 
-// Toggle play/pause
+// Toggle music with 🗿
 function toggleMusic() {
   if (music.paused) {
-    // Play music
-    music.play()
-      .then(() => {
-        musicIcon.className = 'fa-solid fa-pause';
-        musicText.textContent = 'Pause Music';
-        musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #22c55e;"></i> <span style="color: #22c55e;">Now Playing</span>';
-      })
-      .catch(error => {
-        console.log('Playback failed:', error);
-        musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #ef4444;"></i> <span style="color: #ef4444;">Error loading audio</span>';
-      });
+    music.play();
+    musicEmoji.classList.add('rotate-emoji');  // Rotate start
+    musicEmoji.style.borderColor = '#fbbf24';
+    musicEmoji.style.boxShadow = '0 0 30px #fbbf24';
   } else {
-    // Pause music
     music.pause();
-    musicIcon.className = 'fa-solid fa-music';
-    musicText.textContent = 'Play Music';
-    musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #94a3b8;"></i> <span style="color: #94a3b8;">Paused</span>';
+    musicEmoji.classList.remove('rotate-emoji'); // Rotate stop
+    musicEmoji.style.borderColor = 'rgba(255,255,255,0.2)';
+    musicEmoji.style.boxShadow = '0 5px 20px rgba(0,0,0,0.5)';
   }
 }
 
-// Change volume
-function changeVolume(value) {
-  const vol = value / 100;
-  music.volume = vol;
-  
-  // Update volume icons
-  const volLow = document.querySelector('.fa-volume-low');
-  const volHigh = document.querySelector('.fa-volume-high');
-  
-  if (vol <= 0.3) {
-    volLow.style.color = '#38bdf8';
-    volHigh.style.color = '#94a3b8';
-  } else {
-    volLow.style.color = '#94a3b8';
-    volHigh.style.color = '#38bdf8';
+// Open photo (WhatsApp style)
+function openPhoto() {
+  photoModal.classList.add('show');
+  document.body.style.overflow = 'hidden'; // Prevent scrolling
+}
+
+// Close photo
+function closePhoto(event) {
+  // Close only if clicked on modal background or close button
+  if (event.target === photoModal || event.target.classList.contains('close-modal')) {
+    photoModal.classList.remove('show');
+    document.body.style.overflow = ''; // Restore scrolling
   }
 }
 
-// Volume up/down buttons
-function setVolume(direction) {
-  let currentVol = music.volume * 100;
-  
-  if (direction === 'up' && currentVol < 100) {
-    currentVol = Math.min(100, currentVol + 10);
-  } else if (direction === 'down' && currentVol > 0) {
-    currentVol = Math.max(0, currentVol - 10);
-  }
-  
-  volumeSlider.value = currentVol;
-  changeVolume(currentVol);
-}
-
-// When song ends (loop is on, so it will restart)
-music.addEventListener('ended', function() {
-  // Optional: Do something when song ends
-  console.log('Song ended, restarting');
-});
-
-// Error handling
-music.addEventListener('error', function(e) {
-  console.error('Audio error:', e);
-  musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #ef4444;"></i> <span style="color: #ef4444;">Audio file not found</span>';
-  musicBtn.disabled = true;
-  musicBtn.style.opacity = '0.5';
-});
-
-// Check if audio loaded
-music.addEventListener('canplaythrough', function() {
-  musicStatus.innerHTML = '<i class="fa-solid fa-circle" style="color: #22c55e;"></i> <span style="color: #22c55e;">Ready to play</span>';
-  musicBtn.disabled = false;
-  musicBtn.style.opacity = '1';
-});
-
-// Keyboard shortcut - Spacebar play/pause
+// Close with Escape key
 document.addEventListener('keydown', function(e) {
-  if (e.code === 'Space' && !e.target.matches('input, button, a')) {
+  if (e.key === 'Escape' && photoModal.classList.contains('show')) {
+    photoModal.classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  
+  // Spacebar for music
+  if (e.code === 'Space' && !e.target.matches('a')) {
     e.preventDefault();
     toggleMusic();
   }
 });
 
-// Auto-play when page loads? (Optional - browsers block auto-play)
-// Uncomment below to try auto-play
-/*
-window.addEventListener('load', function() {
-  setTimeout(() => {
-    toggleMusic();
-  }, 1000);
+// Error handling
+music.addEventListener('error', function() {
+  musicEmoji.textContent = '❌';
+  musicEmoji.style.background = 'rgba(239, 68, 68, 0.3)';
 });
-*/
+
+// When music ends (loop is on, so it will restart)
+music.addEventListener('ended', function() {
+  // Keep rotating
+});
 </script>
 
 </body>
