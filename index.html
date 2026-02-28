@@ -8,9 +8,6 @@
 <!-- Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-<!-- Confetti Library -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-
 <style>
 * {
   margin: 0;
@@ -67,7 +64,11 @@ body{
   object-fit: cover;
   border: 3px solid rgba(255,255,255,0.3);
   box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
+}
+
+.avatar-img:hover {
+  transform: scale(1.05);
 }
 
 .avatar-img:active {
@@ -163,23 +164,27 @@ i{
   to { transform: rotate(360deg); }
 }
 
-/* ===== PHOTO ZOOM MODAL ===== */
+/* ===== PHOTO ZOOM MODAL - SMOOTH ANIMATION ===== */
 .photo-modal {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0);
   z-index: 2000;
+  display: flex;
   justify-content: center;
   align-items: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(0px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .photo-modal.show {
-  display: flex;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(10px);
+  pointer-events: all;
 }
 
 .modal-content {
@@ -189,6 +194,14 @@ i{
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: scale(0.5);
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bounce effect */
+}
+
+.photo-modal.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
 }
 
 .modal-image {
@@ -201,74 +214,77 @@ i{
     0 0 30px rgba(56, 189, 248, 0.8),
     0 0 60px rgba(56, 189, 248, 0.4),
     0 20px 40px rgba(0,0,0,0.6);
+  transform: scale(1);
+  transition: transform 0.3s ease;
 }
 
-/* 3D Close Button */
-.close-modal {
+.modal-image:hover {
+  transform: scale(1.02);
+}
+
+/* ===== BACK BUTTON - SMOOTH ===== */
+.back-button {
   position: absolute;
   top: 30px;
-  right: 30px;
+  left: 30px;
   color: white;
-  font-size: 40px;
+  font-size: 24px;
   cursor: pointer;
   width: 60px;
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 20px;
-  background: linear-gradient(145deg, #ff5555, #cc0000);
-  transition: all 0.2s ease;
+  border-radius: 50px;
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 2001;
-  border: none;
-  box-shadow: 
-    0 10px 0 #7f0000,
-    0 15px 20px rgba(0,0,0,0.5);
-  font-weight: bold;
-  transform: translateY(-5px);
-}
-
-.close-modal:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 5px 0 #7f0000,
-    0 10px 20px rgba(0,0,0,0.5);
-  background: linear-gradient(145deg, #ff6666, #dd0000);
-}
-
-.close-modal:active {
-  transform: translateY(8px);
-  box-shadow: 
-    0 2px 0 #7f0000,
-    0 5px 10px rgba(0,0,0,0.5);
-}
-
-/* Click Effect Animation */
-@keyframes clickPulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.5; }
-  100% { transform: scale(2); opacity: 0; }
-}
-
-.click-effect {
-  position: fixed;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #38bdf8, transparent);
+  border: 2px solid rgba(255,255,255,0.2);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  transform: translateX(-20px);
+  opacity: 0;
   pointer-events: none;
-  z-index: 9999;
-  animation: clickPulse 0.6s ease-out forwards;
+}
+
+.photo-modal.show .back-button {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.back-button:hover {
+  background: rgba(56, 189, 248, 0.3);
+  border-color: #38bdf8;
+  transform: scale(1.1) translateX(0);
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+}
+
+.back-button:active {
+  transform: scale(0.95) translateX(0);
+}
+
+.back-button i {
+  font-size: 32px;
+  color: white;
+  transition: transform 0.3s;
+}
+
+.back-button:hover i {
+  transform: translateX(-5px);
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-  .close-modal {
+  .back-button {
+    top: 20px;
+    left: 20px;
     width: 50px;
     height: 50px;
-    font-size: 35px;
-    top: 20px;
-    right: 20px;
+  }
+  
+  .back-button i {
+    font-size: 28px;
   }
 }
 
@@ -282,8 +298,8 @@ a[href*="youtube"]:hover i { color: #ff0000; }
 
 <body>
 <div class="card">
-  <!-- Profile Photo - Click for confetti + effect -->
-  <div class="avatar-container" onclick="handlePhotoClick(event)">
+  <!-- Profile Photo - Click to zoom with smooth animation -->
+  <div class="avatar-container" onclick="openPhoto()">
     <img src="photo1.png" alt="Kishor Bankapur" class="avatar-img" id="profilePhoto">
   </div>
   
@@ -317,7 +333,10 @@ a[href*="youtube"]:hover i { color: #ff0000; }
 
 <!-- ===== PHOTO ZOOM MODAL ===== -->
 <div class="photo-modal" id="photoModal" onclick="closePhoto(event)">
-  <span class="close-modal" onclick="closePhoto(event)">✕</span>
+  <!-- BACK BUTTON -->
+  <div class="back-button" onclick="closePhoto(event)">
+    <i class="fa-solid fa-arrow-left"></i>
+  </div>
   <div class="modal-content">
     <img src="photo1.png" class="modal-image" alt="Kishor Bankapur">
   </div>
@@ -332,6 +351,7 @@ a[href*="youtube"]:hover i { color: #ff0000; }
 const music = document.getElementById('bgMusic');
 const musicEmoji = document.getElementById('musicEmoji');
 const photoModal = document.getElementById('photoModal');
+let isOpening = false;
 
 // Set volume
 music.volume = 0.5;
@@ -351,78 +371,46 @@ function toggleMusic() {
   }
 }
 
-// ===== CLICK EFFECT - CONFETTI + PARTICLES =====
-function handlePhotoClick(event) {
-  // 1. Ripple Effect at click position
-  const ripple = document.createElement('div');
-  ripple.className = 'click-effect';
-  ripple.style.left = (event.clientX - 50) + 'px';
-  ripple.style.top = (event.clientY - 50) + 'px';
-  document.body.appendChild(ripple);
-  
-  // Remove after animation
-  setTimeout(() => ripple.remove(), 600);
-  
-  // 2. Confetti Blast
-  confetti({
-    particleCount: 150,
-    spread: 100,
-    origin: { y: 0.6 },
-    colors: ['#38bdf8', '#6366f1', '#fbbf24', '#ef4444', '#22c55e']
-  });
-  
-  // 3. Second confetti burst after 200ms
-  setTimeout(() => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.5, x: 0.3 },
-      colors: ['#38bdf8', '#fbbf24']
-    });
-  }, 200);
-  
-  // 4. Third burst from other side
-  setTimeout(() => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { y: 0.5, x: 0.7 },
-      colors: ['#6366f1', '#ef4444']
-    });
-  }, 400);
-  
-  // 5. Small shake effect on photo
-  const photo = document.querySelector('.avatar-img');
-  photo.style.transform = 'scale(0.9) rotate(5deg)';
-  setTimeout(() => {
-    photo.style.transform = 'scale(1) rotate(0deg)';
-  }, 300);
-  
-  // 6. Open photo modal after confetti
-  setTimeout(() => {
-    openPhoto();
-  }, 600);
-}
-
-// Open photo
+// Open photo with smooth animation
 function openPhoto() {
+  if (isOpening) return;
+  isOpening = true;
+  
   photoModal.classList.add('show');
   document.body.style.overflow = 'hidden';
+  
+  // Small haptic feedback (vibration) on mobile if supported
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
+  
+  setTimeout(() => {
+    isOpening = false;
+  }, 500);
 }
 
-// Close photo
+// Close photo with smooth animation
 function closePhoto(event) {
-  if (event.target === photoModal || event.target.classList.contains('close-modal')) {
-    photoModal.classList.remove('show');
-    document.body.style.overflow = '';
+  if (event.target === photoModal || event.target.classList.contains('back-button') || event.target.closest('.back-button')) {
+    // Add closing animation
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.style.transform = 'scale(0.5)';
+    modalContent.style.opacity = '0';
+    
+    setTimeout(() => {
+      photoModal.classList.remove('show');
+      document.body.style.overflow = '';
+      // Reset transform
+      modalContent.style.transform = '';
+      modalContent.style.opacity = '';
+    }, 400);
   }
 }
 
 // Close with Escape key
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && photoModal.classList.contains('show')) {
-    photoModal.classList.remove('show');
-    document.body.style.overflow = '';
+    closePhoto({ target: photoModal });
   }
   
   if (e.code === 'Space' && !e.target.matches('a')) {
@@ -436,6 +424,13 @@ music.addEventListener('error', function() {
   musicEmoji.textContent = '❌';
   musicEmoji.style.background = 'rgba(239, 68, 68, 0.3)';
 });
+
+// Smooth scroll disable when modal open
+photoModal.addEventListener('wheel', (e) => {
+  if (photoModal.classList.contains('show')) {
+    e.preventDefault();
+  }
+}, { passive: false });
 </script>
 
 </body>
