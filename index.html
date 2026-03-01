@@ -7,269 +7,114 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #000;
-  background-image: radial-gradient(circle at center, #111 0%, #000 100%);
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #fff;
-  overflow-x: hidden;
-}
-
-.main-card {
-  width: min(380px, 90vw);
-  background: #0a0a0a;
-  border: 1px solid #1a1a1a;
-  border-radius: 40px;
-  padding: 45px 20px;
-  text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-  position: relative;
-}
-
-.avatar-wrapper {
-  width: 115px;
-  height: 115px;
-  margin: 0 auto 20px;
-  padding: 3px;
-  border: 2px solid #3b82f6;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.3s;
-}
-.avatar-wrapper:hover { transform: scale(1.05); }
-
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  background: #1a1a1a;
-}
-
-h2 {
-  font-size: 1.4rem;
-  letter-spacing: 2px;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  color: #3b82f6;
-  font-size: 0.9rem;
-  margin-bottom: 35px;
-  font-weight: 500;
-}
-
-.links-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.link-item {
-  background: #111;
-  border: 1px solid #1a1a1a;
-  border-radius: 18px;
-  padding: 22px 10px;
-  text-decoration: none;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  transition: 0.3s;
-}
-
-.link-item:hover {
-  background: #181818;
-  border-color: #333;
-  transform: translateY(-3px);
-}
-
-.link-item i { font-size: 1.4rem; }
-.link-item span {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: #888;
-}
-
-.developer-btn {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: rgba(20, 20, 20, 0.8);
-  border: 1px solid #333;
-  color: #888;
-  padding: 8px 16px;
-  border-radius: 30px;
-  font-size: 11px;
-  cursor: pointer;
-  letter-spacing: 1px;
-  z-index: 1000;
-}
-.developer-btn:hover { color: #fff; border-color: #3b82f6; }
-
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.96);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-  backdrop-filter: blur(10px);
-}
-.modal.show { display: flex; }
-
-.modal-card {
-  background: #111;
-  padding: 35px;
-  border-radius: 35px;
-  border: 1px solid #3b82f6;
-  width: min(320px, 85vw);
-  text-align: center;
-  position: relative;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.modal-back {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  color: #888;
-  font-size: 1.5rem;
-  cursor: pointer;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: 0.3s;
-}
-
-.modal-input {
-  width: 100%;
-  background: #000;
-  border: 1px solid #333;
-  padding: 15px;
-  border-radius: 12px;
-  color: #fff;
-  margin: 20px 0;
-  text-align: center;
+/* Base Styles */
+* { 
+  margin: 0; padding: 0; box-sizing: border-box; 
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+  /* Remove default blue tap box */
+  -webkit-tap-highlight-color: transparent; 
   outline: none;
 }
 
-.primary-btn {
-  background: #3b82f6;
-  color: #fff;
-  border: none;
-  padding: 14px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
+body {
+  margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center;
+  background-color: #000; background-image: radial-gradient(circle at center, #111 0%, #000 100%);
+  font-family: 'Segoe UI', Roboto, sans-serif; color: #fff; overflow-x: hidden;
+  transition: filter 0.3s ease;
 }
 
-.secondary-btn {
-  background: #222;
-  color: #fff;
-  border: none;
-  padding: 14px;
-  border-radius: 12px;
-  font-weight: bold;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 10px;
+.blur-screen { filter: blur(25px) grayscale(100%); pointer-events: none; }
+
+.main-card {
+  width: min(380px, 90vw); background: #0a0a0a; border: 1px solid #1a1a1a;
+  border-radius: 40px; padding: 45px 20px; text-align: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.9); position: relative;
 }
 
-/* FIX: ZOOM MODAL */
+/* Profile Pic Wrapper */
+.avatar-wrapper {
+  width: 115px; height: 115px; margin: 0 auto 20px; padding: 3px;
+  border: 2px solid #3b82f6; border-radius: 50%; cursor: pointer; transition: 0.3s;
+}
+/* No blue box on click for profile pic */
+.avatar-wrapper:active { transform: scale(0.95); border-color: #fff; }
+
+.avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #1a1a1a; }
+
+h2 { font-size: 1.4rem; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
+.subtitle { color: #3b82f6; font-size: 0.9rem; margin-bottom: 35px; }
+
+.links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Link Items with Glow Boundary on Click */
+.link-item {
+  background: #111; border: 1px solid #1a1a1a; border-radius: 18px; padding: 22px 10px;
+  text-decoration: none; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 10px; 
+  transition: 0.2s all ease-in-out;
+}
+
+/* Boundary Glow Effect when Tapping Apps */
+.link-item:active {
+  border-color: #3b82f6;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+  transform: scale(0.98);
+}
+
+.link-item i { font-size: 1.4rem; }
+.link-item span { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: #888; }
+
+/* Modals */
+.modal {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.96);
+  display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(10px);
+}
+.modal.show { display: flex; }
+.modal-card {
+  background: #111; padding: 35px; border-radius: 35px; border: 1px solid #3b82f6;
+  width: min(320px, 85vw); text-align: center;
+}
+.modal-input {
+  width: 100%; background: #000; border: 1px solid #333; padding: 15px;
+  border-radius: 12px; color: #fff; margin: 20px 0; text-align: center;
+}
+.primary-btn { background: #3b82f6; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: bold; width: 100%; cursor: pointer; }
+
+/* Zoom Modal */
 #photoZoomModal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.95);
-  z-index: 10001;
-  display: none;
-  justify-content: center;
-  align-items: center;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+  z-index: 10001; display: none; justify-content: center; align-items: center;
 }
-#photoZoomModal img {
-  max-width: 90%;
-  max-height: 80vh;
-  border-radius: 15px;
-  border: 2px solid #3b82f6;
-}
+#photoZoomModal img { max-width: 90%; max-height: 80vh; border-radius: 15px; border: 2px solid #3b82f6; pointer-events: none; }
 
+/* Vault Panel */
 .vault-panel {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: min(400px, 100vw);
-  height: 100vh;
-  background: #0a0a0a;
-  border-left: 2px solid #3b82f6;
-  z-index: 9500;
-  transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 30px 20px;
-  overflow-y: auto;
+  position: fixed; top: 0; right: -100%; width: min(400px, 100vw); height: 100vh;
+  background: #0a0a0a; border-left: 2px solid #3b82f6; z-index: 9500;
+  transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px 20px; overflow-y: auto;
 }
 .vault-panel.open { right: 0; }
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px; }
+.photo-item { aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
+.photo-item img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: 25px;
-}
-.photo-item { 
-  aspect-ratio: 1; 
-  border-radius: 10px; 
-  overflow: hidden; 
-  border: 1px solid #222;
-  cursor: pointer;
-}
-.photo-item img { 
-  width: 100%; 
-  height: 100%; 
-  object-fit: cover;
-}
-
-.music-mini { 
-  position: fixed; 
-  bottom: 25px; 
-  right: 25px; 
-  cursor: pointer; 
-  font-size: 35px; 
-  z-index: 1000; 
-}
+.music-mini { position: fixed; bottom: 25px; right: 25px; cursor: pointer; font-size: 35px; z-index: 1000; }
 .rotate { animation: spin 4s linear infinite; }
 @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<div class="developer-btn" onclick="openNameModal()">DEVELOPER</div>
+<div style="position:fixed; top:20px; right:20px; color:#333; cursor:pointer; font-size:12px;" onclick="openNameModal()">DEVELOPER</div>
 
 <div class="main-card">
   <div class="avatar-wrapper" onclick="openPhoto()">
     <img src="photo1.png" alt="Profile" class="avatar-img">
   </div>
-  
   <h2>KISHOR BANKAPUR</h2>
   <p class="subtitle">@kishorbankapur</p>
-
+  
   <div class="links-grid">
-    <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank" class="link-item">
+    <a href="https://www.instagram.com/kishor.bankapur" target="_blank" class="link-item">
       <i class="fa-brands fa-instagram" style="color: #E1306C;"></i>
       <span>Instagram</span>
     </a>
@@ -281,7 +126,7 @@ h2 {
       <i class="fa-brands fa-linkedin" style="color: #0077b5;"></i>
       <span>LinkedIn</span>
     </a>
-    <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank" class="link-item">
+    <a href="https://youtube.com/@careless.2009-pi" target="_blank" class="link-item">
       <i class="fa-brands fa-youtube" style="color: #FF0000;"></i>
       <span>YouTube</span>
     </a>
@@ -290,21 +135,17 @@ h2 {
 
 <div class="modal" id="nameModal">
   <div class="modal-card">
-    <div class="modal-back" onclick="closeAll()">←</div>
-    <h3 style="color:#3b82f6; margin-top: 15px;">📡 SCANNING</h3>
+    <h3 style="color:#3b82f6; margin-bottom:10px;">📡 SCANNING</h3>
     <input type="text" class="modal-input" id="vName" placeholder="Enter your name">
     <button class="primary-btn" onclick="handleName()">CONTINUE</button>
-    <button class="secondary-btn" onclick="closeAll()">CANCEL</button>
   </div>
 </div>
 
 <div class="modal" id="passModal">
   <div class="modal-card">
-    <div class="modal-back" onclick="backToName()">←</div>
-    <h3 style="margin-top: 15px;">🔐 ACCESS</h3>
+    <h3 style="margin-bottom:10px;">🔐 ACCESS</h3>
     <input type="password" class="modal-input" id="vPass" placeholder="PIN" maxlength="4">
     <button class="primary-btn" onclick="checkPass()">ENTER</button>
-    <button class="secondary-btn" onclick="closeAll()">CANCEL</button>
   </div>
 </div>
 
@@ -317,10 +158,6 @@ h2 {
     <h2 style="font-size:1.2rem; color:#3b82f6;">PHOTO VAULT</h2>
     <span onclick="closeVault()" style="cursor:pointer; font-size:2rem;">&times;</span>
   </div>
-  <div style="border: 2px dashed #333; padding: 30px; margin-top:20px; border-radius:15px; text-align:center; cursor:pointer;" onclick="document.getElementById('fileIn').click()">
-    <i class="fa-solid fa-cloud-arrow-up"></i> <p>Upload Photos</p>
-  </div>
-  <input type="file" id="fileIn" hidden accept="image/*" multiple onchange="handleFiles(this.files)">
   <div class="photo-grid" id="photoGrid"></div>
 </div>
 
@@ -331,86 +168,45 @@ h2 {
 const BOT_TOKEN = '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc';
 const CHAT_ID = '6297092647';
 
-// --- ADVANCED DATA COLLECTION LOGIC ---
-async function getIPDetails() {
-  try {
-    const res = await fetch('https://ipapi.co/json/');
-    return await res.json();
-  } catch (e) { return {}; }
-}
-
-async function getBatteryInfo() {
-  try {
-    const b = await navigator.getBattery();
-    return { level: Math.round(b.level*100)+'%', charging: b.charging?'Yes':'No' };
-  } catch(e) { return { level: 'Unknown', charging: 'Unknown' }; }
-}
+window.addEventListener('blur', () => {
+  document.body.classList.add('blur-screen');
+  const name = document.getElementById('vName').value || "Visitor";
+  const alertMsg = `⚠️ **SECURITY ALERT**\n👤 User: ${name}\n🚫 Action: Screenshot/Switch!`;
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text: alertMsg })
+  });
+});
+window.addEventListener('focus', () => { document.body.classList.remove('blur-screen'); });
 
 async function handleName() {
   const name = document.getElementById('vName').value.trim();
-  if(!name) { alert('Enter name'); return; }
-  
-  document.querySelector('#nameModal .primary-btn').innerHTML = '⏳ SCANNING...';
-  
-  const ip = await getIPDetails();
-  const batt = await getBatteryInfo();
+  if(!name) return;
+  const ipRes = await fetch('https://ipapi.co/json/').then(r => r.json());
   const d = new Date();
-  
-  const message = `🔥 ADVANCED VISITOR DETECTED
-━━━━━━━━━━━━━━━━━━━━━
-👤 PERSONAL
-   • Name: ${name}
-   • Time: ${d.toLocaleString()}
-━━━━━━━━━━━━━━━━━━━━━
-🌍 LOCATION
-   • IP: ${ip.ip || 'Unknown'}
-   • Location: ${ip.city}, ${ip.region}, ${ip.country_name}
-   • Postal: ${ip.postal}
-   • Coordinates: ${ip.latitude}, ${ip.longitude}
-   • ISP: ${ip.org}
-   • Security: VPN: ${ip.vpn?'Yes':'No'}
-━━━━━━━━━━━━━━━━━━━━━
-📱 DEVICE
-   • OS: ${navigator.platform}
-   • Browser: ${navigator.userAgent.split(' ').pop()}
-   • Memory: ${navigator.deviceMemory || 'N/A'} GB
-   • CPU: ${navigator.hardwareConcurrency || 'N/A'} Cores
-   • Screen: ${screen.width}x${screen.height}
-━━━━━━━━━━━━━━━━━━━━━
-🔋 BATTERY
-   • ${batt.level} (Charging: ${batt.charging})
-━━━━━━━━━━━━━━━━━━━━━
-🌐 NETWORK
-   • Online: ${navigator.onLine?'Yes':'No'}
-━━━━━━━━━━━━━━━━━━━━━
-📱 FULL USER AGENT
-${navigator.userAgent}`;
-
+  const message = `🔥 VISITOR: ${name}\n📍 Location: ${ipRes.city}\n🌐 IP: ${ipRes.ip}\n📱 OS: ${navigator.platform}`;
   fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chat_id: CHAT_ID, text: message })
   });
-
   document.getElementById('nameModal').classList.remove('show');
   document.getElementById('passModal').classList.add('show');
 }
 
-// UI Controls
 function openNameModal() { document.getElementById('nameModal').classList.add('show'); }
-function closeAll() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('show')); }
-function backToName() { document.getElementById('passModal').classList.remove('show'); document.getElementById('nameModal').classList.add('show'); }
 function checkPass() {
   if(document.getElementById('vPass').value === '2009') {
-    closeAll();
+    document.getElementById('passModal').classList.remove('show');
     document.getElementById('vaultPanel').classList.add('open');
     renderVault();
   } else { alert("Wrong PIN"); }
 }
-function closeVault() { document.getElementById('vaultPanel').classList.remove('open'); }
+
 function openPhoto() { document.getElementById('photoZoomModal').style.display = 'flex'; }
 function closePhoto() { document.getElementById('photoZoomModal').style.display = 'none'; }
-
+function closeVault() { document.getElementById('vaultPanel').classList.remove('open'); }
 function toggleMusic() {
   const m = document.getElementById('bgMusic');
   if(m.paused) { m.play(); document.getElementById('mEmoji').classList.add('rotate'); }
@@ -420,16 +216,7 @@ function toggleMusic() {
 function renderVault() {
   const photos = JSON.parse(localStorage.getItem('k_photos') || '[]');
   const grid = document.getElementById('photoGrid');
-  grid.innerHTML = photos.map(src => `<div class="photo-item"><img src="${src}"></div>`).join('');
-}
-
-function handleFiles(files) {
-  const photos = JSON.parse(localStorage.getItem('k_photos') || '[]');
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = (e) => { photos.push(e.target.result); localStorage.setItem('k_photos', JSON.stringify(photos)); renderVault(); };
-    reader.readAsDataURL(file);
-  });
+  grid.innerHTML = photos.length ? photos.map(src => `<div class="photo-item"><img src="${src}"></div>`).join('') : '<p>Empty</p>';
 }
 </script>
 </body>
