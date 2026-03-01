@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <title>Kishor | Social</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<!-- Icons -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
@@ -29,7 +27,7 @@ body{
   overflow-x: hidden;
 }
 
-/* Card */
+/* Main Card */
 .card{
   width: min(350px, 80vw);
   padding: clamp(24px, 4vw, 32px);
@@ -44,7 +42,7 @@ body{
   max-width: 400px;
 }
 
-/* Avatar container */
+/* Profile Photo */
 .avatar-container {
   position: relative;
   width: min(120px, 25vw);
@@ -56,7 +54,6 @@ body{
   cursor: pointer;
 }
 
-/* Profile Photo */
 .avatar-img {
   width: 100%;
   height: 100%;
@@ -71,27 +68,22 @@ body{
   transform: scale(1.05);
 }
 
-.avatar-img:active {
-  transform: scale(0.95);
-}
-
 h2{
   margin: 0 0 10px 0;
   font-size: clamp(1.5rem, 5vw, 2rem);
-  text-align: center;
   background: linear-gradient(135deg, #fff, #94a3b8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-p{
+.subtitle{
   opacity:.75;
   margin-bottom: 25px;
   font-size: clamp(1rem, 4vw, 1.2rem);
-  text-align: center;
   color: #94a3b8;
 }
 
+/* Social Links */
 a{
   display:flex;
   align-items:center;
@@ -122,7 +114,37 @@ i{
   text-align: center;
 }
 
-/* ===== MUSIC EMOJI STYLE ===== */
+/* Developer Button - Dark Grey */
+.developer-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(30, 30, 40, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255, 215, 0, 0.4);
+  color: #e0e0e0;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  padding: 8px 18px;
+  border-radius: 30px;
+  cursor: pointer;
+  z-index: 1500;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  text-transform: uppercase;
+}
+
+.developer-btn:hover {
+  border-color: gold;
+  color: gold;
+  background: rgba(40, 40, 50, 0.95);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+  transform: scale(1.05);
+}
+
+/* Music Emoji */
 .music-mini {
   position: fixed;
   bottom: 25px;
@@ -134,7 +156,7 @@ i{
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(30,30,40,0.7);
   backdrop-filter: blur(5px);
   border: 2px solid rgba(255,255,255,0.2);
   color: white;
@@ -154,7 +176,6 @@ i{
   box-shadow: 0 0 30px rgba(255,215,0,0.3);
 }
 
-/* Rotate animation */
 .rotate-emoji {
   animation: spin 4s linear infinite;
 }
@@ -164,7 +185,386 @@ i{
   to { transform: rotate(360deg); }
 }
 
-/* ===== PHOTO ZOOM MODAL - SMOOTH ANIMATION ===== */
+/* Password Modal */
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0);
+  backdrop-filter: blur(0px);
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.password-modal.show {
+  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(12px);
+  pointer-events: all;
+}
+
+.password-card {
+  background: rgba(30, 30, 40, 0.95);
+  padding: 30px 25px;
+  border-radius: 40px;
+  width: min(320px, 85vw);
+  text-align: center;
+  border: 2px solid #444;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+  transform: scale(0.7);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.password-modal.show .password-card {
+  transform: scale(1);
+  opacity: 1;
+  border-color: gold;
+}
+
+.password-card h3 {
+  font-size: 2rem;
+  margin-bottom: 15px;
+  color: #e0e0e0;
+  font-family: 'Courier New', monospace;
+}
+
+.password-card .dev-text {
+  font-family: 'Courier New', monospace;
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  background: rgba(255,255,255,0.05);
+  padding: 8px;
+  border-radius: 30px;
+}
+
+.password-input {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(20,20,30,0.8);
+  border: 2px solid #444;
+  border-radius: 60px;
+  font-size: 1.5rem;
+  text-align: center;
+  color: white;
+  letter-spacing: 4px;
+  margin-bottom: 25px;
+  outline: none;
+  font-family: 'Courier New', monospace;
+}
+
+.password-input:focus {
+  border-color: gold;
+  box-shadow: 0 0 20px rgba(255,215,0,0.3);
+}
+
+.password-card .actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.pass-btn {
+  background: rgba(40,40,50,0.8);
+  border: 2px solid #555;
+  color: #e0e0e0;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+  font-family: 'Courier New', monospace;
+}
+
+.pass-btn:hover {
+  background: gold;
+  color: black;
+  border-color: gold;
+  transform: scale(1.05);
+}
+
+.pass-btn.cancel {
+  border-color: #ff4444;
+  color: #ff8888;
+}
+.pass-btn.cancel:hover {
+  background: #ff4444;
+  border-color: #ff4444;
+  color: white;
+}
+
+/* Developer Mode Panel */
+.dev-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: min(450px, 95vw);
+  height: 100vh;
+  background: rgba(25, 25, 35, 0.98);
+  backdrop-filter: blur(20px);
+  border-left: 3px solid gold;
+  box-shadow: -10px 0 40px rgba(0,0,0,0.7);
+  z-index: 3500;
+  transition: right 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  padding: 30px 20px;
+  overflow-y: auto;
+  color: #e0e0e0;
+}
+
+.dev-panel.open {
+  right: 0;
+}
+
+.dev-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid gold;
+  padding-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-family: 'Courier New', monospace;
+  color: gold;
+}
+
+.dev-panel .close-panel {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 40px;
+  cursor: pointer;
+  color: #aaa;
+  transition: 0.2s;
+}
+.dev-panel .close-panel:hover {
+  color: gold;
+  transform: scale(1.2);
+}
+
+/* Tabs */
+.dev-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+}
+
+.dev-tab {
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  transition: all 0.2s;
+  background: rgba(255,255,255,0.05);
+  flex: 1;
+  text-align: center;
+  color: #aaa;
+}
+
+.dev-tab.active {
+  background: gold;
+  color: black;
+  font-weight: bold;
+}
+
+.dev-tab-content {
+  display: none;
+}
+
+.dev-tab-content.active {
+  display: block;
+}
+
+/* Photo Upload Area */
+.upload-area {
+  border: 3px dashed #555;
+  border-radius: 40px;
+  padding: 30px 20px;
+  text-align: center;
+  margin: 20px 0;
+  cursor: pointer;
+  transition: 0.2s;
+  background: rgba(255,255,255,0.02);
+}
+.upload-area:hover {
+  border-color: gold;
+  background: rgba(255,215,0,0.05);
+}
+.upload-area i {
+  font-size: 50px;
+  color: gold;
+  margin-bottom: 10px;
+}
+
+#fileInput {
+  display: none;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1/1;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 3px solid #555;
+  transition: 0.2s;
+}
+.photo-item:hover {
+  border-color: gold;
+  transform: scale(1.02);
+}
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.photo-item .delete-photo {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: 0.2s;
+  border: 2px solid gold;
+}
+.photo-item:hover .delete-photo {
+  opacity: 1;
+}
+.photo-item .delete-photo:hover {
+  background: red;
+  border-color: white;
+}
+
+/* Visitor Section */
+.visitor-section {
+  margin-top: 20px;
+}
+
+.visitor-title {
+  font-family: 'Courier New', monospace;
+  color: gold;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.visitor-stats {
+  background: rgba(255,255,255,0.03);
+  border-radius: 30px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #444;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+.stat-label {
+  color: #aaa;
+}
+
+.stat-value {
+  color: gold;
+  font-weight: bold;
+}
+
+.visitor-list {
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(0,0,0,0.3);
+  border-radius: 20px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.visitor-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #333;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.visitor-entry:last-child {
+  border-bottom: none;
+}
+
+.visitor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.visitor-email {
+  color: #38bdf8;
+  font-size: 0.9rem;
+}
+
+.visitor-time {
+  color: #aaa;
+  font-size: 0.75rem;
+}
+
+.clear-btn {
+  background: rgba(255,0,0,0.1);
+  border: 1px solid rgba(255,0,0,0.3);
+  color: #ff8888;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  margin-top: 10px;
+  transition: 0.2s;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.clear-btn:hover {
+  background: rgba(255,0,0,0.3);
+  color: white;
+}
+
+.empty-message {
+  text-align: center;
+  color: #aaa;
+  padding: 20px;
+  font-family: monospace;
+}
+
+/* Photo Zoom Modal */
 .photo-modal {
   position: fixed;
   top: 0;
@@ -196,7 +596,7 @@ i{
   align-items: center;
   transform: scale(0.5);
   opacity: 0;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bounce effect */
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .photo-modal.show .modal-content {
@@ -210,19 +610,9 @@ i{
   object-fit: contain;
   border-radius: 30px;
   border: 4px solid rgba(255,255,255,0.3);
-  box-shadow: 
-    0 0 30px rgba(56, 189, 248, 0.8),
-    0 0 60px rgba(56, 189, 248, 0.4),
-    0 20px 40px rgba(0,0,0,0.6);
-  transform: scale(1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.8);
 }
 
-.modal-image:hover {
-  transform: scale(1.02);
-}
-
-/* ===== BACK BUTTON - SMOOTH ===== */
 .back-button {
   position: absolute;
   top: 30px;
@@ -238,10 +628,9 @@ i{
   border-radius: 50px;
   background: rgba(0,0,0,0.3);
   backdrop-filter: blur(10px);
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s ease;
   z-index: 2001;
   border: 2px solid rgba(255,255,255,0.2);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
   transform: translateX(-20px);
   opacity: 0;
   pointer-events: none;
@@ -253,116 +642,261 @@ i{
   pointer-events: all;
 }
 
-.back-button:hover {
-  background: rgba(56, 189, 248, 0.3);
-  border-color: #38bdf8;
-  transform: scale(1.1) translateX(0);
-  box-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
-}
-
-.back-button:active {
-  transform: scale(0.95) translateX(0);
-}
-
-.back-button i {
-  font-size: 32px;
-  color: white;
-  transition: transform 0.3s;
-}
-
-.back-button:hover i {
-  transform: translateX(-5px);
-}
-
-/* Mobile */
 @media (max-width: 480px) {
-  .back-button {
-    top: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
-  }
-  
-  .back-button i {
-    font-size: 28px;
-  }
+  .back-button { top: 20px; left: 20px; width: 50px; height: 50px; }
+  .developer-btn { font-size: 12px; padding: 6px 14px; }
 }
-
-/* Icon hover colors */
-a[href*="instagram"]:hover i { color: #e4405f; }
-a[href*="twitter"]:hover i, a[href*="x.com"]:hover i { color: #1da1f2; }
-a[href*="linkedin"]:hover i { color: #0077b5; }
-a[href*="youtube"]:hover i { color: #ff0000; }
 </style>
 </head>
 
 <body>
 <div class="card">
-  <!-- Profile Photo - Click to zoom with smooth animation -->
   <div class="avatar-container" onclick="openPhoto()">
     <img src="photo1.png" alt="Kishor Bankapur" class="avatar-img" id="profilePhoto">
   </div>
   
   <h2>KISHOR BANKAPUR</h2>
-  <p>@kishorbankapur</p>
+  <p class="subtitle">@kishorbankapur</p>
 
-  <!-- Social Links -->
   <a href="https://www.instagram.com/kishor.bankapur?igsh=djEzNmVjOXFqZXY1" target="_blank">
     <i class="fa-brands fa-instagram"></i> Instagram
   </a>
-
   <a href="https://x.com/bankapurkishor" target="_blank">
     <i class="fa-brands fa-x-twitter"></i> X / Twitter
   </a>
-
   <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" target="_blank">
     <i class="fa-brands fa-linkedin"></i> LinkedIn
   </a>
-
   <a href="https://youtube.com/@careless.2009-pi?si=w8D_u4yLM429y281" target="_blank">
     <i class="fa-brands fa-youtube"></i> Youtube
   </a>
 </div>
 
-<!-- ===== MUSIC EMOJI 🗿 ===== -->
+<!-- Developer Button -->
+<div class="developer-btn" onclick="openPasswordModal()">
+  DEVELOPER
+</div>
+
+<!-- Password Modal -->
+<div class="password-modal" id="passwordModal" onclick="closePasswordModal(event)">
+  <div class="password-card" onclick="event.stopPropagation()">
+    <h3>🔐 ACCESS</h3>
+    <div class="dev-text">only for developer</div>
+    <input type="password" class="password-input" id="passwordInput" placeholder="****" maxlength="4" inputmode="numeric">
+    <div class="actions">
+      <button class="pass-btn" onclick="checkPassword()">ENTER</button>
+      <button class="pass-btn cancel" onclick="closePasswordModal(event)">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- Developer Mode Panel -->
+<div class="dev-panel" id="devPanel">
+  <div class="close-panel" onclick="closeDevPanel()">&times;</div>
+  <h2><i class="fa-solid fa-terminal"></i> DEVELOPER MODE</h2>
+  
+  <div class="dev-tabs">
+    <div class="dev-tab active" onclick="switchDevTab('photos')" id="tabPhotos">📸 PHOTOS</div>
+    <div class="dev-tab" onclick="switchDevTab('visitors')" id="tabVisitors">👥 VISITORS</div>
+  </div>
+  
+  <div class="dev-tab-content active" id="photosTab">
+    <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+      <i class="fa-solid fa-cloud-upload-alt"></i>
+      <p>click to upload photos</p>
+    </div>
+    <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
+    <div class="photo-grid" id="photoGrid"></div>
+  </div>
+  
+  <div class="dev-tab-content" id="visitorsTab">
+    <div class="visitor-section">
+      <div class="visitor-title">
+        <i class="fa-solid fa-clock"></i> VISITOR LOG
+      </div>
+      
+      <div class="visitor-stats">
+        <div class="stat-item">
+          <span class="stat-label">TOTAL VISITS:</span>
+          <span class="stat-value" id="totalVisits">0</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">LAST VISIT:</span>
+          <span class="stat-value" id="lastVisitTime">NEVER</span>
+        </div>
+      </div>
+      
+      <div class="visitor-list" id="visitorList"></div>
+      
+      <button class="clear-btn" onclick="clearAllLogs()">
+        <i class="fa-solid fa-trash"></i> CLEAR ALL LOGS
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Music -->
 <div class="music-mini">
-  <div class="music-emoji" onclick="toggleMusic()" id="musicEmoji">
-    🗿
-  </div>
+  <div class="music-emoji" onclick="toggleMusic()" id="musicEmoji">🗿</div>
 </div>
 
-<!-- ===== PHOTO ZOOM MODAL ===== -->
+<!-- Photo Zoom -->
 <div class="photo-modal" id="photoModal" onclick="closePhoto(event)">
-  <!-- BACK BUTTON -->
-  <div class="back-button" onclick="closePhoto(event)">
-    <i class="fa-solid fa-arrow-left"></i>
-  </div>
-  <div class="modal-content">
-    <img src="photo1.png" class="modal-image" alt="Kishor Bankapur">
-  </div>
+  <div class="back-button" onclick="closePhoto(event)"><i class="fa-solid fa-arrow-left"></i></div>
+  <div class="modal-content"><img src="photo1.png" class="modal-image" alt="Kishor"></div>
 </div>
 
-<!-- Audio Element -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="audio.mp3" type="audio/mpeg">
-</audio>
+<audio id="bgMusic" loop preload="auto"><source src="audio.mp3" type="audio/mpeg"></audio>
 
 <script>
+// Visitor Tracking
+function trackVisitor() {
+  let visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
+  const timeStr = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true});
+  
+  visitors.unshift({
+    id: Date.now() + Math.random(),
+    email: 'GUEST',
+    date: dateStr,
+    time: timeStr
+  });
+  
+  if (visitors.length > 50) visitors = visitors.slice(0, 50);
+  localStorage.setItem('visitor_log', JSON.stringify(visitors));
+}
+
+// Password Modal
+const passwordModal = document.getElementById('passwordModal');
+const devPanel = document.getElementById('devPanel');
+const passwordInput = document.getElementById('passwordInput');
+
+function openPasswordModal() {
+  passwordModal.classList.add('show');
+  passwordInput.value = '';
+  passwordInput.focus();
+}
+
+function closePasswordModal(event) {
+  if (event.target === passwordModal || event.target.classList.contains('cancel')) {
+    passwordModal.classList.remove('show');
+  }
+}
+
+function checkPassword() {
+  if (passwordInput.value.trim() === '2009') {
+    passwordModal.classList.remove('show');
+    devPanel.classList.add('open');
+    loadSavedPhotos();
+    updateVisitorDisplay();
+  } else {
+    alert('Wrong password');
+    passwordInput.value = '';
+    passwordInput.focus();
+  }
+}
+
+function closeDevPanel() {
+  devPanel.classList.remove('open');
+}
+
+// Tabs
+function switchDevTab(tab) {
+  document.getElementById('tabPhotos').classList.remove('active');
+    document.getElementById('tabVisitors').classList.remove('active');
+  document.getElementById('photosTab').classList.remove('active');
+  document.getElementById('visitorsTab').classList.remove('active');
+  
+  if (tab === 'photos') {
+    document.getElementById('tabPhotos').classList.add('active');
+    document.getElementById('photosTab').classList.add('active');
+  } else {
+    document.getElementById('tabVisitors').classList.add('active');
+    document.getElementById('visitorsTab').classList.add('active');
+    updateVisitorDisplay();
+  }
+}
+
+// Visitor Display
+function updateVisitorDisplay() {
+  const visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
+  document.getElementById('totalVisits').textContent = visitors.length;
+  document.getElementById('lastVisitTime').textContent = visitors.length ? `${visitors[0].date} ${visitors[0].time}`.toUpperCase() : 'NEVER';
+  
+  let html = '';
+  if (!visitors.length) {
+    html = '<div class="empty-message">NO VISITORS YET</div>';
+  } else {
+    visitors.forEach((v, i) => {
+      html += `<div class="visitor-entry"><div class="visitor-info"><span class="visitor-email">${i === 0 ? '⭐ ' : ''}${v.email}</span><span class="visitor-time">${v.date} AT ${v.time}</span></div><div style="color:#666;">#${visitors.length - i}</div></div>`;
+    });
+  }
+  document.getElementById('visitorList').innerHTML = html;
+}
+
+function clearAllLogs() {
+  if (confirm('DELETE ALL LOGS?')) {
+    localStorage.removeItem('visitor_log');
+    updateVisitorDisplay();
+  }
+}
+
+// Photo Upload
+const photoGrid = document.getElementById('photoGrid');
+const fileInput = document.getElementById('fileInput');
+const STORAGE_KEY = 'kishor_dev_photos';
+
+function loadSavedPhotos() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) renderPhotos(JSON.parse(saved));
+}
+
+function renderPhotos(photos) {
+  photoGrid.innerHTML = '';
+  if (!photos?.length) {
+    photoGrid.innerHTML = '<p style="grid-column:1/-1; color:#aaa;">NO PHOTOS</p>';
+    return;
+  }
+  photos.forEach((src, i) => {
+    photoGrid.innerHTML += `<div class="photo-item"><img src="${src}"><div class="delete-photo" onclick="deletePhoto(${i})"><i class="fa-solid fa-trash"></i></div></div>`;
+  });
+}
+
+function handleFiles(files) {
+  if (!files.length) return;
+  let existing = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      existing.push(e.target.result);
+      if (existing.length > 50) existing = existing.slice(-50);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+      renderPhotos(existing);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function deletePhoto(i) {
+  let photos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  photos.splice(i, 1);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(photos));
+  renderPhotos(photos);
+}
+
+// Music
 const music = document.getElementById('bgMusic');
 const musicEmoji = document.getElementById('musicEmoji');
-const photoModal = document.getElementById('photoModal');
-let isOpening = false;
-
-// Set volume
 music.volume = 0.5;
 
-// Toggle music with 🗿
 function toggleMusic() {
   if (music.paused) {
     music.play();
     musicEmoji.classList.add('rotate-emoji');
-    musicEmoji.style.borderColor = '#fbbf24';
-    musicEmoji.style.boxShadow = '0 0 30px #fbbf24';
+    musicEmoji.style.borderColor = 'gold';
+    musicEmoji.style.boxShadow = '0 0 30px gold';
   } else {
     music.pause();
     musicEmoji.classList.remove('rotate-emoji');
@@ -371,67 +905,38 @@ function toggleMusic() {
   }
 }
 
-// Open photo with smooth animation
+// Photo Zoom
+const photoModal = document.getElementById('photoModal');
+let isOpening = false;
+
 function openPhoto() {
   if (isOpening) return;
   isOpening = true;
-  
   photoModal.classList.add('show');
   document.body.style.overflow = 'hidden';
-  
-  // Small haptic feedback (vibration) on mobile if supported
-  if (navigator.vibrate) {
-    navigator.vibrate(50);
-  }
-  
-  setTimeout(() => {
-    isOpening = false;
-  }, 500);
+  setTimeout(() => isOpening = false, 500);
 }
 
-// Close photo with smooth animation
-function closePhoto(event) {
-  if (event.target === photoModal || event.target.classList.contains('back-button') || event.target.closest('.back-button')) {
-    // Add closing animation
-    const modalContent = document.querySelector('.modal-content');
-    modalContent.style.transform = 'scale(0.5)';
-    modalContent.style.opacity = '0';
-    
+function closePhoto(e) {
+  if (e.target === photoModal || e.target.classList.contains('back-button')) {
+    document.querySelector('.modal-content').style.transform = 'scale(0.5)';
+    document.querySelector('.modal-content').style.opacity = '0';
     setTimeout(() => {
       photoModal.classList.remove('show');
       document.body.style.overflow = '';
-      // Reset transform
-      modalContent.style.transform = '';
-      modalContent.style.opacity = '';
     }, 400);
   }
 }
 
-// Close with Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape' && photoModal.classList.contains('show')) {
-    closePhoto({ target: photoModal });
-  }
-  
-  if (e.code === 'Space' && !e.target.matches('a')) {
-    e.preventDefault();
-    toggleMusic();
-  }
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && photoModal.classList.contains('show')) closePhoto({target: photoModal});
+  if (e.code === 'Space' && !e.target.matches('a')) { e.preventDefault(); toggleMusic(); }
+  if (e.key === 'Escape' && devPanel.classList.contains('open')) closeDevPanel();
 });
 
-// Error handling
-music.addEventListener('error', function() {
-  musicEmoji.textContent = '❌';
-  musicEmoji.style.background = 'rgba(239, 68, 68, 0.3)';
-});
-
-// Smooth scroll disable when modal open
-photoModal.addEventListener('wheel', (e) => {
-  if (photoModal.classList.contains('show')) {
-    e.preventDefault();
-  }
-}, { passive: false });
+// Init
+trackVisitor();
 </script>
-
 </body>
 </html>
