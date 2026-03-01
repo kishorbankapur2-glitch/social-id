@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kishor | Social</title>
+<title>Kishor | Social Tracker</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
@@ -114,7 +114,7 @@ i{
   text-align: center;
 }
 
-/* Developer Button - Dark Grey */
+/* Developer Button */
 .developer-btn {
   position: fixed;
   top: 20px;
@@ -749,25 +749,65 @@ i{
 <audio id="bgMusic" loop preload="auto"><source src="audio.mp3" type="audio/mpeg"></audio>
 
 <script>
-// Visitor Tracking
+// ================== VISITOR TRACKING ==================
+// Yeh function har baar call hoga jab bhi koi website open karega
 function trackVisitor() {
-  let visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'});
-  const timeStr = now.toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true});
-  
-  visitors.unshift({
-    id: Date.now() + Math.random(),
-    email: 'GUEST',
-    date: dateStr,
-    time: timeStr
-  });
-  
-  if (visitors.length > 50) visitors = visitors.slice(0, 50);
-  localStorage.setItem('visitor_log', JSON.stringify(visitors));
+  try {
+    // Pehle se saved visitors ko lo
+    let visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
+    
+    // Current time and date
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+    const timeStr = now.toLocaleTimeString('en-IN', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true
+    });
+    
+    // Browser info (optional)
+    const browser = navigator.userAgent;
+    let browserName = 'Unknown';
+    if (browser.includes('Chrome')) browserName = 'Chrome';
+    else if (browser.includes('Firefox')) browserName = 'Firefox';
+    else if (browser.includes('Safari')) browserName = 'Safari';
+    else if (browser.includes('Edge')) browserName = 'Edge';
+    else if (browser.includes('Opera')) browserName = 'Opera';
+    
+    // New visitor entry
+    const visitorEntry = {
+      id: Date.now() + Math.random(),
+      email: 'GUEST',
+      browser: browserName,
+      date: dateStr,
+      time: timeStr,
+      fullTime: now.toISOString(),
+      timestamp: now.getTime()
+    };
+    
+    // Add to beginning of array (latest first)
+    visitors.unshift(visitorEntry);
+    
+    // Limit to last 100 visitors (storage limit)
+    if (visitors.length > 100) {
+      visitors = visitors.slice(0, 100);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('visitor_log', JSON.stringify(visitors));
+    
+    console.log('New visitor tracked:', visitorEntry); // Debug ke liye
+  } catch (e) {
+    console.log('Tracking error:', e);
+  }
 }
 
-// Password Modal
+// ================== PASSWORD MODAL ==================
 const passwordModal = document.getElementById('passwordModal');
 const devPanel = document.getElementById('devPanel');
 const passwordInput = document.getElementById('passwordInput');
@@ -779,17 +819,18 @@ function openPasswordModal() {
 }
 
 function closePasswordModal(event) {
-  if (event.target === passwordModal || event.target.classList.contains('cancel')) {
+  if (event.target === passwordModal || event.target.classList.contains('cancel') || event.target.closest('.cancel')) {
     passwordModal.classList.remove('show');
   }
 }
 
 function checkPassword() {
-  if (passwordInput.value.trim() === '2009') {
+  const entered = passwordInput.value.trim();
+  if (entered === '2009') {
     passwordModal.classList.remove('show');
     devPanel.classList.add('open');
     loadSavedPhotos();
-    updateVisitorDisplay();
+    updateVisitorDisplay(); // Update visitor log when opening
   } else {
     alert('Wrong password');
     passwordInput.value = '';
@@ -801,99 +842,152 @@ function closeDevPanel() {
   devPanel.classList.remove('open');
 }
 
-// Tabs
-function switchDevTab(tab) {
+// ================== DEV TABS ==================
+function switchDevTab(tabName) {
   document.getElementById('tabPhotos').classList.remove('active');
-    document.getElementById('tabVisitors').classList.remove('active');
+  document.getElementById('tabVisitors').classList.remove('active');
   document.getElementById('photosTab').classList.remove('active');
   document.getElementById('visitorsTab').classList.remove('active');
   
-  if (tab === 'photos') {
+  if (tabName === 'photos') {
     document.getElementById('tabPhotos').classList.add('active');
     document.getElementById('photosTab').classList.add('active');
   } else {
     document.getElementById('tabVisitors').classList.add('active');
     document.getElementById('visitorsTab').classList.add('active');
-    updateVisitorDisplay();
+    updateVisitorDisplay(); // Refresh when switching to visitors tab
   }
 }
 
-// Visitor Display
+// ================== VISITOR DISPLAY ==================
 function updateVisitorDisplay() {
-  const visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
-  document.getElementById('totalVisits').textContent = visitors.length;
-  document.getElementById('lastVisitTime').textContent = visitors.length ? `${visitors[0].date} ${visitors[0].time}`.toUpperCase() : 'NEVER';
-  
-  let html = '';
-  if (!visitors.length) {
-    html = '<div class="empty-message">NO VISITORS YET</div>';
-  } else {
-    visitors.forEach((v, i) => {
-      html += `<div class="visitor-entry"><div class="visitor-info"><span class="visitor-email">${i === 0 ? '⭐ ' : ''}${v.email}</span><span class="visitor-time">${v.date} AT ${v.time}</span></div><div style="color:#666;">#${visitors.length - i}</div></div>`;
+  try {
+    const visitors = JSON.parse(localStorage.getItem('visitor_log')) || [];
+    
+    // Update stats
+    document.getElementById('totalVisits').textContent = visitors.length;
+    
+    if (visitors.length > 0) {
+      const last = visitors[0];
+      document.getElementById('lastVisitTime').textContent = `${last.date} ${last.time}`.toUpperCase();
+    } else {
+      document.getElementById('lastVisitTime').textContent = 'NEVER';
+    }
+    
+    // Render visitor list
+    const visitorList = document.getElementById('visitorList');
+    if (visitors.length === 0) {
+      visitorList.innerHTML = '<div class="empty-message">NO VISITORS YET</div>';
+      return;
+    }
+    
+    let html = '';
+    visitors.forEach((visitor, index) => {
+      const isFirst = index === 0 ? '⭐ ' : '';
+      const browserIcon = visitor.browser === 'Chrome' ? '🌐' : 
+                         visitor.browser === 'Firefox' ? '🦊' : 
+                         visitor.browser === 'Safari' ? '🧭' : '📱';
+      
+      html += `
+        <div class="visitor-entry">
+          <div class="visitor-info">
+            <span class="visitor-email">${isFirst}${browserIcon} ${visitor.email}</span>
+            <span class="visitor-time">${visitor.date} AT ${visitor.time}</span>
+          </div>
+          <div style="color:#666;">#${visitors.length - index}</div>
+        </div>
+      `;
     });
+    
+    visitorList.innerHTML = html;
+  } catch (e) {
+    console.log('Display error:', e);
   }
-  document.getElementById('visitorList').innerHTML = html;
 }
 
 function clearAllLogs() {
-  if (confirm('DELETE ALL LOGS?')) {
+  if (confirm('DELETE ALL VISITOR LOGS?')) {
     localStorage.removeItem('visitor_log');
     updateVisitorDisplay();
   }
 }
 
-// Photo Upload
+// ================== PHOTO UPLOAD ==================
 const photoGrid = document.getElementById('photoGrid');
 const fileInput = document.getElementById('fileInput');
 const STORAGE_KEY = 'kishor_dev_photos';
 
 function loadSavedPhotos() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) renderPhotos(JSON.parse(saved));
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      renderPhotos(JSON.parse(saved));
+    } else {
+      photoGrid.innerHTML = '<p style="grid-column:1/-1; color:#aaa;">NO PHOTOS</p>';
+    }
+  } catch (e) {
+    console.log('Photo load error:', e);
+  }
 }
 
 function renderPhotos(photos) {
   photoGrid.innerHTML = '';
-  if (!photos?.length) {
+  if (!photos || photos.length === 0) {
     photoGrid.innerHTML = '<p style="grid-column:1/-1; color:#aaa;">NO PHOTOS</p>';
     return;
   }
-  photos.forEach((src, i) => {
-    photoGrid.innerHTML += `<div class="photo-item"><img src="${src}"><div class="delete-photo" onclick="deletePhoto(${i})"><i class="fa-solid fa-trash"></i></div></div>`;
+  
+  photos.forEach((src, index) => {
+    const item = document.createElement('div');
+    item.className = 'photo-item';
+    item.innerHTML = `<img src="${src}"><div class="delete-photo" onclick="deletePhoto(${index})"><i class="fa-solid fa-trash"></i></div>`;
+    photoGrid.appendChild(item);
   });
 }
 
 function handleFiles(files) {
   if (!files.length) return;
-  let existing = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  
+  const saved = localStorage.getItem(STORAGE_KEY);
+  let existingPhotos = saved ? JSON.parse(saved) : [];
+  
   Array.from(files).forEach(file => {
     if (!file.type.startsWith('image/')) return;
+    
     const reader = new FileReader();
-    reader.onload = e => {
-      existing.push(e.target.result);
-      if (existing.length > 50) existing = existing.slice(-50);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-      renderPhotos(existing);
+    reader.onload = function(e) {
+      existingPhotos.push(e.target.result);
+      
+      // Limit to 50 photos
+      if (existingPhotos.length > 50) {
+        existingPhotos = existingPhotos.slice(-50);
+      }
+      
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(existingPhotos));
+      renderPhotos(existingPhotos);
     };
     reader.readAsDataURL(file);
   });
 }
 
-function deletePhoto(i) {
-  let photos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  photos.splice(i, 1);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(photos));
-  renderPhotos(photos);
+function deletePhoto(index) {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    let photos = JSON.parse(saved);
+    photos.splice(index, 1);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(photos));
+    renderPhotos(photos);
+  }
 }
 
-// Music
+// ================== MUSIC ==================
 const music = document.getElementById('bgMusic');
 const musicEmoji = document.getElementById('musicEmoji');
 music.volume = 0.5;
 
 function toggleMusic() {
   if (music.paused) {
-    music.play();
+    music.play().catch(e => console.log('Audio play error:', e));
     musicEmoji.classList.add('rotate-emoji');
     musicEmoji.style.borderColor = 'gold';
     musicEmoji.style.boxShadow = '0 0 30px gold';
@@ -905,7 +999,7 @@ function toggleMusic() {
   }
 }
 
-// Photo Zoom
+// ================== PHOTO ZOOM ==================
 const photoModal = document.getElementById('photoModal');
 let isOpening = false;
 
@@ -914,29 +1008,58 @@ function openPhoto() {
   isOpening = true;
   photoModal.classList.add('show');
   document.body.style.overflow = 'hidden';
-  setTimeout(() => isOpening = false, 500);
+  if (navigator.vibrate) navigator.vibrate(50);
+  setTimeout(() => { isOpening = false; }, 500);
 }
 
-function closePhoto(e) {
-  if (e.target === photoModal || e.target.classList.contains('back-button')) {
-    document.querySelector('.modal-content').style.transform = 'scale(0.5)';
-    document.querySelector('.modal-content').style.opacity = '0';
+function closePhoto(event) {
+  if (event.target === photoModal || event.target.classList.contains('back-button') || event.target.closest('.back-button')) {
+    const modalContent = document.querySelector('.modal-content');
+    modalContent.style.transform = 'scale(0.5)';
+    modalContent.style.opacity = '0';
     setTimeout(() => {
       photoModal.classList.remove('show');
       document.body.style.overflow = '';
+      modalContent.style.transform = '';
+      modalContent.style.opacity = '';
     }, 400);
   }
 }
 
-// Keyboard
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && photoModal.classList.contains('show')) closePhoto({target: photoModal});
-  if (e.code === 'Space' && !e.target.matches('a')) { e.preventDefault(); toggleMusic(); }
-  if (e.key === 'Escape' && devPanel.classList.contains('open')) closeDevPanel();
+// ================== KEYBOARD SHORTCUTS ==================
+document.addEventListener('keydown', function(e) {
+  // Escape key for photo modal
+  if (e.key === 'Escape' && photoModal.classList.contains('show')) {
+    closePhoto({ target: photoModal });
+  }
+  
+  // Space bar for music
+  if (e.code === 'Space' && !e.target.matches('a') && !e.target.matches('button') && !e.target.matches('input')) {
+    e.preventDefault();
+    toggleMusic();
+  }
+  
+  // Escape key for dev panel
+  if (e.key === 'Escape' && devPanel.classList.contains('open')) {
+    closeDevPanel();
+  }
 });
 
-// Init
+// ================== INITIALIZE ==================
+// Track visitor immediately when page loads
 trackVisitor();
+
+// Also track when page becomes visible (if user switches tabs and comes back)
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden) {
+    // Page is now visible, track this as a return visit
+    console.log('User returned to page');
+    // Optional: track return visits if you want
+    // trackVisitor();
+  }
+});
+
+console.log('Website loaded, visitor tracking active');
 </script>
 </body>
 </html>
