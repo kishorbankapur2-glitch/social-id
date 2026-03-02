@@ -1,0 +1,23 @@
+{
+  "name": "Kishor Bankapur Secret Lab",
+  "short_name": "Secret Lab",
+  "description": "Kishor Bankapur's Private Developer Portal",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "photo1.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "photo1.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
+
